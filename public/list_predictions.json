@@ -1,0 +1,31 @@
+{
+    "date": "01-01-2020",
+    "predictions": [
+        {
+            "player": "Player One",
+            "predictions": [
+                {
+                    "match": 1,
+                    "prediciton": "home"
+                },
+                {
+                    "match": 2,
+                    "predicition": "home"
+                }
+            ]
+        },
+        {
+            "player": "Player Two",
+            "predictions": [
+                {
+                    "match": 1,
+                    "prediciton": "draw"
+                },
+                {
+                    "match": 2,
+                    "predicition": "home"
+                }
+            ]
+        }
+    ]
+}
