@@ -11,14 +11,14 @@ class Predictions extends Component {
     getPredictions() {
         var existingPlayers = this.state.players;
 
-        //fetch("http:192.168.0.62:5000/predictions")
-        fetch("./list_predictions.json")
+        //fetch("http:192.168.0.62:5000/live_scores")
+        fetch("./live_scores.json")
         .then(response => response.json())
-        .then(data => data.predictions.forEach((player) => {
+        .then(data => data.scores.forEach((player) => {
             var found = false;
 
             existingPlayers.forEach((existingPlayer, i) => {
-                if(existingPlayer.player === player.player) {
+                if(existingPlayer.name === player.name) {
                     found = true;
                     existingPlayers[i] = player;
                 }
@@ -40,7 +40,8 @@ class Predictions extends Component {
         const rows = this.state.players.map((player, index) => {
             return (
                 <tr key={index}>
-                    <td>{player.player}</td>
+                    <td>{player.name}</td>
+                    <td>{player.score}/{player.matches.length}</td>
                 </tr>
             )
         });
@@ -48,7 +49,7 @@ class Predictions extends Component {
         return (
             <div>
                 <table>
-                <tbody>{rows.length === 0 ? "No Predictions" : rows}</tbody>
+                <tbody>{rows.length === 0 ? " No Predictions" : rows}</tbody>
                 </table>
             </div>
         )
