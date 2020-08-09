@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import '../css/Games.css';
+
 class Games extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +20,7 @@ class Games extends Component {
         // TODO: include ID in web API response
         var games = [];
 
-        //fetch("http:192.168.0.62:5000/matches")
+        //fetch("http:192.168.0.62:5000/game/livematches")
         fetch("./list_matches.json")
         .then(response => response.json())
         .then(data => data.matches.forEach((match, i) => {
@@ -34,7 +36,11 @@ class Games extends Component {
             };
         }))
         .then(this.state.games.length === 0 ? this.setState({ games: games }) : null )
-        .catch(error => alert(error));
+        .catch(/* do nothing */);
+    }
+
+    calculateExpired(match) {
+        return match.status === 'FINISHED' ? 'FT' : (match.match_minute + '\'');
     }
 
     componentDidMount() {
@@ -52,14 +58,18 @@ class Games extends Component {
 
             return (
                 <tr key={index}>
-                    <td>{gameState.home_team} ({gameState.home_score}) - {gameState.away_team} ({gameState.away_score})</td>
+                    <td>{gameState.home_team}</td>
+                    <td className="matchscore">{gameState.home_score}</td>
+                    <td className="matchscore">{gameState.away_score}</td>
+                    <td>{gameState.away_team}</td>
+                    <td className="matchtime">{this.calculateExpired(gameState)}</td>
                 </tr>
             )
         }) || [];
 
         return (
-            <div>
-                <table>
+            <div className="games">
+                <table className="gamestable">
                     <tbody>{rows.length === 0 ? "No Games" : rows}</tbody>
                 </table>
             </div>

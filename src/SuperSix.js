@@ -4,10 +4,12 @@ import Games from "./components/container/Games";
 import Scores from "./components/container/Scores";
 import Time from "./components/container/Time";
 
+import './components/css/SuperSix.css';
+
 class SuperSix extends Component {
     render () {
         return (
-            <div>
+            <div className="supersix">
                 <Time />
                 <Games />
                 <Scores />

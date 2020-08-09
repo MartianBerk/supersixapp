@@ -26,7 +26,7 @@ class Time extends Component {
         var secs = "0" + date.getSeconds();
 
         return (
-            <div>
+            <div className="time">
                 <h2>{ day.substr(-2) + " " + months[month.substr(-2)] + " " + year.substr() }</h2>
                 <h3>{ hours + ":" + mins.substr(-2) + ":" + secs.substr(-2)}</h3>
             </div>

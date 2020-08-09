@@ -1,0 +1,28 @@
+.games {
+    margin: auto;
+}
+
+.gamestable {
+    font-weight: bold;
+}
+
+table.gamestable td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100px;
+    height: 10px;
+}
+
+table.gamestable td.matchscore {
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #34d15e;
+    width: 10px;
+    height: 10px;
+}
+
+.matchtime {
+    color: #8f9491;
+    padding-left: 5px;
+    width: 10px;
+}

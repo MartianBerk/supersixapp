@@ -32,7 +32,7 @@ class Scores extends Component {
             }
         }))
         .then(this.setState({ players: existingPlayers }))
-        .catch(error => alert(error));
+        .catch(/* do nothing */);
     }
 
     componentDidMount() {
