@@ -6,14 +6,18 @@
             "home_team": "Man Utd.",
             "away_team": "Man City",
             "home_score": 0,
-            "away_score": 0
+            "away_score": 0,
+            "status": "NOT_FINISHED",
+            "match_minute": "53"
         },
         {
             "id": 2,
             "home_team": "Chelsea",
             "away_team": "Everton",
             "home_score": 1,
-            "away_score": 0
+            "away_score": 0,
+            "status": "FINISHED",
+            "match_minute": null
         }
     ]
 }
