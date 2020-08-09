@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Games from "./components/container/Games";
-import Predictions from "./components/container/Predictions";
+import Scores from "./components/container/Scores";
 import Time from "./components/container/Time";
 
 class SuperSix extends Component {
@@ -10,7 +10,7 @@ class SuperSix extends Component {
             <div>
                 <Time />
                 <Games />
-                <Predictions />
+                <Scores />
             </div>
         )
     }
