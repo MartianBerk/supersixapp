@@ -43,7 +43,7 @@ class Scores extends Component {
         const rows = this.state.players.map((player, index) => {
             return (
                 <tr key={index}
-                    onMouseOver={() => this.setState({ indexRow: index === this.state.indexRow ? null : index })}  // handle double click on phones
+                    onMouseOver={() => this.setState({ indexRow: index })}
                     onMouseOut={() => this.setState({ indexRow: null })}
                 >
                     <td>{player.name}</td>
