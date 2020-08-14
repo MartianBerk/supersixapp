@@ -1,6 +1,8 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 
 import Predictions from "./Predictions.js";
+
+import '../css/Scores.css';
 
 class Scores extends Component {
     constructor(props) {
@@ -46,17 +48,17 @@ class Scores extends Component {
                     onMouseOver={() => this.setState({ indexRow: index })}
                     onMouseOut={() => this.setState({ indexRow: null })}
                 >
-                    <td>{player.name}</td>
-                    <td>{player.score}/{player.matches.length}</td>
+                    <td className="playername">{player.name}</td>
+                    <td className="playerscore">{player.score}/{player.matches.length}</td>
                     <Predictions data={player.matches} reveal={this.state.indexRow === index} />
                 </tr>
             )
         });
 
         return (
-            <div>
-                <table>
-                <tbody>{rows.length === 0 ? " No Scores" : rows}</tbody>
+            <div className="scores">
+                <table className="scorestable">
+                    <tbody>{rows.length === 0 ? " No Scores" : rows}</tbody>
                 </table>
             </div>
         )

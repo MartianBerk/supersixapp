@@ -1,0 +1,14 @@
+.predictions {
+    margin: auto;
+    border: 2px solid black;
+    position: absolute;
+    margin-left: 25px
+}
+
+td.pick {
+    font-weight: bold;
+}
+
+td.correct {
+    background-color: #34d15e;
+}
