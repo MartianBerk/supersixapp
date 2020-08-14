@@ -44,13 +44,21 @@ class Games extends Component {
     }
 
     componentDidMount() {
+        this.getMatches();  // get data first
         this.gamesInterval = setInterval(() => this.getMatches(), 10000)
     }
 
     render () {
         const rows = this.state.games.map((game, index) => {
             var gameState = null;
-            [this.state.gameOne, this.state.gameTwo].forEach(element => {
+            [
+                this.state.gameOne,
+                this.state.gameTwo,
+                this.state.gameThree,
+                this.state.gameFour,
+                this.state.gameFive,
+                this.state.gameSix
+            ].forEach(element => {
                 if ('id' in element && element.id === game) {
                     gameState = element;
                 }

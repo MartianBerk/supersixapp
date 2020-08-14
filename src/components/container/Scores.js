@@ -38,6 +38,7 @@ class Scores extends Component {
     }
 
     componentDidMount() {
+        this.getScores();  // get data first
         this.scoresInterval = setInterval(() => this.getScores(), 10000)
     }
 
@@ -53,7 +54,7 @@ class Scores extends Component {
                     <Predictions data={player.matches} reveal={this.state.indexRow === index} />
                 </tr>
             )
-        });
+        }) || [];
 
         return (
             <div className="scores">
