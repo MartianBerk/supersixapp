@@ -1,0 +1,17 @@
+.scores {
+    margin: auto;
+    padding-left: 50px;
+    padding-top: 25px;
+}
+
+.playername {
+    font-weight: bold;
+    padding-top: 25px;
+}
+
+.playerscore {
+    padding-left: 40px;
+    padding-top: 25px;
+    width: 10px;
+    font-weight: bold;
+}

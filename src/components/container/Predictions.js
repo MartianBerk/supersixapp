@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../css/Predictions.css';
 
 class Predictions extends Component {
     constructor(props) {
@@ -9,21 +10,20 @@ class Predictions extends Component {
         const rows = this.props.data.map((match, i) => {
             return (
                 <tr key={i}>
-                    {match.home_team} - {match.away_team} ({match.prediction[0].toUpperCase() + match.prediction.slice(1)})
+                    <td className={match.prediction === 'home' ? 'pick' : ''}>{match.home_team}</td>
+                    <td>Vs</td>
+                    <td className={match.prediction === 'away' ? 'pick' : ''}>{match.away_team}</td>
+                    <td>{match.correct ? <img src='tick.png' height='25' width='25' /> : ''}</td>
                 </tr>
             )
         });
 
         return (
-            <div>
-                <div>
-                {
-                    this.props.reveal && 
-                    <table>
-                        <tbody>{rows}</tbody>
-                    </table>
-                }
-                </div>
+            this.props.reveal && 
+            <div className="predictions">
+                <table className="predictionstable">
+                    <tbody>{rows}</tbody>
+                </table>
             </div>
         )
     }
