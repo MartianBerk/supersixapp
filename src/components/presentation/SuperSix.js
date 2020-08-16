@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import Games from "./components/container/Games";
-import Scores from "./components/container/Scores";
-import Time from "./components/container/Time";
+import Games from "../container/Games.js";
+import Scores from "../container/Scores.js";
+import Time from "../container/Time.js";
 
-import './components/css/SuperSix.css';
+import '../css/SuperSix.css';
 
 class SuperSix extends Component {
     render () {
