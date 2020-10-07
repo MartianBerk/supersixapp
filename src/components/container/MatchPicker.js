@@ -18,7 +18,7 @@ class MatchPicker extends Component {
         // TODO: include ID and selected in web API response
         var games = [];
 
-        //fetch("http:192.168.0.62:5000/matches?{matchDate}")
+        //fetch("http:192.168.0.62:5000/listmatches?{matchDate}")
         fetch("./list_matches.json")
         .then(response => response.json())
         .then(data => this.setState({ games: data.matches, selected: data.matches.reduce((r, d) => {

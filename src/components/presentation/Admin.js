@@ -7,6 +7,7 @@ import {
   } from 'react-router-dom';
 
 import MatchPicker from '../container/MatchPicker.js';
+import PredictionSetter from '../container/PredictionSetter.js';
 
 class Admin extends Component {
     render () {
@@ -28,7 +29,7 @@ class Admin extends Component {
                         <MatchPicker />
                     </Route>
                     <Route path="/admin/predictions">
-                        Predictions Go Here...
+                        <PredictionSetter />
                     </Route>
                 </Switch>
                 </BrowserRouter>

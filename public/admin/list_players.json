@@ -1,0 +1,14 @@
+{
+    "players": [
+        {
+            "id": 1,
+            "first_name": "Martin",
+            "last_name": "Baker"
+        },
+        {
+            "id": 1,
+            "first_name": "Greg",
+            "last_name": "Perkins"
+        }
+    ]
+}
