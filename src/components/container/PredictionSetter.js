@@ -6,6 +6,7 @@ class PredictionSetter extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            round: null,
             predictions: [],
             players: [],
             games: []
@@ -33,7 +34,13 @@ class PredictionSetter extends Component {
     }
 
     getPlayers() {
-        // TODO: update to context of round
+        fetch("http://192.168.0.62:5000/getround")
+        .then(response => response.json())
+        .then(data => this.setState({ round: data.id}))
+        .catch(/* do nothing */)
+    }
+
+    getRound() {
         var players = [];
 
         //fetch("http://192.168.0.62:5000/list_players")
@@ -47,6 +54,7 @@ class PredictionSetter extends Component {
     }
 
     loadData(matchDate) {
+        this.getRound();
         this.getPlayers();
         this.getMatches(matchDate);
     }
