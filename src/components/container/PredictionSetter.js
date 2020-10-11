@@ -21,8 +21,7 @@ class PredictionSetter extends Component {
         // TODO: include ID and selected in web API response
         var games = [];
 
-        //fetch("http:192.168.0.62:5000/listmatches?{matchDate}")
-        fetch("./list_matches.json")
+        fetch("http:192.168.0.65:5000/listmatches?{matchDate}")
         .then(response => response.json())
         .then(data => this.setState({ games: data.matches, selected: data.matches.reduce((r, d) => {
             if (d.selected) {
@@ -34,7 +33,7 @@ class PredictionSetter extends Component {
     }
 
     getPlayers() {
-        fetch("http://192.168.0.62:5000/getround")
+        fetch("http://192.168.0.65:5000/listplayers")
         .then(response => response.json())
         .then(data => this.setState({ round: data.id}))
         .catch(/* do nothing */)
@@ -43,8 +42,7 @@ class PredictionSetter extends Component {
     getRound() {
         var players = [];
 
-        //fetch("http://192.168.0.62:5000/list_players")
-        fetch("./list_players.json")
+        fetch("http://192.168.0.65:5000/getround")
         .then(response => response.json())
         .then(data => data.players.forEach(player => {
             players.push({ id: player.id, name: (player.first_name + " " + player.last_name) });
@@ -102,7 +100,7 @@ class PredictionSetter extends Component {
             return false;
         }
 
-        fetch("http://192.168.0.62:5000/admin/addpredictions", {
+        fetch("http://192.168.0.65:5000/admin/addpredictions", {
             method: "POST",
             body: JSON.stringify(this.state.predictions)
         })

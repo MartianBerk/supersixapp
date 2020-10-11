@@ -16,10 +16,12 @@ class MatchPicker extends Component {
 
     getMatches(matchDate) {
         // TODO: include ID and selected in web API response
+        // TODO: update all Flask responses to use custom response
+        matchDate = new Date(matchDate);
+        matchDate = `${matchDate.getDate()}-${matchDate.getMonth() + 1}-${matchDate.getFullYear()}`
+        
         var games = [];
-
-        //fetch("http:192.168.0.62:5000/listmatches?{matchDate}")
-        fetch("./list_matches.json")
+        fetch("http://192.168.0.65:5000/supersix/admin/listmatches?matchDate=" + matchDate)
         .then(response => response.json())
         .then(data => this.setState({ games: data.matches, selected: data.matches.reduce((r, d) => {
             if (d.selected) {
@@ -66,7 +68,7 @@ class MatchPicker extends Component {
             return false;
         }
 
-        fetch("http://192.168.0.62:5000/admin/addmatches", {
+        fetch("http://192.168.0.65:5000/admin/addmatches", {
             method: "POST",
             body: JSON.stringify({"ids": this.state.selected})
         })
