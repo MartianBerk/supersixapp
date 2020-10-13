@@ -8,6 +8,9 @@ import {
 
 import MatchPicker from '../container/MatchPicker.js';
 import PredictionSetter from '../container/PredictionSetter.js';
+import Round from "../container/Round.js";
+import Players from "../container/Players.js";
+
 
 class Admin extends Component {
     render () {
@@ -17,6 +20,12 @@ class Admin extends Component {
                 <div className="adminmenu">
                     <ul>
                         <li>
+                            <Link to="/admin/round">Round</Link>
+                        </li>
+                        <li>
+                            <Link to="/admin/players">Players</Link>
+                        </li>
+                        <li>
                             <Link to="/admin/matches">Matches</Link>
                         </li>
                         <li>
@@ -25,6 +34,12 @@ class Admin extends Component {
                     </ul>
                 </div>
                 <Switch>
+                    <Route path="/admin/round">
+                        <Round />
+                    </Route>
+                    <Route path="/admin/players">
+                        <Players />
+                    </Route>
                     <Route path="/admin/matches">
                         <MatchPicker />
                     </Route>

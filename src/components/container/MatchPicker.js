@@ -16,7 +16,6 @@ class MatchPicker extends Component {
 
     getMatches(matchDate) {
         // TODO: include ID and selected in web API response
-        // TODO: update all Flask responses to use custom response
         matchDate = new Date(matchDate);
         matchDate = `${matchDate.getDate()}-${matchDate.getMonth() + 1}-${matchDate.getFullYear()}`
         
@@ -68,8 +67,10 @@ class MatchPicker extends Component {
             return false;
         }
 
-        fetch("http://192.168.0.65:5000/admin/addmatches", {
+        fetch("http://192.168.0.65:5000/supersix/admin/addmatches",
+        {
             method: "POST",
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({"ids": this.state.selected})
         })
         .then();

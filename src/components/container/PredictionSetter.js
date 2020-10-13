@@ -19,12 +19,13 @@ class PredictionSetter extends Component {
 
     getMatches(matchDate) {
         // TODO: include ID and selected in web API response
-        var games = [];
+        matchDate = new Date(matchDate);
+        matchDate = `${matchDate.getDate()}-${matchDate.getMonth() + 1}-${matchDate.getFullYear()}`
 
-        fetch("http:192.168.0.65:5000/listmatches?{matchDate}")
+        fetch("http://192.168.0.65:5000/supersix/admin/listmatches?matchDate=" + matchDate)
         .then(response => response.json())
-        .then(data => this.setState({ games: data.matches, selected: data.matches.reduce((r, d) => {
-            if (d.selected) {
+        .then(data => this.setState({ games: data.matches.reduce((r, d) => {
+            if (d.use_match) {
                 r.push(d.id);
             }
             return r
@@ -32,17 +33,17 @@ class PredictionSetter extends Component {
         .catch(/* do nothing */);
     }
 
-    getPlayers() {
-        fetch("http://192.168.0.65:5000/listplayers")
+    getRound() {
+        fetch("http://192.168.0.65:5000/supersix/admin/getround")
         .then(response => response.json())
         .then(data => this.setState({ round: data.id}))
         .catch(/* do nothing */)
     }
 
-    getRound() {
+    getPlayers() {
         var players = [];
 
-        fetch("http://192.168.0.65:5000/getround")
+        fetch("http://192.168.0.65:5000/supersix/admin/listplayers")
         .then(response => response.json())
         .then(data => data.players.forEach(player => {
             players.push({ id: player.id, name: (player.first_name + " " + player.last_name) });
