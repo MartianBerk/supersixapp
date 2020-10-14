@@ -7,6 +7,7 @@ class PredictionSetter extends Component {
         super(props);
         this.state = {
             round: null,
+            player: null,
             predictions: [],
             players: [],
             games: []
@@ -14,7 +15,7 @@ class PredictionSetter extends Component {
 
         this.handlePredictionSelect = this.handlePredictionSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.resetPredictions = this.resetPredictions.bind(this);
+        this.handlePlayerSelect = this.handlePlayerSelect.bind(this);
     }
 
     getMatches(matchDate) {
@@ -26,7 +27,7 @@ class PredictionSetter extends Component {
         .then(response => response.json())
         .then(data => this.setState({ games: data.matches.reduce((r, d) => {
             if (d.use_match) {
-                r.push(d.id);
+                r.push(d);
             }
             return r
         }, [])}))
@@ -101,15 +102,26 @@ class PredictionSetter extends Component {
             return false;
         }
 
-        fetch("http://192.168.0.65:5000/admin/addpredictions", {
+        fetch("http://192.168.0.65:5000/supersix/admin/addpredictions", {
             method: "POST",
-            body: JSON.stringify(this.state.predictions)
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(this.state.predictions.map(p => {
+                return {
+                    match_id: p.id,
+                    player_id: this.state.player,
+                    prediction: p.prediction,
+                    round_id: this.state.round
+                }
+            }))
         })
         .then();
     }
 
-    resetPredictions() {
-        this.setState({ predictions: [] });
+    handlePlayerSelect(e) {
+        this.setState({ 
+            predictions: [], 
+            player: e.target.value
+        });
 
         document.getElementsByName("prediction").forEach(e => {
             e.value = null;
@@ -135,7 +147,7 @@ class PredictionSetter extends Component {
         });
 
         var playerField = (
-            <select name="players" onChange={this.resetPredictions}> 
+            <select name="players" onChange={this.handlePlayerSelect}> 
                 <option value=""></option>
                 { 
                     this.state.players.map(player => {

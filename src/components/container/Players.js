@@ -19,8 +19,20 @@ class Players extends Component {
         .then(response => response.json())
         .then(data => data.players.forEach(player => {
             this.setState((oldState) => {
-                var newPlayers = [...oldState.players];
-                newPlayers.push({ id: player.id, name: (player.first_name + " " + player.last_name) });
+                let newPlayers = [...oldState.players];
+
+                let found = false;
+                for(var i = 0; i < newPlayers.length; i++) {
+                    if(newPlayers[i] && newPlayers[i].id === player.id) {
+                        found = true;
+                        break
+                    }
+                }
+
+                if(!found) {
+                    newPlayers.push({ id: player.id, name: (player.first_name + " " + player.last_name) });
+                }
+                
                 return {players: newPlayers};
             });
         }))
