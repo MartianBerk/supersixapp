@@ -20,8 +20,7 @@ class Games extends Component {
         // TODO: include ID in web API response
         var games = [];
 
-        //fetch("http:192.168.0.62:5000/game/livematches")
-        fetch("./list_matches.json")
+        fetch("http://192.168.0.65:5000/supersix/game/livematches")
         .then(response => response.json())
         .then(data => data.matches.forEach((match, i) => {
             games.push(match.id);
@@ -64,15 +63,17 @@ class Games extends Component {
                 }
             });
 
-            return (
-                <tr key={index}>
-                    <td>{gameState.home_team}</td>
-                    <td className="matchscore">{gameState.home_score}</td>
-                    <td className="matchscore">{gameState.away_score}</td>
-                    <td>{gameState.away_team}</td>
-                    <td className="matchtime">{this.calculateExpired(gameState)}</td>
-                </tr>
-            )
+            if (gameState) {
+                return (
+                    <tr key={index}>
+                        <td>{gameState.home_team}</td>
+                        <td className="matchscore">{gameState.home_score}</td>
+                        <td className="matchscore">{gameState.away_score}</td>
+                        <td>{gameState.away_team}</td>
+                        <td className="matchtime">{this.calculateExpired(gameState)}</td>
+                    </tr>
+                )
+            }
         }) || [];
 
         return (
