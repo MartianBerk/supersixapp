@@ -16,8 +16,7 @@ class Scores extends Component {
     getScores() {
         var existingPlayers = this.state.players;
 
-        //fetch("http:192.168.0.62:5000/live_scores")
-        fetch("./live_scores.json")
+        fetch("http://192.168.0.65:5000/supersix/game/livescores")
         .then(response => response.json())
         .then(data => data.scores.forEach((player) => {
             var found = false;
@@ -32,6 +31,14 @@ class Scores extends Component {
             if(!found) {
                 existingPlayers.push(player);
             }
+        }))
+        .then(existingPlayers.sort((a, b) => {
+            if(a.score < b.score)
+                return 1;
+            else if(a.score > b.score)
+                return -1;
+            else
+                return 0
         }))
         .then(this.setState({ players: existingPlayers }))
         .catch(/* do nothing */);
