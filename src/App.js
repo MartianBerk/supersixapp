@@ -17,21 +17,21 @@ function App() {
       <BrowserRouter>
       <div className="appmenu">
         <ul>
-          <li>
+          {/* <li>
             <Link to="/">Super Six</Link>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <Link to="/admin">Admin</Link>
-          </li>
+          </li> */}
         </ul>
       </div>
       <Switch>
         <Route exact path="/">
           <SuperSix />
         </Route>
-        <Route path="/admin">
+        {/* <Route path="/admin">
           <Admin />
-        </Route>
+        </Route> */}
       </Switch>
       </BrowserRouter>
     </div>

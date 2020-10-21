@@ -1,3 +1,6 @@
+import '../css/Time.css';
+
+
 import React, { Component } from 'react';
 
 class Time extends Component {

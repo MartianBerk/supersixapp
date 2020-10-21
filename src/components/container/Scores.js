@@ -16,7 +16,8 @@ class Scores extends Component {
     getScores() {
         var existingPlayers = this.state.players;
 
-        fetch("http://192.168.0.65:5000/supersix/game/livescores")
+        // fetch("http://192.168.0.65:5000/supersix/game/livescores")
+        fetch("./scores.json")
         .then(response => response.json())
         .then(data => data.scores.forEach((player) => {
             var found = false;
@@ -53,12 +54,12 @@ class Scores extends Component {
         const rows = this.state.players.map((player, index) => {
             return (
                 <tr key={index}
-                    onMouseOver={() => this.setState({ indexRow: index })}
+                    onMouseDown={() => this.setState({ indexRow: index })}
                     onMouseOut={() => this.setState({ indexRow: null })}
                 >
                     <td className="playername">{player.name}</td>
                     <td className="playerscore">{player.score}/{player.matches.length}</td>
-                    <Predictions data={player.matches} reveal={this.state.indexRow === index} />
+                    {/* <Predictions data={player.matches} reveal={this.state.indexRow === index} /> */}
                 </tr>
             )
         }) || [];
