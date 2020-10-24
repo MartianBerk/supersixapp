@@ -39,8 +39,29 @@ class Games extends Component {
         .catch(/* do nothing */);
     }
 
+    formatMatchDate(matchDate) {
+        let d = new Date(matchDate);
+
+        let hours = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
+        let minutes = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
+
+        return `${hours}:${minutes}`;
+    }
+
     calculateExpired(match) {
-        return match.status === 'FINISHED' ? 'FT' : (match.match_minute + '\'');
+        let time = null;
+
+        if (match.status === 'FINISHED') {
+            time = 'FT';
+        }
+        else if (!match.match_minute) {
+            time = 'K/O ' + this.formatMatchDate(match.match_date);
+        }
+        else {
+            time = match.match_minute + '\'';
+        }
+
+        return time;
     }
 
     componentDidMount() {
@@ -68,8 +89,8 @@ class Games extends Component {
                 return (
                     <tr key={index}>
                         <td>{gameState.home_team}</td>
-                        <td className="matchscore">{gameState.home_score}</td>
-                        <td className="matchscore">{gameState.away_score}</td>
+                        <td className="matchscore">{gameState.home_score || '-'}</td>
+                        <td className="matchscore">{gameState.away_score || '-'}</td>
                         <td>{gameState.away_team}</td>
                         <td className="matchtime">{this.calculateExpired(gameState)}</td>
                     </tr>

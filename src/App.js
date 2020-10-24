@@ -16,14 +16,14 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <div className="appmenu">
-        <ul>
-          {/* <li>
+        {/* <ul>
+          <li>
             <Link to="/">Super Six</Link>
-          </li> */}
-          {/* <li>
+          </li>
+          <li>
             <Link to="/admin">Admin</Link>
-          </li> */}
-        </ul>
+          </li>
+        </ul> */}
       </div>
       <Switch>
         <Route exact path="/">
