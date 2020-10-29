@@ -23,7 +23,7 @@ class PredictionSetter extends Component {
         matchDate = new Date(matchDate);
         matchDate = `${matchDate.getDate()}-${matchDate.getMonth() + 1}-${matchDate.getFullYear()}`
 
-        fetch("http://192.168.0.65:5000/supersix/admin/listmatches?matchDate=" + matchDate)
+        fetch("http://192.168.0.12:5000/supersix/admin/listmatches?matchDate=" + matchDate)
         .then(response => response.json())
         .then(data => this.setState({ games: data.matches.reduce((r, d) => {
             if (d.use_match) {
@@ -35,7 +35,7 @@ class PredictionSetter extends Component {
     }
 
     getRound() {
-        fetch("http://192.168.0.65:5000/supersix/admin/getround")
+        fetch("http://192.168.0.12:5000/supersix/admin/getround")
         .then(response => response.json())
         .then(data => this.setState({ round: data.id}))
         .catch(/* do nothing */)
@@ -44,7 +44,7 @@ class PredictionSetter extends Component {
     getPlayers() {
         var players = [];
 
-        fetch("http://192.168.0.65:5000/supersix/admin/listplayers")
+        fetch("http://192.168.0.12:5000/supersix/admin/listplayers")
         .then(response => response.json())
         .then(data => data.players.forEach(player => {
             players.push({ id: player.id, name: (player.first_name + " " + player.last_name) });
@@ -102,7 +102,7 @@ class PredictionSetter extends Component {
             return false;
         }
 
-        fetch("http://192.168.0.65:5000/supersix/admin/addpredictions", {
+        fetch("http://192.168.0.12:5000/supersix/admin/addpredictions", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(this.state.predictions.map(p => {

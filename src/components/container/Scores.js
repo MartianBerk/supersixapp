@@ -16,7 +16,8 @@ class Scores extends Component {
     getScores() {
         var existingPlayers = this.state.players;
 
-        fetch("http://192.168.0.65:5000/supersix/game/livescores")
+        // fetch("https://db1662e12f5d.ngrok.io/supersix/game/livescores")
+        fetch("http://192.168.0.12:5000/supersix/game/livescores")
         // fetch("./scores.json")
         .then(response => response.json())
         .then(data => data.scores.forEach((player) => {

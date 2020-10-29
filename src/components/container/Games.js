@@ -20,7 +20,8 @@ class Games extends Component {
         // TODO: include ID in web API response
         var games = [];
 
-        fetch("http://192.168.0.65:5000/supersix/game/livematches")
+        fetch("http://192.168.0.12:5000/supersix/game/livematches")
+        // fetch("https://db1662e12f5d.ngrok.io/supersix/game/livematches")
         // fetch("./matches.json")
         .then(response => response.json())
         .then(data => data.matches.forEach((match, i) => {
@@ -89,8 +90,8 @@ class Games extends Component {
                 return (
                     <tr key={index}>
                         <td>{gameState.home_team}</td>
-                        <td className="matchscore">{gameState.home_score || '-'}</td>
-                        <td className="matchscore">{gameState.away_score || '-'}</td>
+                        <td className="matchscore">{gameState.home_score !== null ? gameState.home_score : '-'}</td>
+                        <td className="matchscore">{gameState.away_score !== null ? gameState.away_score : '-'}</td>
                         <td>{gameState.away_team}</td>
                         <td className="matchtime">{this.calculateExpired(gameState)}</td>
                     </tr>
