@@ -20,9 +20,9 @@ class Games extends Component {
         // TODO: include ID in web API response
         var games = [];
 
-        fetch("http://192.168.0.12:5000/supersix/game/livematches")
+        // fetch("http://192.168.0.12:5000/supersix/game/livematches")
         // fetch("https://db1662e12f5d.ngrok.io/supersix/game/livematches")
-        // fetch("./matches.json")
+        fetch("./matches.json")
         .then(response => response.json())
         .then(data => data.matches.forEach((match, i) => {
             games.push(match.id);
