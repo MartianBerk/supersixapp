@@ -16,8 +16,9 @@ class Scores extends Component {
     getScores() {
         var existingPlayers = this.state.players;
 
-        //fetch("http:192.168.0.62:5000/live_scores")
-        fetch("./live_scores.json")
+        // fetch("https://db1662e12f5d.ngrok.io/supersix/game/livescores")
+        // fetch("http://192.168.0.12:5000/supersix/game/livescores")
+        fetch("./scores.json")
         .then(response => response.json())
         .then(data => data.scores.forEach((player) => {
             var found = false;
@@ -33,6 +34,14 @@ class Scores extends Component {
                 existingPlayers.push(player);
             }
         }))
+        .then(existingPlayers.sort((a, b) => {
+            if(a.score < b.score)
+                return 1;
+            else if(a.score > b.score)
+                return -1;
+            else
+                return 0
+        }))
         .then(this.setState({ players: existingPlayers }))
         .catch(/* do nothing */);
     }
@@ -46,12 +55,12 @@ class Scores extends Component {
         const rows = this.state.players.map((player, index) => {
             return (
                 <tr key={index}
-                    onMouseOver={() => this.setState({ indexRow: index })}
+                    onMouseDown={() => this.setState({ indexRow: index })}
                     onMouseOut={() => this.setState({ indexRow: null })}
                 >
                     <td className="playername">{player.name}</td>
                     <td className="playerscore">{player.score}/{player.matches.length}</td>
-                    <Predictions data={player.matches} reveal={this.state.indexRow === index} />
+                    {/* <Predictions data={player.matches} reveal={this.state.indexRow === index} /> */}
                 </tr>
             )
         }) || [];

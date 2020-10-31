@@ -20,8 +20,9 @@ class Games extends Component {
         // TODO: include ID in web API response
         var games = [];
 
-        //fetch("http:192.168.0.62:5000/game/livematches")
-        fetch("./list_matches.json")
+        // fetch("http://192.168.0.12:5000/supersix/game/livematches")
+        // fetch("https://db1662e12f5d.ngrok.io/supersix/game/livematches")
+        fetch("./matches.json")
         .then(response => response.json())
         .then(data => data.matches.forEach((match, i) => {
             games.push(match.id);
@@ -39,8 +40,29 @@ class Games extends Component {
         .catch(/* do nothing */);
     }
 
+    formatMatchDate(matchDate) {
+        let d = new Date(matchDate);
+
+        let hours = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
+        let minutes = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
+
+        return `${hours}:${minutes}`;
+    }
+
     calculateExpired(match) {
-        return match.status === 'FINISHED' ? 'FT' : (match.match_minute + '\'');
+        let time = null;
+
+        if (match.status === 'FINISHED') {
+            time = 'FT';
+        }
+        else if (!match.match_minute) {
+            time = 'K/O ' + this.formatMatchDate(match.match_date);
+        }
+        else {
+            time = match.match_minute + '\'';
+        }
+
+        return time;
     }
 
     componentDidMount() {
@@ -64,15 +86,17 @@ class Games extends Component {
                 }
             });
 
-            return (
-                <tr key={index}>
-                    <td>{gameState.home_team}</td>
-                    <td className="matchscore">{gameState.home_score}</td>
-                    <td className="matchscore">{gameState.away_score}</td>
-                    <td>{gameState.away_team}</td>
-                    <td className="matchtime">{this.calculateExpired(gameState)}</td>
-                </tr>
-            )
+            if (gameState) {
+                return (
+                    <tr key={index}>
+                        <td>{gameState.home_team}</td>
+                        <td className="matchscore">{gameState.home_score !== null ? gameState.home_score : '-'}</td>
+                        <td className="matchscore">{gameState.away_score !== null ? gameState.away_score : '-'}</td>
+                        <td>{gameState.away_team}</td>
+                        <td className="matchtime">{this.calculateExpired(gameState)}</td>
+                    </tr>
+                )
+            }
         }) || [];
 
         return (

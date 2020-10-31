@@ -2,7 +2,8 @@
     margin: auto;
     border: 2px solid black;
     position: absolute;
-    margin-left: 25px
+    margin-left: -225px;
+    background-color: white;
 }
 
 td.pick {
