@@ -62,6 +62,7 @@ class Scores extends Component {
                     <p className="score">
                         <span className="scoresection playername">{player.name}</span>
                         <span className="scoresection playerscore">{player.score}/{player.matches.length}</span>
+                        <img className="scoresection expand" src={this.state.indexRow ===  index ? 'shrink.png' : 'expand.png'} height='10' width='10' />
                     </p>
                     {this.state.indexRow === index ? <Predictions data={this.state.players[this.state.indexRow].matches} /> : null}
                 </div>
