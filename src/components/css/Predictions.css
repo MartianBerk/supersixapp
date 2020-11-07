@@ -1,15 +1,27 @@
 .predictions {
+    /* margin: auto; */
+    overflow-x: hidden;
+}
+
+.prediction {
     margin: auto;
-    border: 2px solid black;
-    position: absolute;
-    margin-left: -225px;
-    background-color: white;
+    overflow: hidden;
 }
 
-td.pick {
+.prediction-section {
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.prediction-hometeam, .prediction-awayteam {
+    width: 40%;
+}
+
+.versus {
+    width: 5%;
+}
+
+.pick {
     font-weight: bold;
-}
-
-td.correct {
-    background-color: #34d15e;
 }
