@@ -22,9 +22,9 @@
 .supersix-menu-button {
     background-color: inherit;
     float: left;
-    border: None;
+    border-right: 2px solid black;
     font-size: 25px;
-    padding: 5px 5px;
+    padding-top: 5px;
     transition: 0.3s;
     cursor: pointer;
     outline: none;
