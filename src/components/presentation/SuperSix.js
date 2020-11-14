@@ -34,12 +34,12 @@ class SuperSix extends Component {
                     <button 
                         className={`supersix-menu-button ${this.state.showGames ? "active" : ""}`}
                         id="supersix-games"
-                        onClick={this.handleMenuClick}>Games
+                        onClick={this.handleMenuClick}><img src='games.png' height='40' width='40' /> 
                     </button>
                     <button
                         className={`supersix-menu-button ${this.state.showPlayers ? "active" : ""}`}
                         id="supersix-players"
-                        onClick={this.handleMenuClick}>Players
+                        onClick={this.handleMenuClick}><img src='scores.png' height='40' width='40' /> 
                     </button>
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
