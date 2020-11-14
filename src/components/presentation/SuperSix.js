@@ -18,10 +18,10 @@ class SuperSix extends Component {
     }
 
     handleMenuClick(e) {
-        if (e.target.id === "supersix-games") {
+        if (e.target.id === "supersix-games" || e.target.id === "supersix-games-img") {
             this.setState({ showGames: true, showPlayers: false })
         }
-        else if (e.target.id === "supersix-players") {
+        else if (e.target.id === "supersix-players" || e.target.id === "supersix-scores-img") {
             this.setState({ showGames: false, showPlayers: true })
         }
     }
@@ -34,12 +34,12 @@ class SuperSix extends Component {
                     <button 
                         className={`supersix-menu-button ${this.state.showGames ? "active" : ""}`}
                         id="supersix-games"
-                        onClick={this.handleMenuClick}><img src='games.png' height='40' width='40' /> 
+                        onClick={this.handleMenuClick}><img id="supersix-games-img" onClick={this.handleMenuClick}  src='games.png' height='40' width='40' /> 
                     </button>
                     <button
                         className={`supersix-menu-button ${this.state.showPlayers ? "active" : ""}`}
                         id="supersix-players"
-                        onClick={this.handleMenuClick}><img src='scores.png' height='40' width='40' /> 
+                        onClick={this.handleMenuClick}><img id="supersix-scores-img" onClick={this.handleMenuClick}  src='scores.png' height='40' width='40' /> 
                     </button>
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
