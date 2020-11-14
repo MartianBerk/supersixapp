@@ -1,0 +1,25 @@
+{
+    "stats": [
+        {
+            "name": "Martin",
+            "scores": [
+                {
+                    "date": "Sat, 24 Oct 2020 14:00:00 GMT",
+                    "score": 3
+                },
+                {
+                    "date": "Sat, 31 Oct 2020 14:00:00 GMT",
+                    "score": 5
+                },
+                {
+                    "date": "Sat, 7 Nov 2020 14:00:00 GMT",
+                    "score": 2
+                },
+                {
+                    "date": "Sat, 14 Nov 2020 14:00:00 GMT",
+                    "score": 4
+                }
+            ]
+        }
+    ]
+}

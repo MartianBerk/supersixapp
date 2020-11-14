@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 
+import LineGraph from "../container/graphs/LineGraph.js";
+
 import '../css/Performance.css';
 
 class Performance extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            data: []
+        }
     }
 
     getPerformanceStats() {
@@ -21,7 +25,15 @@ class Performance extends Component {
     render() {
         return (
             <div className="performance">
-                TBC
+                <div className="overall-stats">
+                    <LineGraph
+                        height={300}
+                        width={300}
+                        data={this.state.data}
+                        xAxis="score"
+                        yAxis="date"
+                    />
+                </div>
             </div>
         )
     }
