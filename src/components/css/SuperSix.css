@@ -8,15 +8,14 @@
 }
 
 .supersix-container {
-    width: 75%;
+    width: 100%;
     position: fixed;
-    left: 13%
+    background-color: #454242;
 }
 
 .supersix-menu {
     background-color: #babab6;
     overflow: hidden;
-    border: 1px solid black;
     height: 50px;
 }
 

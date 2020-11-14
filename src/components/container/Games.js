@@ -86,24 +86,30 @@ class Games extends Component {
                 }
             });
 
+            // TODO: note - team names should be no more 14 chars in total for optimum experience. Look into nicknames of sorts
             if (gameState) {
                 return (
-                    <tr key={index}>
-                        <td>{gameState.home_team}</td>
-                        <td className="matchscore">{gameState.home_score !== null ? gameState.home_score : '-'}</td>
-                        <td className="matchscore">{gameState.away_score !== null ? gameState.away_score : '-'}</td>
-                        <td>{gameState.away_team}</td>
-                        <td className="matchtime">{this.calculateExpired(gameState)}</td>
-                    </tr>
+                    <div key={index}>
+                        <p className="game">
+                            <span className="gamesection hometeam">{gameState.home_team}</span>
+                            <span className="gamesection gamescores">
+                                <span className="matchscore">
+                                    {gameState.home_score !== null ? gameState.home_score : '-'}
+                                    <span className="matchscore-divider">:</span>
+                                    {gameState.away_score !== null ? gameState.away_score : '-'}
+                                </span>
+                            </span>
+                            <span className="gamesection awayteam">{gameState.away_team}</span>
+                            <span className="gamesection matchtime">{this.calculateExpired(gameState)}</span>
+                        </p>
+                    </div>
                 )
             }
         }) || [];
 
         return (
             <div className="games">
-                <table className="gamestable">
-                    <tbody>{rows.length === 0 ? "No Games" : rows}</tbody>
-                </table>
+                {rows.length === 0 ? "No Games" : rows}
             </div>
         )
     }

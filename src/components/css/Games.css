@@ -1,28 +1,54 @@
 .games {
     margin: auto;
-}
-
-.gamestable {
     font-weight: bold;
-}
-
-table.gamestable td {
     padding-top: 10px;
     padding-bottom: 10px;
-    width: 100px;
     height: 10px;
 }
 
-table.gamestable td.matchscore {
+.game {
+    margin: auto;
+    overflow: hidden;
+}
+
+.gamesection {
     padding-left: 5px;
-    padding-right: 5px;
-    background-color: #34d15e;
-    width: 10px;
-    height: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    float: left;
+    height: 30px;
+    color: #ccccc3;
+}
+
+.hometeam, .awayteam {
+    width: 30%;
+    margin-top: 3px;
+}
+
+.gamescores {
+    width: 20%;
 }
 
 .matchtime {
-    color: #8f9491;
+    width: 5%;
+}
+
+.matchscore {
+    margin-left: 2px;
+    margin-right: 2px;
     padding-left: 5px;
+    padding-right: 5px;
+    width: 15px;
+    height: 15px;
+    font-size: 20px;
+}
+
+.matchscore-divider {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.matchtime {
+    padding-left: 25px;
     width: 10px;
 }

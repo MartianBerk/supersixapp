@@ -1,17 +1,46 @@
-.scores {
+.scorescontainer {
     margin: auto;
-    padding-left: 50px;
     padding-top: 25px;
+    height: 80%;
+}
+
+.scores {
+    height: 50%;
+    overflow-y: scroll;
+}
+
+.score {
+    margin: auto;
+    overflow-x: hidden;
+}
+
+.scoresection {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    float: left;
 }
 
 .playername {
     font-weight: bold;
     padding-top: 25px;
+    width: 50%
 }
 
 .playerscore {
     padding-left: 40px;
     padding-top: 25px;
-    width: 10px;
+    width: 25%;
     font-weight: bold;
+}
+
+.even {
+    background-color: #918989;
+}
+
+.odd {
+    background-color: #746d6d;
+}
+
+.expand {
+    margin-top: 15px;
 }

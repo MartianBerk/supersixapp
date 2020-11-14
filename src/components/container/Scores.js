@@ -54,22 +54,26 @@ class Scores extends Component {
     render () {
         const rows = this.state.players.map((player, index) => {
             return (
-                <tr key={index}
-                    onMouseDown={() => this.setState({ indexRow: index })}
-                    onMouseOut={() => this.setState({ indexRow: null })}
+                <div 
+                    key={index}
+                    className={index % 2 === 0 ? "even" : "odd"}
+                    onMouseDown={() => this.setState({ indexRow: (this.state.indexRow === index ? null : index) })}
                 >
-                    <td className="playername">{player.name}</td>
-                    <td className="playerscore">{player.score}/{player.matches.length}</td>
-                    {/* <Predictions data={player.matches} reveal={this.state.indexRow === index} /> */}
-                </tr>
+                    <p className="score">
+                        <span className="scoresection playername">{player.name}</span>
+                        <span className="scoresection playerscore">{player.score}/{player.matches.length}</span>
+                        <img className="scoresection expand" src={this.state.indexRow ===  index ? 'shrink.png' : 'expand.png'} height='10' width='10' />
+                    </p>
+                    {this.state.indexRow === index ? <Predictions data={this.state.players[this.state.indexRow].matches} /> : null}
+                </div>
             )
         }) || [];
 
         return (
-            <div className="scores">
-                <table className="scorestable">
-                    <tbody>{rows.length === 0 ? " No Scores" : rows}</tbody>
-                </table>
+            <div className="scorescontainer">
+                <div className="scores">
+                    {rows.length === 0 ? " No Scores" : rows}
+                </div>
             </div>
         )
     }

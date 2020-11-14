@@ -9,22 +9,21 @@ class Predictions extends Component {
     render () {
         const rows = this.props.data.map((match, i) => {
             return (
-                <tr key={i}>
-                    <td className={match.prediction === 'home' ? 'pick' : ''}>{match.home_team}</td>
-                    <td>Vs</td>
-                    <td className={match.prediction === 'away' ? 'pick' : ''}>{match.away_team}</td>
-                    <td>{match.correct ? <img src='tick.png' height='25' width='25' /> : ''}</td>
-                </tr>
+                <div key={i}>
+                    <p className="prediction">
+                        <span className={"prediction-section prediction-hometeam" + (match.prediction === 'home' ? ' pick' : '')}>{match.home_team}</span>
+                        <span className="prediction-section versus">Vs</span>
+                        <span className={"prediction-section prediction-awayteam" + (match.prediction === 'away' ? ' pick' : '')}>{match.away_team}</span>
+                        <span className="prediction-section">{match.correct ? <img src='tick.png' height='25' width='25' /> : ''}</span>
+                    </p>
+                </div>
             )
         });
 
         return (
-            this.props.reveal && 
             <div className="predictions">
-                <table className="predictionstable">
-                    <tbody>{rows}</tbody>
-                </table>
-            </div>
+                {rows}
+            </div> 
         )
     }
 };
