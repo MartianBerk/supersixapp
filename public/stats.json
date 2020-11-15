@@ -74,6 +74,31 @@
                     "score": 0
                 }
             ]
+        },
+        {
+            "name": "Dean",
+            "scores": [
+                {
+                    "date": "Sat, 17 Oct 2020 14:00:00 GMT",
+                    "score": 1
+                },
+                {
+                    "date": "Sat, 24 Oct 2020 14:00:00 GMT",
+                    "score": 2
+                },
+                {
+                    "date": "Sat, 31 Oct 2020 14:00:00 GMT",
+                    "score": 4
+                },
+                {
+                    "date": "Sat, 7 Nov 2020 14:00:00 GMT",
+                    "score": 1
+                },
+                {
+                    "date": "Sat, 14 Nov 2020 14:00:00 GMT",
+                    "score": 3
+                }
+            ]
         }
     ]
 }

@@ -92,8 +92,8 @@ class Performance extends Component {
         const overall = (
             <div className="overall-stats">
                 <LineGraph
-                    height={400}
-                    width={600}
+                    height={300}
+                    width={300}
                     backgroundColour="#635f5f"
                     data={this.state.data.filter(player => { return player.show ? player : null })}
                     xAxis="date"
@@ -104,7 +104,7 @@ class Performance extends Component {
                 <br />
                 {this.state.data.map((player, i) => {
                     return (
-                        <div>
+                        <div className="line-graph-legend">
                             <input
                                 type="checkbox"
                                 id={`line-graph-player-${i}`}
@@ -113,7 +113,7 @@ class Performance extends Component {
                                 onClick={this.handleSelect}
                                 defaultChecked={player.show ? true : false}
                             />
-                            <span className="line-graph-legend" style={{ color: player.lineColour }}>{player.name}</span>
+                            <span className="line-graph-legend-key" style={{ color: player.lineColour }}>{player.name}</span>
                         </div>
                     )
                 })}
@@ -121,9 +121,10 @@ class Performance extends Component {
         )
 
         return (
-            <div className="performance">
-                <br />
-                {this.state.renderLineGraph && overall}
+            <div className="performancecontainer">
+                <div className="performance">
+                    {this.state.renderLineGraph && overall}
+                </div>
             </div>
         )
     }

@@ -70,6 +70,7 @@ const LineGraph = props => {
 
         // draw graph data
         props.data.forEach(line => {
+            context.lineWidth = 3;
             context.strokeStyle = line.lineColour;
 
             // starting block
