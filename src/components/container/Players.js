@@ -18,6 +18,7 @@ class Players extends Component {
         fetch("http://192.168.0.12:5000/supersix/admin/listplayers")
         .then(response => response.json())
         .then(data => data.players.forEach(player => {
+            // this allows for effective updating of a states array and rerendering
             this.setState((oldState) => {
                 let newPlayers = [...oldState.players];
 
