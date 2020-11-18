@@ -6,7 +6,8 @@ import '../../css/graphs/LineGraph.css';
 const LineGraph = props => {
     const canvasRef = useRef(null);
 
-    function drawLine(context, startX, startY, endX, endY) {
+    function drawLine(context, startX, startY, endX, endY, lineWidth=2) {
+        context.lineWidth = lineWidth;
         context.beginPath();
         context.moveTo(startX, startY);
         context.lineTo(endX, endY);
@@ -53,19 +54,27 @@ const LineGraph = props => {
 
         // TODO: make x axis labels optional??
         // add x axis labels
-        // let i = 0;
-        // xRange.forEach(value => {
-        //     context.fillStyle = "#000000";
-        //     context.fillText(value, leftIndent + (xLength / (xRange.size + 1)) * i, (props.height - bottomIndent));
-        //     i++;
-        // });
+        let i = 0;
+        xRange.forEach(_value => {
+            context.fillStyle = "#ffffff";
+            context.strokeStyle = "#ffffff";
+            // context.fillText(_value, leftIndent + (xLength / (xRange.size + 1)) * i, (props.height - bottomIndent));
+            
+            // draw grid lines
+            drawLine(context, leftIndent + ((xLength - leftIndent) / (xRange.size - 1) * i), props.height - bottomIndent, leftIndent + ((xLength - leftIndent) / (xRange.size - 1) * i), bottomIndent, 0.2);
+
+            i++;
+        });
 
         // add y axis labels
         let yRange = new Array(yMax);
-        for (let i = 0; i <= yRange.length; i++) {
-            context.fillStyle = "#000000";
-            context.strokeStyle = "#000000";
-            context.fillText(i/* > 0 ? i : ""*/, leftIndent / 2, props.height - bottomIndent - (yLength / yMax * i));
+        for (i = 0; i <= yRange.length; i++) {
+            context.fillStyle = "#ffffff";
+            context.strokeStyle = "#ffffff";
+            context.fillText(i, leftIndent / 2, props.height - bottomIndent - (yLength / yMax * i));
+            
+            // draw grid lines
+            drawLine(context, leftIndent, props.height - bottomIndent - (yLength / yMax * i), xLength, props.height - bottomIndent - (yLength / yMax * i), 0.2);
         }
 
         // draw graph data
@@ -79,17 +88,21 @@ const LineGraph = props => {
 
             line[props.graphData].forEach((linePart, i) => {
                 if (!lastX) {
-                    var startX = endX = lastX = leftIndent + (xLength / xRange.size) * i;
+                    var startX = endX = lastX = leftIndent + ((xLength - leftIndent) / (xRange.size - 1) * i);
                     var startY = endY = lastY = props.height - bottomIndent - (yLength / yMax) * linePart[props.yAxis];
                 }
                 else {
                     var startX = lastX;
                     var startY = lastY;
-                    var endX = lastX = leftIndent + (xLength / xRange.size) * i;
+                    var endX = lastX = leftIndent + ((xLength - leftIndent) / (xRange.size - 1) * i);
                     var endY = lastY = props.height - bottomIndent - (yLength / yMax) * linePart[props.yAxis];
-                }
 
-                drawLine(context, startX, startY, endX, endY);
+                    // if (line.name == "Hannah") {
+                    //     alert(endX)
+                    // }
+
+                    drawLine(context, startX, startY, endX, endY, 1.5);
+                }
             });
         });
 

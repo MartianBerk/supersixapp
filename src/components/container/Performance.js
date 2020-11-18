@@ -92,7 +92,7 @@ class Performance extends Component {
         const overall = (
             <div className="overall-stats">
                 <LineGraph
-                    height={300}
+                    height={200}
                     width={300}
                     backgroundColour="#635f5f"
                     data={this.state.data.filter(player => { return player.show ? player : null })}

@@ -22,6 +22,18 @@
                 {
                     "date": "Sat, 14 Nov 2020 14:00:00 GMT",
                     "score": 4
+                },
+                {
+                    "date": "Sat, 21 Nov 2020 14:00:00 GMT",
+                    "score": 2
+                },
+                {
+                    "date": "Sat, 28 Nov 2020 14:00:00 GMT",
+                    "score": 2
+                },
+                {
+                    "date": "Sat, 5 Dec 2020 14:00:00 GMT",
+                    "score": 3
                 }
             ]
         },
@@ -47,6 +59,10 @@
                 {
                     "date": "Sat, 14 Nov 2020 14:00:00 GMT",
                     "score": 3
+                },
+                {
+                    "date": "Sat, 21 Nov 2020 14:00:00 GMT",
+                    "score": 4
                 }
             ]
         },
