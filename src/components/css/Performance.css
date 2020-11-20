@@ -12,11 +12,15 @@
 .line-graph-legend {
     font-weight: bold;
     font-size: 20px;
-    display: inline-block;
+    /* display: inline-block; */
     overflow: hidden;
     margin: 0px 20px;
 }
 
 .line-graph-legend-key {
     padding-left: 5px;
+}
+
+.performance table {
+    width: 100%;
 }

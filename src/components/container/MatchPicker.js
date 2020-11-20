@@ -19,7 +19,6 @@ class MatchPicker extends Component {
         matchDate = new Date(matchDate);
         matchDate = `${matchDate.getDate()}-${matchDate.getMonth() + 1}-${matchDate.getFullYear()}`
         
-        var games = [];
         fetch("http://192.168.0.12:5000/supersix/admin/listmatches?matchDate=" + matchDate)
         .then(response => response.json())
         .then(data => this.setState({ games: data.matches, selected: data.matches.reduce((r, d) => {

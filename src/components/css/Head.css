@@ -1,0 +1,12 @@
+.head {
+    background-color: #454242;
+    color: #ccccc3;
+    overflow: hidden;
+    width: 100%;
+    margin: auto;
+}
+
+.time, .jackpot {
+    float: left;
+    width: 50%;
+}

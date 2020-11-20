@@ -1,9 +1,9 @@
-import '../css/Time.css';
+import '../css/Head.css';
 
 
 import React, { Component } from 'react';
 
-class Time extends Component {
+class Head extends Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -29,12 +29,18 @@ class Time extends Component {
         var secs = "0" + date.getSeconds();
 
         return (
-            <div className="time">
-                <h2>{ day.substr(-2) + " " + months[month.substr(-2)] + " " + year.substr() }</h2>
-                <h3>{ hours + ":" + mins.substr(-2) + ":" + secs.substr(-2)}</h3>
+            <div className="head">
+                <div className="time">
+                    <h2>{ day.substr(-2) + " " + months[month.substr(-2)] + " " + year.substr() }</h2>
+                    <h3>{ hours + ":" + mins.substr(-2) + ":" + secs.substr(-2)}</h3>
+                </div>
+                <div className="jackpot">
+                    <h2>Jackpot</h2>
+                    <h3>£234</h3>
+                </div>
             </div>
         )
     }
 }
 
-export default Time;
+export default Head;

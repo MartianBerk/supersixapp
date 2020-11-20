@@ -11,13 +11,9 @@ class Performance extends Component {
             data: [],
             renderLineGraph: false
         };
-        this.colourPalette = [
-            "#803030",
-            "#427a33",
-            "#34507d"
-        ];
 
-        this.handleSelect = this.handleSelect.bind(this);
+        this.handleNameSelect = this.handleNameSelect.bind(this);
+        this.handleColourSelect = this.handleColourSelect.bind(this);
     }
 
     formatDate(date) {
@@ -26,15 +22,19 @@ class Performance extends Component {
     }
 
     getPerformanceStats() {
-        // fetch("http://192.168.0.12:5000/supersix/stats/list")
-        fetch("stats.json")
+        // fetch("http://192.168.0.12:5000/supersix/stats/aggregate")
+        fetch("aggregate_stats.json")
         .then(response => response.json())
         .then(data => data.stats.forEach((stat, i) => {
-            stat.lineColour = i < this.colourPalette.length ? this.colourPalette[i] : "#000000";
-            stat.show = true;
+            stat.lineColour = null;
+            stat.show = false;
+            stat.overall = 0;
+            stat.matches = 0;
 
             stat.scores.forEach(score => {
                 score.date = this.formatDate(score.date);
+                stat.overall += score.score;
+                stat.matches += score.matches;
             });
 
             // this allows for effective updating of a states array and rerendering
@@ -51,6 +51,15 @@ class Performance extends Component {
 
                 newData.push(stat);
 
+                newData.sort((a, b) => {
+                    if(a.overall < b.overall)
+                        return 1;
+                    else if(a.overall > b.overall)
+                        return -1;
+                    else
+                        return 0
+                });
+
                 return { data: newData };
             });
 
@@ -65,13 +74,14 @@ class Performance extends Component {
         this.getPerformanceStats();
     }
 
-    handleSelect(event) {
+    handleNameSelect(event) {
         const index = event.target.value;
 
         if (event.target.checked) {
             this.setState(oldState => {
                 let newData = [...oldState.data];
                 newData[index].show = true;
+                newData[index].lineColour = "#000000";
     
                 return { data: newData };
             });
@@ -88,6 +98,15 @@ class Performance extends Component {
         event.target.checked = event.target.checked;
     }
 
+    handleColourSelect(event) {
+        const index = parseInt(event.target.id.split("-")[0]);
+
+        let newData = [...this.state.data];
+        newData[index].lineColour = event.target.value;
+
+        this.setState({ data: newData });
+    }
+
     render() {
         const overall = (
             <div className="overall-stats">
@@ -95,6 +114,8 @@ class Performance extends Component {
                     height={200}
                     width={300}
                     backgroundColour="#635f5f"
+                    axisColour="#000000"
+                    gridColour="#ffffff"
                     data={this.state.data.filter(player => { return player.show ? player : null })}
                     xAxis="date"
                     yAxis="score"
@@ -102,21 +123,43 @@ class Performance extends Component {
                     lineLabel="name"
                 />
                 <br />
-                {this.state.data.map((player, i) => {
-                    return (
-                        <div className="line-graph-legend">
-                            <input
-                                type="checkbox"
-                                id={`line-graph-player-${i}`}
-                                name="legend"
-                                value={i}
-                                onClick={this.handleSelect}
-                                defaultChecked={player.show ? true : false}
-                            />
-                            <span className="line-graph-legend-key" style={{ color: player.lineColour }}>{player.name}</span>
-                        </div>
-                    )
-                })}
+                <div className="performance-table">
+                    <table>
+                        <thead>
+                            <th>Show</th>
+                            <th>Colour</th>
+                            <th>Player</th>
+                            <th>Current</th>
+                        </thead>
+                        <tbody>
+                            {this.state.data.map((player, i) => {
+                                return (
+                                    <tr>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                id={`line-graph-player-${i}`}
+                                                name="legend"
+                                                value={i}
+                                                onClick={this.handleNameSelect}
+                                                defaultChecked={player.show ? true : false}
+                                            />
+                                        </td>
+                                        <td>
+                                            <input type="color" id={`${i}-player-colorpicker`} onInput={this.handleColourSelect} />
+                                        </td>
+                                        <td>
+                                            <span>{player.name}</span>
+                                        </td>
+                                        <td>
+                                            ({player.overall} / {player.matches})
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         )
 
