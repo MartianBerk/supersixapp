@@ -7,11 +7,20 @@ class Head extends Component {
     constructor(props) {
         super(props);
         this.state = { 
+            jackpot: 0,
             time: Date.now()
         };
     }
 
+    fetchCurrentRound() {
+        fetch("./current_round.json")
+        .then(response => response.json())
+        .then(data => this.setState({jackpot: data.current_round.jackpot}))
+        .catch(/* do nothing */)
+    }
+
     componentDidMount() {
+        this.fetchCurrentRound();
         this.dateInterval = setInterval(() => this.setState({ time: Date.now() }), 1000);
     }
 
@@ -36,7 +45,7 @@ class Head extends Component {
                 </div>
                 <div className="jackpot">
                     <h2>Jackpot</h2>
-                    <h3>£234</h3>
+                    <h3>£{this.state.jackpot / 100}</h3>
                 </div>
             </div>
         )

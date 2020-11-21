@@ -22,13 +22,15 @@
 .supersix-menu-button {
     background-color: inherit;
     float: left;
+    border-top: none;
     border-right: 2px solid black;
     font-size: 25px;
     padding-top: 5px;
     transition: 0.3s;
     cursor: pointer;
     outline: none;
-    width: 50%
+    width: 33.333%;
+    height: 50px;
 }
 
 .supersix-menu-button:hover {

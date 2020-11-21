@@ -141,6 +141,7 @@ class PredictionSetter extends Component {
                         <option value="home">Home</option>
                         <option value="away">Away</option>
                         <option value="draw">Draw</option>
+                        <option value="void">--VOID--</option>
                     </select>
                 </form>
             )

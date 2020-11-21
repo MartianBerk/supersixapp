@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      {/*<div className="appmenu">
+      {/* {<div className="appmenu">
         <ul>
           <li>
             <Link to="/">Super Six</Link>
@@ -24,14 +24,14 @@ function App() {
             <Link to="/admin">Admin</Link>
           </li>
         </ul>
-      </div>*/}
+      </div>} */}
       <Switch>
         <Route exact path="/">
           <SuperSix />
         </Route>
-        {/*<Route path="/admin">
+        {/* {<Route path="/admin">
           <Admin />
-        </Route>*/}
+        </Route>} */}
       </Switch>
       </BrowserRouter>
     </div>

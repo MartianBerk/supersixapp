@@ -9,16 +9,33 @@ class Performance extends Component {
         super(props);
         this.state = {
             data: [],
-            renderLineGraph: false
+            renderLineGraph: false,
+            sortColumn: { column: "overall", desc: true }
         };
 
         this.handleNameSelect = this.handleNameSelect.bind(this);
         this.handleColourSelect = this.handleColourSelect.bind(this);
+        this.handleColumnSort = this.handleColumnSort.bind(this);
     }
 
     formatDate(date) {
         date = new Date(date);
         return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    }
+
+    sortStats(column, direction) {
+        return function(a, b) {
+            if(direction === "desc" && a[column] < b[column])
+                return 1;
+            else if(direction === "desc" && a[column] > b[column])
+                return -1;
+            else if(a[column] < b[column])
+                return -1;
+            else if(a[column] > b[column])
+                return 1;
+            else
+                return 0
+        }
     }
 
     getPerformanceStats() {
@@ -37,6 +54,8 @@ class Performance extends Component {
                 stat.matches += score.matches;
             });
 
+            stat.percent = stat.overall / stat.matches * 100;
+
             // this allows for effective updating of a states array and rerendering
             this.setState((oldState) => {
                 let newData = [...oldState.data];
@@ -51,14 +70,7 @@ class Performance extends Component {
 
                 newData.push(stat);
 
-                newData.sort((a, b) => {
-                    if(a.overall < b.overall)
-                        return 1;
-                    else if(a.overall > b.overall)
-                        return -1;
-                    else
-                        return 0
-                });
+                newData.sort(this.sortStats("overall", "desc"));
 
                 return { data: newData };
             });
@@ -81,7 +93,7 @@ class Performance extends Component {
             this.setState(oldState => {
                 let newData = [...oldState.data];
                 newData[index].show = true;
-                newData[index].lineColour = "#000000";
+                newData[index].lineColour = newData[index].lineColour ? newData[index].lineColour : "#000000";
     
                 return { data: newData };
             });
@@ -107,6 +119,32 @@ class Performance extends Component {
         this.setState({ data: newData });
     }
 
+    handleColumnSort(event) {
+        const id = event.target.id.split("-")[0]
+        let column = this.state.sortColumn.column;
+        let desc = this.state.sortColumn.desc;
+
+        switch (id) {
+            case "percent": column = "percent"; break;
+            case "overall": column = "overall"; break;
+            case "playername": column = "name"; break;
+            default: break;
+        }
+
+        if (column === this.state.sortColumn.column) {
+            desc = !desc;
+        }
+
+        this.setState({ sortColumn: { column: column, desc:desc } });
+
+        this.setState(oldState => {
+            let newData = [...oldState.data];
+            newData.sort(this.sortStats(oldState.sortColumn.column, desc ? "desc" : "asc"));
+
+            return { data: newData };
+        })
+    }
+
     render() {
         const overall = (
             <div className="overall-stats">
@@ -126,33 +164,50 @@ class Performance extends Component {
                 <div className="performance-table">
                     <table>
                         <thead>
-                            <th>Show</th>
-                            <th>Colour</th>
-                            <th>Player</th>
-                            <th>Current</th>
+                            <th id="playername-column" className="table-column-header table-column-header-sort" onClick={this.handleColumnSort}>
+                                <span id="playername-title" className="table-column-header-contents">Player</span>
+                                <span id="playername-sort" className="table-column-header-contents">
+                                    {this.state.sortColumn.column === "name" ? <img className="table-sort" src={this.state.sortColumn.desc ? "expand.png" : "shrink.png"} height="10" width="10" /> : ""}
+                                </span>
+                            </th>
+                            <th id="overall-column" className="table-column-header table-column-header-sort" onClick={this.handleColumnSort}>
+                                <span id="overall-title" className="table-column-header-contents" onClick={this.handleColumnSort}>Current</span>
+                                <span id="overall-sort" className="table-column-header-contents">
+                                    {this.state.sortColumn.column === "overall" ? <img className="table-sort" src={this.state.sortColumn.desc ? "expand.png" : "shrink.png"} height="10" width="10" /> : ""}
+                                </span>
+                            </th>
+                            <th id="percent-column" className="table-column-header table-column-header-sort" onClick={this.handleColumnSort}>
+                                <span id="percent-title" className="table-column-header-contents">%</span>
+                                <span id="percent-sort" className="table-column-header-contents">
+                                    {this.state.sortColumn.column === "percent" ? <img className="table-sort" src={this.state.sortColumn.desc ? "expand.png" : "shrink.png"} height="10" width="10" /> : ""}
+                                </span>  
+                            </th>
+                            <th className="table-column-header">Show</th>
                         </thead>
                         <tbody>
                             {this.state.data.map((player, i) => {
                                 return (
-                                    <tr>
+                                    <tr className={i % 2 === 0 ? "table-row-even" : "table-row-odd"}>
                                         <td>
+                                            <span>{player.name}</span>
+                                        </td>
+                                        <td>
+                                            {player.overall} / {player.matches}
+                                        </td>
+                                        <td>
+                                            {Math.round(player.percent)}%
+                                        </td>
+                                        <td className="color-picker-container">
+                                            <input className="color-picker" type="color" id={`${i}-player-colorpicker`} onInput={this.handleColourSelect} />    
                                             <input
+                                                className="line-reveal"
                                                 type="checkbox"
                                                 id={`line-graph-player-${i}`}
                                                 name="legend"
                                                 value={i}
                                                 onClick={this.handleNameSelect}
-                                                defaultChecked={player.show ? true : false}
+                                                checked={player.show}
                                             />
-                                        </td>
-                                        <td>
-                                            <input type="color" id={`${i}-player-colorpicker`} onInput={this.handleColourSelect} />
-                                        </td>
-                                        <td>
-                                            <span>{player.name}</span>
-                                        </td>
-                                        <td>
-                                            ({player.overall} / {player.matches})
                                         </td>
                                     </tr>
                                 )
