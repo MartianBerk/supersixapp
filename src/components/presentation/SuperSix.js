@@ -11,10 +11,16 @@ class SuperSix extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            meta: {},
             showGames: true,
             showPlayers: false,
             showPerformance: false
         };
+
+        fetch("./meta.json")
+        .then(response => response.json())
+        .then(data => this.setState({ meta: data.meta }))
+        .catch(/* do nothing */);
 
         this.handleMenuClick = this.handleMenuClick.bind(this);
     }
@@ -53,13 +59,13 @@ class SuperSix extends Component {
                     </button> 
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
-                    <Games />
+                    <Games meta={this.state.meta.teams} />
                 </div>
                 <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
-                    <Scores />
+                    <Scores meta={this.state.meta.players} />
                 </div>
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
-                    <Performance />
+                    <Performance meta={this.state.meta.players} />
                 </div>
             </div>
         )

@@ -52,6 +52,7 @@ class Performance extends Component {
                 score.date = this.formatDate(score.date);
                 stat.overall += score.score;
                 stat.matches += score.matches;
+                stat.name = stat.name in this.props.meta ? this.props.meta[stat.name] : stat.name;
             });
 
             stat.percent = stat.overall / stat.matches * 100;

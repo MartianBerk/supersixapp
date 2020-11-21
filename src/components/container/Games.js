@@ -27,6 +27,9 @@ class Games extends Component {
         .then(data => data.matches.forEach((match, i) => {
             games.push(match.id);
 
+            match.home_team = match.home_team in this.props.meta ? this.props.meta[match.home_team] : match.home_team;
+            match.away_team = match.away_team in this.props.meta ? this.props.meta[match.away_team] : match.away_team;
+
             switch(i) {
                 case 0: this.setState({ gameOne: match }); break;
                 case 1: this.setState({ gameTwo: match }); break;
