@@ -1,0 +1,56 @@
+.performancecontainer {
+    margin: auto;
+    padding-top: 25px;
+    height: 80%;
+}
+
+.performance {
+    height: 50%;
+    overflow-y: scroll;
+}
+
+.line-graph-legend {
+    font-weight: bold;
+    font-size: 20px;
+    overflow: hidden;
+    margin: 0px 20px;
+}
+
+.line-graph-legend-key {
+    padding-left: 5px;
+}
+
+.performance table {
+    width: 100%;
+}
+
+.color-picker {
+    width: 25px;
+}
+
+th {
+    margin: auto;
+    /* width: 25%; */
+}
+
+.table-column-header {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding-bottom: 7.5px;
+}
+
+.table-column-header-contents {
+    padding: 0px 5px 0px 5px;
+}
+
+.table-column-header-contents:hover, .table-column-header-sort {
+    cursor: pointer;
+}
+
+.table-row-even {
+    background-color: #918989;
+}
+
+.table-row-odd {
+    background-color: #746d6d;
+}
