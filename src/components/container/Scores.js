@@ -23,7 +23,7 @@ class Scores extends Component {
         .then(data => data.scores.forEach((player) => {
             var found = false;
             
-            player.name = player.name in this.props.meta ? this.props.meta[player.name] : player.name;
+            player.name = player.name in this.props.meta.players ? this.props.meta.players[player.name] : player.name;
 
             existingPlayers.forEach((existingPlayer, i) => {
                 if(existingPlayer.name === player.name) {

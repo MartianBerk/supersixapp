@@ -6,50 +6,86 @@ class Games extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            games: [],
-            gameOne: {},
-            gameTwo: {},
-            gameThree: {},
-            gameFour: {},
-            gameFive: {},
-            gameSix: {}
+            date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
+            live: false,
+            games: []
         };
+
+        this.handleDateClick = this.handleDateClick.bind(this);
     }
 
-    getMatches() {
-        // TODO: include ID in web API response
-        var games = [];
+    getMatches(date, purge) {
+        date = new Date(date === undefined ? this.state.date : date);
 
-        // fetch("http://192.168.0.12:5000/supersix/game/livematches")
-        // fetch("https://db1662e12f5d.ngrok.io/supersix/game/livematches")
-        fetch("./matches.json")
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1);
+        const day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+        date = [year, month, day].join("");
+
+        var live = false;
+
+        // fetch("http://192.168.0.37:5000/supersix/game/livematches")
+        fetch(`./matches-${date}.json`)
         .then(response => response.json())
-        .then(data => data.matches.forEach((match, i) => {
-            games.push(match.id);
+        .then(data => {
+            if (purge !== undefined) {
+                this.setState(oldState => {
+                    let newGames = [...oldState.games];
 
-            match.home_team = match.home_team in this.props.meta ? this.props.meta[match.home_team] : match.home_team;
-            match.away_team = match.away_team in this.props.meta ? this.props.meta[match.away_team] : match.away_team;
+                    while (newGames.length > 0) {
+                        newGames.pop()
+                    }
 
-            switch(i) {
-                case 0: this.setState({ gameOne: match }); break;
-                case 1: this.setState({ gameTwo: match }); break;
-                case 2: this.setState({ gameThree: match }); break;
-                case 3: this.setState({ gameFour: match }); break;
-                case 4: this.setState({ gameFive: match }); break;
-                case 5: this.setState({ gameSix: match }); break;
-            };
+                    return { games: newGames }
+                });
+            }
+
+            return data
+        })
+        .then(data => data.matches.forEach(match => {
+            if (!live) {
+                live = match.status !== "FINISHED"
+            }
+
+            match.home_team = match.home_team in this.props.meta.teams ? this.props.meta.teams[match.home_team] : match.home_team;
+            match.away_team = match.away_team in this.props.meta.teams ? this.props.meta.teams[match.away_team] : match.away_team;
+
+            this.setState((oldState) => {
+                let newGames = [...oldState.games];
+
+                let found = false;
+                for (let i = 0; i < newGames.length; i++) {
+                    if (match.id === newGames[i].id) {
+                        newGames[i] = match;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    newGames.push(match);
+                }
+
+                return { games: newGames };
+            });
         }))
-        .then(this.state.games.length === 0 ? this.setState({ games: games }) : null )
+        .then(() => { this.setState({ live: live }) })
         .catch(/* do nothing */);
     }
 
     formatMatchDate(matchDate) {
-        let d = new Date(matchDate);
+        let date = new Date(matchDate);
 
-        let hours = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
-        let minutes = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-        return `${hours}:${minutes}`;
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+
+        let hours = date.getHours() > 9 ? date.getHours() : "0" + date.getHours();
+        let mins = date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes();
+
+        return day + " " + months[month] + " " + year + " " + hours + ":" + mins;
     }
 
     calculateExpired(match) {
@@ -57,9 +93,6 @@ class Games extends Component {
 
         if (match.status === 'FINISHED') {
             time = 'FT';
-        }
-        else if (!match.match_minute) {
-            time = 'K/O ' + this.formatMatchDate(match.match_date);
         }
         else {
             time = match.match_minute + '\'';
@@ -73,45 +106,46 @@ class Games extends Component {
         this.gamesInterval = setInterval(() => this.getMatches(), 10000)
     }
 
+    handleDateClick(event) {
+        let dateIndex = this.props.meta.gameweeks.indexOf(this.state.date);
+
+        switch(event.target.id) {
+            case "date-picker-left": dateIndex--; break;
+            case "date-picker-right": dateIndex++; break;
+        };
+
+        this.setState({ date: this.props.meta.gameweeks[dateIndex] });
+        this.getMatches(this.props.meta.gameweeks[dateIndex], true);
+    }
+
     render () {
         const rows = this.state.games.map((game, index) => {
-            var gameState = null;
-            [
-                this.state.gameOne,
-                this.state.gameTwo,
-                this.state.gameThree,
-                this.state.gameFour,
-                this.state.gameFive,
-                this.state.gameSix
-            ].forEach(element => {
-                if ('id' in element && element.id === game) {
-                    gameState = element;
-                }
-            });
-
             // TODO: note - team names should be no more 14 chars in total for optimum experience. Look into nicknames of sorts
-            if (gameState) {
-                return (
-                    <div key={index}>
-                        <p className="game">
-                            <span className="gamesection hometeam">{gameState.home_team}</span>
-                            <span className="gamesection gamescores">
-                                <span className="matchscore">
-                                    {gameState.home_score !== null ? gameState.home_score : '-'}
-                                    <span className="matchscore-divider">:</span>
-                                    {gameState.away_score !== null ? gameState.away_score : '-'}
-                                </span>
+            return (
+                <div key={index}>
+                    <p className="game">
+                        <span className="gamesection hometeam">{game.home_team}</span>
+                        <span className="gamesection gamescores">
+                            <span className="matchscore">
+                                {game.home_score !== null ? game.home_score : '-'}
+                                <span className="matchscore-divider">:</span>
+                                {game.away_score !== null ? game.away_score : '-'}
                             </span>
-                            <span className="gamesection awayteam">{gameState.away_team}</span>
-                            <span className="gamesection matchtime">{this.calculateExpired(gameState)}</span>
-                        </p>
-                    </div>
-                )
-            }
+                        </span>
+                        <span className="gamesection awayteam">{game.away_team}</span>
+                        <span className="gamesection matchtime">{this.calculateExpired(game)}</span>
+                    </p>
+                </div>
+            )
         }) || [];
 
         return (
             <div className="games">
+                <div className="date-picker">
+                    <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) ? <div id="date-picker-left" onClick={this.handleDateClick}>{"<"}</div> : <div id="date-picker-left">{""}</div>}</div>
+                    <div className={this.state.live ? "date-picker-part live" : "date-picker-part"}>{ this.formatMatchDate(this.state.date) }</div>
+                    <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) !== this.props.meta.gameweeks.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
+                </div>
                 {rows.length === 0 ? "No Games" : rows}
             </div>
         )

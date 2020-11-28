@@ -15,16 +15,16 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      {/* {<div className="appmenu">
-        <ul>
+      {<div className="appmenu">
+        {/* <ul>
           <li>
             <Link to="/">Super Six</Link>
           </li>
           <li>
             <Link to="/admin">Admin</Link>
           </li>
-        </ul>
-      </div>} */}
+        </ul> */}
+      </div>}
       <Switch>
         <Route exact path="/">
           <SuperSix />
