@@ -161,7 +161,7 @@ class Scores extends Component {
                     <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) !== this.props.meta.gameweeks.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
                 </div>
                 <div className="scores">
-                    {rows.length === 0 ? " No Scores" : rows}
+                    {rows.length === 0 ? <span style={{fontWeight: "bold"}}>No Scores</span> : rows}
                 </div>
             </div>
         )
