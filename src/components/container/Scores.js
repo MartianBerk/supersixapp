@@ -70,14 +70,25 @@ class Scores extends Component {
         }))
         .then(() => {
             this.setState(oldState => {
+                let player = oldState.players[0];  // only need one players scores to track live
+
+                if (!live) {
+                    for (var i = 0; i < player.matches.length; i++) {
+                        if (player.matches[i].status !== "FINISHED") {
+                            live = true;
+                            break;
+                        }
+                    }
+                }
+
+                return {live: live}
+            })
+        })
+        .then(() => {
+            this.setState(oldState => {
                 let sorted = [...oldState.players];
 
                 sorted.sort((a, b) => {
-                    // throw live check in here
-                    if (!live) {
-                        live = (a.status && a.status !== "FINISHED") || (b.status && b.status !== "FINISHED")
-                    }
-
                     if(a.score < b.score)
                         return 1;
                     else if(a.score > b.score)
@@ -86,7 +97,7 @@ class Scores extends Component {
                         return 0
                 })
 
-                return {players: sorted, live: live}
+                return {players: sorted}
             })
         })
         .catch(/* do nothing */);
