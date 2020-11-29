@@ -64,7 +64,7 @@ class SuperSix extends Component {
                     { !this.state.loading ? <Games meta={{ teams: this.state.meta.teams, gameweeks: this.state.meta.gameweeks }} /> : null }
                 </div>
                 <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
-                    <Scores meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }} />
+                    { !this.state.loading ? <Scores meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }} /> : null }
                 </div>
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
                     <Performance meta={this.state.meta.players} />
