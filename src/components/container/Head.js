@@ -15,33 +15,46 @@ class Head extends Component {
     fetchCurrentRound() {
         fetch("./current_round.json")
         .then(response => response.json())
-        .then(data => this.setState({jackpot: data.current_round.jackpot}))
+        .then(data => this.setState({
+            jackpot: data.current_round.jackpot,
+            start_date: data.current_round.start_date,
+            next_date: data.current_round.current_match_date,
+            rounds: data.current_round.matches
+        }))
         .catch(/* do nothing */)
     }
 
     componentDidMount() {
         this.fetchCurrentRound();
-        this.dateInterval = setInterval(() => this.setState({ time: Date.now() }), 1000);
+    }
+
+    formatDate(date, inc_time) {
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        date = new Date(date);
+
+        const year = date.getFullYear().toString();
+        const month = date.getMonth().toString();
+        const day = date.getDate().toString();
+
+        const hours = date.getHours();
+        const mins = "0" + date.getMinutes();
+        const secs = "0" + date.getSeconds();
+
+        date = day.substr(-2) + " " + months[month.substr(-2)] + " " + year.substr();
+        if (inc_time === undefined) {
+            return date;
+        }
+
+        return date + " " + hours + ":" + mins.substr(-2) + ":" + secs.substr(-2);
     }
 
     render () {
-        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-        var date = new Date(this.state.time);
-
-        var year = date.getFullYear().toString();
-        var month = date.getMonth().toString();
-        var day = date.getDate().toString();
-
-        var hours = date.getHours();
-        var mins = "0" + date.getMinutes();
-        var secs = "0" + date.getSeconds();
-
         return (
             <div className="head">
-                <div className="time">
-                    <h2>{ day.substr(-2) + " " + months[month.substr(-2)] + " " + year.substr() }</h2>
-                    <h3>{ hours + ":" + mins.substr(-2) + ":" + secs.substr(-2)}</h3>
+                <div className="round">
+                    <h2>Rounds</h2>
+                    <h3>{ this.state.rounds }</h3>
                 </div>
                 <div className="jackpot">
                     <h2>Jackpot</h2>

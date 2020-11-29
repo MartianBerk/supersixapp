@@ -6,7 +6,11 @@
     margin: auto;
 }
 
-.time, .jackpot {
+.round, .jackpot {
     float: left;
     width: 50%;
+}
+
+.round {
+    font-weight: bold;
 }
