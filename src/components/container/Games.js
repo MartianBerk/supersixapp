@@ -44,7 +44,7 @@ class Games extends Component {
         })
         .then(data => data.matches.forEach(match => {
             if (!live) {
-                live = match.status !== "FINISHED"
+                live = match.status === "IN PLAY"
             }
 
             match.home_team = match.home_team in this.props.meta.teams ? this.props.meta.teams[match.home_team] : match.home_team;
