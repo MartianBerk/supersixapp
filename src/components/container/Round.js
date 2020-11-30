@@ -29,7 +29,7 @@ class Round extends Component {
             return false;
         }
 
-        fetch("http://192.168.0.12:5000/supersix/admin/addround",
+        fetch("http://192.168.0.37:5000/supersix/admin/addround",
         {
             method: "POST",
             headers: {"Content-Type": "application/json"},
