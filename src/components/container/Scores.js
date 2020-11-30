@@ -74,7 +74,7 @@ class Scores extends Component {
 
                 if (!live) {
                     for (var i = 0; i < player.matches.length; i++) {
-                        if (player.matches[i].status !== "FINISHED") {
+                        if (player.matches[i].status === "IN PLAY") {
                             live = true;
                             break;
                         }
