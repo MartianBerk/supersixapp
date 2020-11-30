@@ -89,7 +89,7 @@ class Games extends Component {
     }
 
     calculateExpired(match) {
-        let time = '';
+        let time = '-';
 
         if (match.status === 'FINISHED') {
             time = 'FT';
