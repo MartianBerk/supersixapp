@@ -101,9 +101,27 @@ class Games extends Component {
         return time;
     }
 
+    initiateLiveMode() {
+        const date = new Date(this.state.date);
+        const now = new Date();
+
+        let cutoff = new Date(date.getTime());
+        cutoff.setHours(cutoff.getHours() + 3);  // set cutoff 3 hours later
+
+        if (!this.gamesInterval && now >= date && now <= cutoff) {
+            this.getMatches();
+            this.gamesInterval = setInterval(() => this.getMatches(), 10000);  // 10 sec refresh
+        }
+        else if (!(now >= date && now <= cutoff)) {
+            this.gamesInterval = null;
+        }
+    }
+
     componentDidMount() {
+        this.initiateLiveMode();
         this.getMatches();  // get data first
-        this.gamesInterval = setInterval(() => this.getMatches(), 10000)
+        this.gamesInterval = null;
+        this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 10000);  // 10 sec refresh
     }
 
     handleDateClick(event) {
