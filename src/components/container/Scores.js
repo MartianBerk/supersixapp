@@ -118,9 +118,27 @@ class Scores extends Component {
         return day + " " + months[month] + " " + year + " " + hours + ":" + mins;
     }
 
+    initiateLiveMode() {
+        const date = new Date(this.state.date);
+        const now = new Date()
+        
+        let cutoff = new Date(date.getTime());
+        cutoff.setHours(cutoff.getHours() + 3);  // set cutoff 3 hours later
+
+        if (!this.scoresInterval && now >= date && now <= cutoff) {
+            this.getScores();
+            this.scoresInterval = setInterval(() => this.getScores(), 10000);  // 10 sec refresh
+        }
+        else if (!(now >= date && now <= cutoff)) {
+            this.scoresInterval = null;
+        }
+    }
+
     componentDidMount() {
+        this.initiateLiveMode();
         this.getScores();  // get data first
-        this.scoresInterval = setInterval(() => this.getScores(), 10000)
+        this.scoresInterval = null;
+        this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 10000);  // 10 sec refresh
     }
 
     handleDateClick(event) {
