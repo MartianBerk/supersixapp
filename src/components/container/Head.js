@@ -56,6 +56,9 @@ class Head extends Component {
                     <h2>Rounds</h2>
                     <h3>{ this.state.rounds }</h3>
                 </div>
+                <div className="logo">
+                    <img id="supersix-logo" src='logo.png' height='60' width='70' /> 
+                </div>
                 <div className="jackpot">
                     <h2>Jackpot</h2>
                     <h3>£{this.state.jackpot / 100}</h3>
