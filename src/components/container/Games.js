@@ -44,7 +44,7 @@ class Games extends Component {
         })
         .then(data => data.matches.forEach(match => {
             if (!live) {
-                live = match.status !== "FINISHED"
+                live = match.status === "IN PLAY"
             }
 
             match.home_team = match.home_team in this.props.meta.teams ? this.props.meta.teams[match.home_team] : match.home_team;
@@ -89,21 +89,39 @@ class Games extends Component {
     }
 
     calculateExpired(match) {
-        let time = null;
+        let time = '-';
 
         if (match.status === 'FINISHED') {
             time = 'FT';
         }
-        else {
+        else if (match.match_minute) {
             time = match.match_minute + '\'';
         }
 
         return time;
     }
 
+    initiateLiveMode() {
+        const date = new Date(this.state.date);
+        const now = new Date();
+
+        let cutoff = new Date(date.getTime());
+        cutoff.setHours(cutoff.getHours() + 3);  // set cutoff 3 hours later
+
+        if (!this.gamesInterval && now >= date && now <= cutoff) {
+            this.getMatches();
+            this.gamesInterval = setInterval(() => this.getMatches(), 10000);  // 10 sec refresh
+        }
+        else if (!(now >= date && now <= cutoff)) {
+            this.gamesInterval = null;
+        }
+    }
+
     componentDidMount() {
+        this.initiateLiveMode();
         this.getMatches();  // get data first
-        this.gamesInterval = setInterval(() => this.getMatches(), 10000)
+        this.gamesInterval = null;
+        this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 10000);  // 10 sec refresh
     }
 
     handleDateClick(event) {
