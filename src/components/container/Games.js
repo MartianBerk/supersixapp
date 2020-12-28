@@ -18,7 +18,7 @@ class Games extends Component {
         date = new Date(date === undefined ? this.state.date : date);
 
         const year = date.getFullYear();
-        const month = (date.getMonth() + 1);
+        const month = (date.getMonth() + 1) > 9 ? date.getMonth() : "0" + date.getMonth();
         const day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
         date = [year, month, day].join("");
 
