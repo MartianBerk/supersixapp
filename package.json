@@ -1,6 +1,6 @@
 {
   "name": "supersixapp",
-  "homepage": "./supersix",
+  "homepage": "http://192.168.0.55/supersix",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

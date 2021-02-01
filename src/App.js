@@ -14,7 +14,7 @@ import SuperSix from './components/presentation/SuperSix.js';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename="/supersix">
       {<div className="appmenu">
         {/* <ul>
           <li>
@@ -26,7 +26,7 @@ function App() {
         </ul> */}
       </div>}
       <Switch>
-        <Route exact path="/">
+        <Route exact path="/supersix">
           <SuperSix />
         </Route>
         {/* {<Route path="/admin">
