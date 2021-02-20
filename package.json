@@ -1,6 +1,5 @@
 {
   "name": "supersixapp",
-  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,7 +9,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3"
   },
-  "proxy": "http://192.168.0.37:5000",
+  "proxy": "http://192.168.0.55",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
