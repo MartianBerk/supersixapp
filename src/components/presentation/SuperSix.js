@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import * as Constants from "../constants.js";
 import Games from "../container/Games.js";
 import Performance from "../container/Performance.js";
 import Scores from "../container/Scores.js";
@@ -18,7 +19,7 @@ class SuperSix extends Component {
             showPerformance: false
         };
 
-        fetch("./meta.json")
+        fetch(Constants.METAURL)
         .then(response => response.json())
         .then(data => this.setState({ meta: data.meta }))
         .then(() => this.setState({ loading: false }))

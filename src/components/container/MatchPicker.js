@@ -19,7 +19,7 @@ class MatchPicker extends Component {
         matchDate = new Date(matchDate);
         matchDate = `${matchDate.getDate()}-${matchDate.getMonth() + 1}-${matchDate.getFullYear()}`
         
-        fetch("http://192.168.0.12:5000/supersix/admin/listmatches?matchDate=" + matchDate)
+        fetch("http://192.168.0.55/webapis/supersix/admin/listmatches?matchDate=" + matchDate)
         .then(response => response.json())
         .then(data => this.setState({ games: data.matches, selected: data.matches.reduce((r, d) => {
             if (d.selected) {
@@ -66,7 +66,7 @@ class MatchPicker extends Component {
             return false;
         }
 
-        fetch("http://192.168.0.12:5000/supersix/admin/addmatches",
+        fetch("http://192.168.0.55/webapis/supersix/admin/addmatches",
         {
             method: "POST",
             headers: {"Content-Type": "application/json"},

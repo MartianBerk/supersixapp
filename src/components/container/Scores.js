@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import * as Constants from "../constants.js";
 import Predictions from "./Predictions.js";
 
 import '../css/Scores.css';
@@ -23,13 +24,11 @@ class Scores extends Component {
         const year = date.getFullYear();
         const month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1);
         const day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
-        date = [year, month, day].join("");
+        date = [day, month, year].join("-");
 
         var live = false;
 
-        // fetch("https://db1662e12f5d.ngrok.io/supersix/game/livescores")
-        // fetch("http://192.168.0.12:5000/supersix/game/livescores")
-        fetch(`./scores-${date}.json`)
+        fetch(`${Constants.SCORESURL}?matchDate=${date}`)
         .then(response => response.json())
         .then(data => {
             if (purge !== undefined) {
@@ -123,7 +122,7 @@ class Scores extends Component {
         const now = new Date()
         
         let cutoff = new Date(date.getTime());
-        cutoff.setHours(cutoff.getHours() + 3);  // set cutoff 3 hours later
+        cutoff.setHours(cutoff.getHours() + 2);  // set cutoff 2 hours later
 
         if (!this.scoresInterval && now >= date && now <= cutoff) {
             this.getScores();
