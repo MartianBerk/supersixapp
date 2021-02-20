@@ -1,7 +1,8 @@
-import '../css/Head.css';
-
-
 import React, { Component } from 'react';
+
+import * as Constants from "../constants.js";
+
+import '../css/Head.css';
 
 class Head extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Head extends Component {
     }
 
     fetchCurrentRound() {
-        fetch("./current_round.json")
+        fetch(Constants.CURRENTROUNDURL)
         .then(response => response.json())
         .then(data => this.setState({
             jackpot: data.current_round.jackpot,

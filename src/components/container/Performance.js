@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import * as Constants from "../constants";
 import LineGraph from "../container/graphs/LineGraph.js";
 
 import '../css/Performance.css';
@@ -39,8 +40,7 @@ class Performance extends Component {
     }
 
     getPerformanceStats() {
-        // fetch("http://192.168.0.12:5000/supersix/stats/aggregate")
-        fetch("aggregate_stats.json")
+        fetch(Constants.AGGREGATESTATSURL)
         .then(response => response.json())
         .then(data => data.stats.forEach((stat, i) => {
             stat.lineColour = null;

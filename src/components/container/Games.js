@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import * as Constants from "../constants.js";
+
 import '../css/Games.css';
 
 class Games extends Component {
@@ -20,12 +22,11 @@ class Games extends Component {
         const year = date.getFullYear();
         const month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1);
         const day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
-        date = [year, month, day].join("");
+        date = [day, month, year].join("-");
 
         var live = false;
 
-        // fetch("http://192.168.0.37:5000/supersix/game/livematches")
-        fetch(`./matches-${date}.json`)
+        fetch(`${Constants.MATCHESURL}?matchDate=${date}`)
         .then(response => response.json())
         .then(data => {
             if (purge !== undefined) {
@@ -106,7 +107,7 @@ class Games extends Component {
         const now = new Date();
 
         let cutoff = new Date(date.getTime());
-        cutoff.setHours(cutoff.getHours() + 3);  // set cutoff 3 hours later
+        cutoff.setHours(cutoff.getHours() + 2);  // set cutoff 2 hours later
 
         if (!this.gamesInterval && now >= date && now <= cutoff) {
             this.getMatches();
