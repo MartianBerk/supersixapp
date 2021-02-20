@@ -15,7 +15,7 @@ class Players extends Component {
     }
 
     getPlayers() {
-        fetch("http://192.168.0.37:5000/supersix/admin/listplayers")
+        fetch("http://192.168.0.55/webapis/supersix/admin/listplayers")
         .then(response => response.json())
         .then(data => data.players.forEach(player => {
             // this allows for effective updating of a states array and rerendering
@@ -63,7 +63,7 @@ class Players extends Component {
             return false;
         }
 
-        fetch("http://192.168.0.37:5000/supersix/admin/addplayer", {
+        fetch("http://192.168.0.55/webapis/supersix/admin/addplayer", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(this.state.newPlayer)
