@@ -42,27 +42,34 @@ class Head extends Component {
 
         const dateString = `${year}-${month}-${day}`;
 
-        // TODO: special message api
-
-        fetch("https://www.gov.uk/bank-holidays.json")
+        fetch(Constants.SPECIALMESSAGEURL)
         .then(response => response.json())
         .then(data => {
-            const events = data["england-and-wales"]["events"] || [];
+            if (!data.message) {
+                fetch(Constants.BANKHOLIDAYSURL)
+                .then(response => response.json())
+                .then(data => {
+                    const events = data["england-and-wales"]["events"] || [];
 
-            for(var i = 0; i < events.length; i++) {
-                if (events[i].date === dateString) {
-                    this.setState({ specialMessage: "Bank Holiday Bonanza" })
-                    return null;
-                }
+                    for(var i = 0; i < events.length; i++) {
+                        if (events[i].date === dateString) {
+                            this.setState({ specialMessage: "Bank Holiday Bonanza" })
+                            return null;
+                        }
+                    }
+                })
+                .then(_ => {
+                    if (!this.state.specialMessage && date.getMonth() !== 6) {
+                        this.setState({ specialMessage: "Midweek Madness" })
+                        return null;
+                    } 
+                })
+                .catch(/* do nothing */)
+            }
+            else {
+                this.setState({ specialMessage: data.message });
             }
         })
-        .then(_ => {
-            if (!this.state.specialMessage && date.getMonth() !== 6) {
-                this.setState({ specialMessage: "Midweek Madness" })
-                return null;
-            } 
-        })
-        .catch(e => { alert(e) })
 
         return null;
     }

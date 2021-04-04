@@ -6,3 +6,7 @@ export const METAURL = BASEURL + "/game/meta";
 export const CURRENTROUNDURL = BASEURL + "/game/currentround";
 
 export const AGGREGATESTATSURL = BASEURL + "/stats/aggregate";
+
+export const SPECIALMESSAGEURL = BASEURL + "/game/specialmessage";
+
+export const BANKHOLIDAYSURL = "https://www.gov.uk/bank-holidays.json"
