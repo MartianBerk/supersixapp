@@ -59,7 +59,7 @@ class Head extends Component {
                     }
                 })
                 .then(_ => {
-                    if (!this.state.specialMessage && date.getMonth() !== 6) {
+                    if (!this.state.specialMessage && date.getDay() !== 6) {
                         this.setState({ specialMessage: "Midweek Madness" })
                         return null;
                     } 
