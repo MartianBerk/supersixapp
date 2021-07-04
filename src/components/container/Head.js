@@ -9,7 +9,11 @@ class Head extends Component {
         super(props);
         this.state = { 
             jackpot: 0,
-            time: Date.now()
+            time: Date.now(),
+            startDate: null,
+            nextDate: null,
+            rounds: null,
+            specialMessage: null
         };
     }
 
@@ -18,15 +22,75 @@ class Head extends Component {
         .then(response => response.json())
         .then(data => this.setState({
             jackpot: data.current_round.jackpot,
-            start_date: data.current_round.start_date,
-            next_date: data.current_round.current_match_date,
+            startDate: data.current_round.start_date,
+            nextDate: data.current_round.current_match_date,
             rounds: data.current_round.matches
         }))
         .catch(/* do nothing */)
     }
 
+    isSpecialEvent() {
+        let date = new Date(this.state.nextDate);
+
+        const year = date.getFullYear().toString();
+
+        let month = (date.getMonth() + 1).toString();
+        month = month >= 10 ? month : "0" + month;
+
+        let day = date.getDate().toString();
+        day = day >= 10 ? day : "0" + day;
+
+        const dateString = `${year}-${month}-${day}`;
+
+        fetch(Constants.SPECIALMESSAGEURL)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.message) {
+                fetch(Constants.BANKHOLIDAYSURL)
+                .then(response => response.json())
+                .then(data => {
+                    const events = data["england-and-wales"]["events"] || [];
+
+                    for(var i = 0; i < events.length; i++) {
+                        if (events[i].date === dateString) {
+                            this.setState({ specialMessage: "Bank Holiday Bonanza" })
+                            return null;
+                        }
+                    }
+                })
+                .then(_ => {
+                    if (!this.state.specialMessage && date.getDay() !== 6) {
+                        this.setState({ specialMessage: "Midweek Madness" })
+                        return null;
+                    } 
+                })
+                .catch(/* do nothing */)
+            }
+            else {
+                this.setState({ specialMessage: data.message });
+            }
+        })
+
+        return null;
+    }
+
+    getData() {
+        fetch(Constants.CURRENTROUNDURL)
+        .then(response => response.json())
+        .then(data => this.setState({
+            jackpot: data.current_round.jackpot,
+            startDate: data.current_round.start_date,
+            nextDate: data.current_round.current_match_date,
+            rounds: data.current_round.matches
+        }, () => {
+            // special event check after round loaded
+            this.isSpecialEvent()
+        }))
+        .catch(/* do nothing */)
+    }
+
     componentDidMount() {
-        this.fetchCurrentRound();
+        this.getData();
     }
 
     formatDate(date, inc_time) {
@@ -53,16 +117,19 @@ class Head extends Component {
     render () {
         return (
             <div className="head">
-                <div className="round">
-                    <h2>Rounds</h2>
-                    <h3>{ this.state.rounds }</h3>
-                </div>
-                <div className="logo">
-                    <img id="supersix-logo" src='logo.png' height='70' width='80' /> 
-                </div>
-                <div className="jackpot">
-                    <h2>Jackpot</h2>
-                    <h3>£{this.state.jackpot / 100}</h3>
+                <div className="head-main">
+                    <div className="round">
+                        <h2>Rounds</h2>
+                        <h3>{ this.state.rounds }</h3>
+                    </div>
+                    <div className="logo">
+                        <img id="supersix-logo" src='logo.png' height='70' width='80' />
+                        <div className="banner-text">{this.state.specialMessage}</div>
+                    </div>
+                    <div className="jackpot">
+                        <h2>Jackpot</h2>
+                        <h3>£{this.state.jackpot / 100}</h3>
+                    </div>
                 </div>
             </div>
         )
