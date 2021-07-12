@@ -3,14 +3,17 @@ import React, { Component } from 'react';
 import * as Constants from "../constants.js";
 
 import '../css/Games.css';
+import GameDetail from './GameDetail.js';
 
 class Games extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            playerId: this.props.playerId,
             date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
             live: false,
-            games: []
+            games: [],
+            indexRow: null
         };
 
         this.handleDateClick = this.handleDateClick.bind(this);
@@ -141,7 +144,10 @@ class Games extends Component {
         const rows = this.state.games.map((game, index) => {
             // TODO: note - team names should be no more 14 chars in total for optimum experience. Look into nicknames of sorts
             return (
-                <div key={index}>
+                <div
+                    key={index}
+                    onMouseDown={(event) => {alert(event.target.type); this.setState({ indexRow: (this.state.indexRow === index ? null : index) })}}
+                >
                     <p className="game">
                         <span className="gamesection hometeam">{game.home_team}</span>
                         <span className="gamesection gamescores">
@@ -154,6 +160,7 @@ class Games extends Component {
                         <span className="gamesection awayteam">{game.away_team}</span>
                         <span className="gamesection matchtime">{this.calculateExpired(game)}</span>
                     </p>
+                    {this.state.indexRow === index ? <GameDetail playerId={this.state.playerId} homeTeam={game.home_team} awayTeam={game.away_team} gameDate={game.match_date} /> : null}
                 </div>
             )
         }) || [];

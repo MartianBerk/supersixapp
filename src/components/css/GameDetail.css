@@ -1,0 +1,50 @@
+.gamedetail-container {
+    height: 70%;
+    color: #ccccc3;
+    overflow-y: scroll;
+}
+
+.gamedetail-row {
+    margin: auto;
+    overflow-x: hidden;
+}
+
+.gamedetail-section { 
+    padding-left: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    float: left;
+}
+
+.hometeam {
+    font-weight: bold;
+    width: 30%;
+}
+
+.title {
+    
+    font-weight: bold;
+    width: 30%;
+}
+
+.awayteam {
+    font-weight: bold;
+    width: 30%
+}
+
+.result-img {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.gamedetail-selections {
+    overflow-x: hidden;
+    margin-bottom: 20px;
+}
+
+.gamedetail-button-selection {
+    width: 15%;
+    margin-left: 20px;
+    margin-right: 20px;
+    /* float: left; */
+}

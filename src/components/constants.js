@@ -1,7 +1,8 @@
 export const BASEURL = "https://superiorsix.co.uk/webapis/supersix";
 
 // game web apis
-export const MATCHESURL = BASEURL + "/game/livematches";
+// export const MATCHESURL = BASEURL + "/game/livematches";
+export const MATCHESURL = "matches.json";
 export const SCORESURL = BASEURL + "/game/livescores";
 // export const METAURL = BASEURL + "/game/meta";
 export const METAURL = "meta.json"
@@ -13,6 +14,8 @@ export const SPECIALMESSAGEURL = BASEURL + "/game/specialmessage";
 
 // export const GETPLAYERURL = BASEURL + "/player/get";
 export const GETPLAYERURL = "player.json";
+
+export const GETMATCHDETAILURL = "matchdetail.json"
 
 // access control web apis
 const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.lengh - 8) + "/accesscontrol"
