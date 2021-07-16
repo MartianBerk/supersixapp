@@ -12,11 +12,17 @@ class GameDetail extends Component {
             awayTeam: this.props.awayTeam,
             gameDate: this.props.gameDate,
             playerId: this.props.playerId,
+            gameId: this.props.gameId,
             loading: true,
+            selection: null,
+            submitted: false,
             leaguePosition: {},
             teamPerformance: {},
             headToHead: {}
         };
+
+        this.handleSelectionClick = this.handleSelectionClick.bind(this);
+        this.handleSubmitClick = this.handleSubmitClick.bind(this);
     }
 
     fetchGameData() {
@@ -25,9 +31,27 @@ class GameDetail extends Component {
         .then(data => this.setState({
             leaguePosition: data["match_detail"]["league_position"],
             teamPerformance: data["match_detail"]["team_performance"],
-            headToHead: data["match_detail"]["head_to_head"],
-            loading: false
+            headToHead: data["match_detail"]["head_to_head"]
         }))
+        .then(_ => {
+            fetch(Constants.GETPREDICTIONURL)
+            .then(response => response.json())
+            .then((data) => {
+                let state = {};
+                if (Object.keys(data["prediction"]).length > 0) {
+                    state = {
+                        selection: data["prediction"]["prediction"],
+                        submitted: true,
+                    };
+                }
+
+                this.setState({
+                    ...state,
+                    loading: false
+                });
+            })
+            .catch(/* do nothing */)
+        })
         .catch(/* do nothing */)
     }
 
@@ -35,17 +59,76 @@ class GameDetail extends Component {
         this.fetchGameData();
     }
 
+    handleSelectionClick(e) {
+        if (!this.state.submitted && e.target.value !== this.state.selection) {
+            this.setState({ selection: e.target.value });
+        }
+    }
+
+    handleSubmitClick(_) {
+
+    }
+
     renderWinDrawLoss(results) {
-        return results.map(result => {
-            return <img src={result === "WIN" ?
+        return results.map((result, i) => {
+            return <img 
+                        key={i}
+                        src={result === "WIN" ?
                             "tick.png"
                             : result === "LOSE" ?
                             "cross.png"
                             : "neutral.png"}
-                    width="20"
-                    height="20"
-                    className="result-img" />
+                        width="20"
+                        height="20"
+                        className="result-img" />
         })
+    }
+
+    renderPasswordField() {
+
+    }
+
+    renderUserSubmit() {
+        if (this.state.playerId) {
+            return (
+                <div className="gamedetail-selection">
+                    <div className="gamedetail-selections">
+                        <button
+                            className={"gamedetail-button gamedetail-button-selection" + (this.state.selection === "home" ? " active" : "")}
+                            onClick={this.handleSelectionClick} value="home">
+                                HOME
+                        </button>
+                        <button className={"gamedetail-button gamedetail-button-selection" + (this.state.selection === "draw" ? " active" : "")}
+                            onClick={this.handleSelectionClick} value="draw">
+                                DRAW
+                        </button>
+                        <button className={"gamedetail-button gamedetail-button-selection" + (this.state.selection === "away" ? " active" : "")}
+                            onClick={this.handleSelectionClick} value="away">
+                                AWAY
+                        </button>
+                    </div>
+                    <div className="gamedetail-submit">
+                        <button className={"gamedetail-button gamedetail-button-submit"  + (this.state.submitted ? " active" : "")}
+                            onClick={this.handleSubmitClick}>
+                                {this.state.submitted ? "SUBMITTED" : "SUBMIT"}
+                        </button>
+                    </div>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div className="gamedetail-selection">
+                    <div className="gamedetail-selections">
+                        <p className="gamedetail-row">
+                            <span className="gamedetail-section hometeam"></span>
+                            <span className="gamedetail-section small-title">Please login to predict?</span>
+                            <span className="gamedetail-section awayteam"></span>
+                        </p>
+                    </div>
+                </div>
+            )
+        }
     }
 
     render () {
@@ -68,17 +151,8 @@ class GameDetail extends Component {
                         <span className="gamedetail-section title">Head To Head</span>
                         <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.headToHead[this.state.awayTeam])}</span>
                     </p>
-                    {/* TODO: This needs to only render if we have playerId.*/}
-                    <div className="gamedetail-selection">
-                        <div className="gamedetail-selections">
-                            <button className="gamedetail-button gamedetail-button-selection">HOME</button>
-                            <button className="gamedetail-button gamedetail-button-selection">DRAW</button>
-                            <button className="gamedetail-button gamedetail-button-selection">AWAY</button>
-                        </div>
-                        <div className="gamedetail-submit">
-                            <button className="gamedetail-button gamedetail-button-submit">SUBMIT</button>
-                        </div>
-                    </div>
+                    {/* TODO: This needs to only render if we have playerId. Otherwise a login button to reveal user page. Also, handle submitted predictions.*/}
+                    {this.renderUserSubmit()}
                 </div>
             )
         )

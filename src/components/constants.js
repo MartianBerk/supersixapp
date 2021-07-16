@@ -17,6 +17,8 @@ export const GETPLAYERURL = "player.json";
 
 export const GETMATCHDETAILURL = "matchdetail.json"
 
+export const GETPREDICTIONURL = "prediction.json"
+
 // access control web apis
 const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.lengh - 8) + "/accesscontrol"
 // export const LOGGEDINURL = ACCESSCONTROLURL + "/isloggedin";

@@ -141,26 +141,41 @@ class Games extends Component {
     }
 
     render () {
+        const today = new Date();
+        const gameDate = new Date(this.state.date);
+        
+        let gameDay = true;
+        if ((today.getFullYear() + today.getMonth() + today.getDate()) < (gameDate.getFullYear() + gameDate.getMonth() + gameDate.getDate())) {
+            gameDay = false;
+        }
+
         const rows = this.state.games.map((game, index) => {
             // TODO: note - team names should be no more 14 chars in total for optimum experience. Look into nicknames of sorts
+            // TODO: control GameDetail, scores and minute counter based on date being before game_date.
             return (
                 <div
                     key={index}
-                    onMouseDown={(event) => {alert(event.target.type); this.setState({ indexRow: (this.state.indexRow === index ? null : index) })}}
+                    onMouseDown={(event) => {if (event.target.type != "submit") { this.setState({ indexRow: (this.state.indexRow === index ? null : index) }) }}}
                 >
                     <p className="game">
-                        <span className="gamesection hometeam">{game.home_team}</span>
-                        <span className="gamesection gamescores">
+                        <span className={"gamesection hometeam" + (gameDay ? " gameday" : "")}>{game.home_team}</span>
+                        <span className={"gamesection gamescores" + (gameDay ? " gameday" : "")}>
                             <span className="matchscore">
                                 {game.home_score !== null ? game.home_score : '-'}
                                 <span className="matchscore-divider">:</span>
                                 {game.away_score !== null ? game.away_score : '-'}
                             </span>
                         </span>
-                        <span className="gamesection awayteam">{game.away_team}</span>
-                        <span className="gamesection matchtime">{this.calculateExpired(game)}</span>
+                        <span className={"gamesection awayteam" + (gameDay ? " gameday" : "")}>{game.away_team}</span>
+                        {gameDay ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}
                     </p>
-                    {this.state.indexRow === index ? <GameDetail playerId={this.state.playerId} homeTeam={game.home_team} awayTeam={game.away_team} gameDate={game.match_date} /> : null}
+                    {!gameDay && this.state.indexRow === index ? <GameDetail
+                                                                    playerId={this.state.playerId}
+                                                                    homeTeam={game.home_team}
+                                                                    awayTeam={game.away_team}
+                                                                    gameDate={game.match_date}
+                                                                    gameId={game.id} />
+                                                               : null}
                 </div>
             )
         }) || [];

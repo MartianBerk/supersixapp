@@ -10,8 +10,17 @@ class User extends Component {
         this.state = {
             isLoggedIn: props.isLoggedIn,
             newUser: false,
-            userData: props.userData
+            userData: props.userData,
+            validUser: props.isLoggedIn,
+            newUser: !props.isLoggedIn
         };
+
+        this.checkUser = this.checkUser.bind(this);
+        this.loginUser = this.loginUser.bind(this);
+    }
+
+    componentDidMount() {
+        this.checkLoggedIn();
     }
 
     checkLoggedIn() {
@@ -19,37 +28,44 @@ class User extends Component {
     }
 
     checkUser(e) {
-
+        this.setState({ validUser: true })
     }
 
-    componentDidMount() {
-        this.checkLoggedIn();
+    loginUser(e) {
+
     }
 
     renderUserLogin() {
         return (
             // TODO: this will need to redirect to homepage if successful
-            <form action={Constants.LOGINURL + "?application=superiorsix"} method="POST">
-                <input type="text" onChange={this.checkUser} value="User ID" />
-                <br />
-                <input type="password" value="Password" />
-                <br />
-                {this.state.newUser && <input type="password" /> && <br />}
-                <br />
-                <input type="Submit" value={this.state.newUser ? "Register" : "Login"} />
-            </form>
+            <div className="userprofile-login">
+                <p>
+                    User ID / Email
+                    <br />
+                    <input type="text" />
+                </p>
+                {this.state.validUser ? <p>
+                                            Password
+                                            <br />
+                                            <input type="password" value="Password" />
+                                        </p> 
+                                      : null}
+                <p><input type="submit" value={this.state.validUser ? "Login" : "Check"} onClick={this.state.validUser ? this.loginUser : this.checkUser} /> </p>
+            </div>
         )
     }
 
     renderUserProfile() {
         return (
-            <p>User Profile</p>
+            <div className="userprofile-profile">
+                User Profile
+            </div>
         )
     }
 
     render () {
         return (
-            <div className="usercontainer">
+            <div className="userprofile-container">
                 <div className="user-profile">
                     { this.state.isLoggedIn ? this.renderUserProfile() : this.renderUserLogin() }
                 </div>

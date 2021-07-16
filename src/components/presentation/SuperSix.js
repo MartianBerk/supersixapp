@@ -60,8 +60,6 @@ class SuperSix extends Component {
         }
     }
 
-    // TODO figure out how to map user to player and pass in player ID to Games for prediction settings.
-
     render () {
         return (
             <div className="supersix-container">
