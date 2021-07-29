@@ -26,35 +26,40 @@ class GameDetail extends Component {
     }
 
     fetchGameData() {
-        const league = "ELC";
-        const season = "2021/22";
+        let gameDate = new Date(this.state.gameDate);
 
-        fetch(`${Constants.GETMATCHDETAILURL}?season=${season}&league=${league}&hometeam=${this.state.homeTeam}&awayteam=${this.state.awayTeam}`)
+        const year = gameDate.getFullYear();
+        const month = (gameDate.getMonth() + 1) > 9 ? (gameDate.getMonth() + 1) : "0" + (gameDate.getMonth() + 1);
+        const day = gameDate.getDate() > 9 ? gameDate.getDate() : "0" + gameDate.getDate();
+        gameDate = [day, month, year].join("-");
+
+        fetch(`${Constants.GETMATCHDETAILURL}?hometeam=${this.state.homeTeam}&awayteam=${this.state.awayTeam}&matchdate=${gameDate}`)
         .then(response => response.json())
         .then(data => this.setState({
             leaguePosition: data["match_detail"]["league_position"],
             teamPerformance: data["match_detail"]["team_performance"],
             headToHead: data["match_detail"]["head_to_head"]
         }))
-        .then(_ => {
-            fetch(Constants.GETPREDICTIONURL)
-            .then(response => response.json())
-            .then((data) => {
-                let state = {};
-                if (Object.keys(data["prediction"]).length > 0) {
-                    state = {
-                        selection: data["prediction"]["prediction"],
-                        submitted: true,
-                    };
-                }
+        // .then(_ => {
+        //     fetch(Constants.GETPREDICTIONURL)
+        //     .then(response => response.json())
+        //     .then((data) => {
+        //         let state = {};
+        //         if (Object.keys(data["prediction"]).length > 0) {
+        //             state = {
+        //                 selection: data["prediction"]["prediction"],
+        //                 submitted: true,
+        //             };
+        //         }
 
-                this.setState({
-                    ...state,
-                    loading: false
-                });
-            })
-            .catch(/* do nothing */)
-        })
+        //         this.setState({
+        //             ...state,
+        //             loading: false
+        //         });
+        //     })
+        //     .catch(/* do nothing */)
+        // })
+        .then(_ => {this.setState({ loading: false })})
         .catch(/* do nothing */)
     }
 
@@ -81,8 +86,8 @@ class GameDetail extends Component {
                             : result === "LOSE" ?
                             "cross.png"
                             : "neutral.png"}
-                        width="20"
-                        height="20"
+                        width="12"
+                        height="12"
                         className="result-img" />
         })
     }
@@ -125,7 +130,7 @@ class GameDetail extends Component {
                     <div className="gamedetail-selections">
                         <p className="gamedetail-row">
                             <span className="gamedetail-section hometeam"></span>
-                            <span className="gamedetail-section small-title">Please login to predict?</span>
+                            <span className="gamedetail-section title">Please login to predict?</span>
                             <span className="gamedetail-section awayteam"></span>
                         </p>
                     </div>
@@ -140,13 +145,13 @@ class GameDetail extends Component {
             (
                 <div className="gamedetail-container">
                     <p className="gamedetail-row">
-                        <span className="gamedetail-section hometeam">{this.state.leaguePosition[this.state.homeTeam]}</span>
+                        <span className="gamedetail-section hometeam">{this.state.leaguePosition[this.state.homeTeam] || "-"}</span>
                         <span className="gamedetail-section title">League Position</span>
-                        <span className="gamedetail-section awayteam">{this.state.leaguePosition[this.state.awayTeam]}</span>
+                        <span className="gamedetail-section awayteam">{this.state.leaguePosition[this.state.awayTeam] || "-"}</span>
                     </p>
                     <p className="gamedetail-row">
                         <span className="gamedetail-section hometeam">{this.renderWinDrawLoss(this.state.teamPerformance[this.state.homeTeam])}</span>
-                        <span className="gamedetail-section title">Team Performance</span>
+                        <span className="gamedetail-section title">Performance</span>
                         <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.teamPerformance[this.state.awayTeam])}</span>
                     </p>
                     <p className="gamedetail-row">
@@ -155,7 +160,7 @@ class GameDetail extends Component {
                         <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.headToHead[this.state.awayTeam])}</span>
                     </p>
                     {/* TODO: This needs to only render if we have playerId. Otherwise a login button to reveal user page. Also, handle submitted predictions.*/}
-                    {this.renderUserSubmit()}
+                    {/* {this.renderUserSubmit()} */}
                 </div>
             )
         )

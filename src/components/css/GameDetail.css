@@ -21,11 +21,7 @@
 }
 
 .title {
-    font-weight: bold;
-    width: 30%;
-}
-
-.small-title {
+    margin-top: 8px;
     font-weight: bold;
     font-size: 12px;
     width: 30%;
