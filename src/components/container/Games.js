@@ -160,11 +160,12 @@ class Games extends Component {
                     <p className="game">
                         <span className={"gamesection hometeam" + (gameDay ? " gameday" : "")}>{game.home_team}</span>
                         <span className={"gamesection gamescores" + (gameDay ? " gameday" : "")}>
-                            <span className="matchscore">
-                                {game.home_score !== null ? game.home_score : '-'}
-                                <span className="matchscore-divider">:</span>
-                                {game.away_score !== null ? game.away_score : '-'}
-                            </span>
+                            {gameDay ? <span className="matchscore">
+                                          {game.home_score !== null ? game.home_score : '-'}
+                                          <span className="matchscore-divider">:</span>
+                                          {game.away_score !== null ? game.away_score : '-'}
+                                      </span>
+                                     : <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
                         </span>
                         <span className={"gamesection awayteam" + (gameDay ? " gameday" : "")}>{game.away_team}</span>
                         {gameDay ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}
