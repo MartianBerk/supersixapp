@@ -26,7 +26,10 @@ class GameDetail extends Component {
     }
 
     fetchGameData() {
-        fetch(Constants.GETMATCHDETAILURL)
+        const league = "ELC";
+        const season = "2021/22";
+
+        fetch(`${Constants.GETMATCHDETAILURL}?season=${season}&league=${league}&hometeam=${this.state.homeTeam}&awayteam=${this.state.awayTeam}`)
         .then(response => response.json())
         .then(data => this.setState({
             leaguePosition: data["match_detail"]["league_position"],
