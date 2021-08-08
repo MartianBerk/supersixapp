@@ -144,9 +144,9 @@ class Games extends Component {
         const today = new Date();
         const gameDate = new Date(this.state.date);
         
-        let gameDay = false;
-        if (today.getFullYear() === gameDate.getFullYear() && today.getMonth() === gameDate.getMonth() && today.getDate() === gameDate.getDate()) {
-            gameDay = true;
+        let gameDay = true;
+        if (today.getFullYear() < gameDate.getFullYear() && today.getMonth() < gameDate.getMonth() && today.getDate() < gameDate.getDate()) {
+            gameDay = false;
         }
 
         const rows = this.state.games.map((game, index) => {
