@@ -145,7 +145,7 @@ class Games extends Component {
         const gameDate = new Date(this.state.date);
         
         let gameDay = true;
-        if (today.getFullYear() < gameDate.getFullYear() && today.getMonth() < gameDate.getMonth() && today.getDate() < gameDate.getDate()) {
+        if (today.getFullYear() <= gameDate.getFullYear() && today.getMonth() <= gameDate.getMonth() && today.getDate() < gameDate.getDate()) {
             gameDay = false;
         }
 
