@@ -51,8 +51,14 @@ class Games extends Component {
                 live = match.status === "IN PLAY"
             }
 
-            match.home_team = match.home_team in this.props.meta.teams ? this.props.meta.teams[match.home_team] : match.home_team;
-            match.away_team = match.away_team in this.props.meta.teams ? this.props.meta.teams[match.away_team] : match.away_team;
+            match.home_team = {
+                label: match.home_team in this.props.meta.teams ? this.props.meta.teams[match.home_team] : match.home_team,
+                name: match.home_team
+            };
+            match.away_team = {
+                label: match.away_team in this.props.meta.teams ? this.props.meta.teams[match.away_team] : match.away_team,
+                name: match.away_team
+            };
 
             this.setState((oldState) => {
                 let newGames = [...oldState.games];
@@ -158,7 +164,7 @@ class Games extends Component {
                     onMouseDown={(event) => {if (event.target.type != "submit") { this.setState({ indexRow: (this.state.indexRow === index ? null : index) }) }}}
                 >
                     <p className="game">
-                        <span className={"gamesection hometeam" + (gameDay ? " gameday" : "")}>{game.home_team}</span>
+                        <span className={"gamesection hometeam" + (gameDay ? " gameday" : "")}>{game.home_team.label}</span>
                         <span className={"gamesection gamescores" + (gameDay ? " gameday" : "")}>
                             {gameDay ? <span className="matchscore">
                                           {game.home_score !== null ? game.home_score : '-'}
@@ -167,13 +173,13 @@ class Games extends Component {
                                       </span>
                                      : <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
                         </span>
-                        <span className={"gamesection awayteam" + (gameDay ? " gameday" : "")}>{game.away_team}</span>
+                        <span className={"gamesection awayteam" + (gameDay ? " gameday" : "")}>{game.away_team.label}</span>
                         {gameDay ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}
                     </p>
                     {!gameDay && this.state.indexRow === index ? <GameDetail
                                                                     playerId={this.state.playerId}
-                                                                    homeTeam={game.home_team}
-                                                                    awayTeam={game.away_team}
+                                                                    homeTeam={game.home_team.name}
+                                                                    awayTeam={game.away_team.name}
                                                                     gameDate={game.match_date}
                                                                     gameId={game.id} />
                                                                : null}
