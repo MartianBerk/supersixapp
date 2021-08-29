@@ -48,13 +48,22 @@
     color: #ccccc3;
 }
 
-.hometeam, .awayteam {
+.hometeam.gameday, .awayteam.gameday {
     width: 30%;
     margin-top: 3px;
 }
 
-.gamescores {
+.gamescores.gameday {
     width: 20%;
+}
+
+.hometeam, .awayteam {
+    width: 33%;
+    margin-top: 3px;
+}
+
+.gamescores {
+    width: 33%;
 }
 
 .matchtime {

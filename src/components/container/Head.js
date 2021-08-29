@@ -120,7 +120,7 @@ class Head extends Component {
                 <div className="head-main">
                     <div className="round">
                         <h2>Rounds</h2>
-                        <h3>{ this.state.rounds }</h3>
+                        <h3>{ this.state.rounds || 0 }</h3>
                     </div>
                     <div className="logo">
                         <img id="supersix-logo" src='logo.png' height='70' width='80' />

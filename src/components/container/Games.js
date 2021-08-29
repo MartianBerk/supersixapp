@@ -3,14 +3,17 @@ import React, { Component } from 'react';
 import * as Constants from "../constants.js";
 
 import '../css/Games.css';
+import GameDetail from './GameDetail.js';
 
 class Games extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            playerId: this.props.playerId,
             date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
             live: false,
-            games: []
+            games: [],
+            indexRow: null
         };
 
         this.handleDateClick = this.handleDateClick.bind(this);
@@ -48,8 +51,14 @@ class Games extends Component {
                 live = match.status === "IN PLAY"
             }
 
-            match.home_team = match.home_team in this.props.meta.teams ? this.props.meta.teams[match.home_team] : match.home_team;
-            match.away_team = match.away_team in this.props.meta.teams ? this.props.meta.teams[match.away_team] : match.away_team;
+            match.home_team = {
+                label: match.home_team in this.props.meta.teams ? this.props.meta.teams[match.home_team] : match.home_team,
+                name: match.home_team
+            };
+            match.away_team = {
+                label: match.away_team in this.props.meta.teams ? this.props.meta.teams[match.away_team] : match.away_team,
+                name: match.away_team
+            };
 
             this.setState((oldState) => {
                 let newGames = [...oldState.games];
@@ -138,22 +147,46 @@ class Games extends Component {
     }
 
     render () {
+        const today = new Date();
+        const gameDate = new Date(this.state.date);
+        
+        // only set gameday if before matchday. After or on matchday, ensure gameDay is true.
+        let gameDay = false;
+        if(today.getFullYear() === gameDate.getFullYear() && today.getMonth() === gameDate.getMonth() && today.getDate() === gameDate.getDate()) {
+            gameDay = true;
+        }
+        else if(today > gameDate) {
+            gameDay = true;
+        }
+
         const rows = this.state.games.map((game, index) => {
             // TODO: note - team names should be no more 14 chars in total for optimum experience. Look into nicknames of sorts
+            // TODO: control GameDetail, scores and minute counter based on date being before game_date.
             return (
-                <div key={index}>
+                <div
+                    key={index}
+                    onMouseDown={(event) => {if (event.target.type != "submit") { this.setState({ indexRow: (this.state.indexRow === index ? null : index) }) }}}
+                >
                     <p className="game">
-                        <span className="gamesection hometeam">{game.home_team}</span>
-                        <span className="gamesection gamescores">
-                            <span className="matchscore">
-                                {game.home_score !== null ? game.home_score : '-'}
-                                <span className="matchscore-divider">:</span>
-                                {game.away_score !== null ? game.away_score : '-'}
-                            </span>
+                        <span className={"gamesection hometeam" + (gameDay ? " gameday" : "")}>{game.home_team.label}</span>
+                        <span className={"gamesection gamescores" + (gameDay ? " gameday" : "")}>
+                            {gameDay ? <span className="matchscore">
+                                          {game.home_score !== null ? game.home_score : '-'}
+                                          <span className="matchscore-divider">:</span>
+                                          {game.away_score !== null ? game.away_score : '-'}
+                                      </span>
+                                     : <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
                         </span>
-                        <span className="gamesection awayteam">{game.away_team}</span>
-                        <span className="gamesection matchtime">{this.calculateExpired(game)}</span>
+                        <span className={"gamesection awayteam" + (gameDay ? " gameday" : "")}>{game.away_team.label}</span>
+                        {gameDay ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}
                     </p>
+                    {!gameDay && this.state.indexRow === index ? <GameDetail
+                                                                    playerId={this.state.playerId}
+                                                                    homeTeam={game.home_team.name}
+                                                                    awayTeam={game.away_team.name}
+                                                                    gameDate={game.match_date}
+                                                                    gameId={game.id} />
+                                                               : null}
                 </div>
             )
         }) || [];
