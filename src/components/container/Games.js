@@ -150,9 +150,13 @@ class Games extends Component {
         const today = new Date();
         const gameDate = new Date(this.state.date);
         
-        let gameDay = true;
-        if (today.getFullYear() <= gameDate.getFullYear() && today.getMonth() <= gameDate.getMonth() && today.getDate() < gameDate.getDate()) {
-            gameDay = false;
+        // only set gameday if before matchday. After or on matchday, ensure gameDay is true.
+        let gameDay = false;
+        if(today.getFullYear() === gameDate.getFullYear() && today.getMonth() === gameDate.getMonth() && today.getDate() === gameDate.getDate()) {
+            gameDay = true;
+        }
+        else if(today > gameDate) {
+            gameDay = true;
         }
 
         const rows = this.state.games.map((game, index) => {

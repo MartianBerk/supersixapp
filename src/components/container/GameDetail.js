@@ -160,7 +160,7 @@ class GameDetail extends Component {
                         <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.headToHead[this.state.awayTeam])}</span>
                     </p>
                     {/* TODO: This needs to only render if we have playerId. Otherwise a login button to reveal user page. Also, handle submitted predictions.*/}
-                    {this.renderUserSubmit()}
+                    {/* {this.renderUserSubmit()} */}
                 </div>
             )
         )

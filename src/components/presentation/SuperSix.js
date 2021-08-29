@@ -21,7 +21,7 @@ class SuperSix extends Component {
             showGames: true,
             showPlayers: false,
             showPerformance: false,
-            showUser: false
+            // showUser: false
         };
 
         fetch(Constants.METAURL)
@@ -53,9 +53,9 @@ class SuperSix extends Component {
         else if (e.target.id === "supersix-performance" || e.target.id === "supersix-performance-img") {
             this.setState({ showGames: false, showPlayers: false, showPerformance: true, showUser: false })
         }
-        else if (e.target.id === "supersix-user" || e.target.id === "supersix-user-img") {
-            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true })
-        }
+        // else if (e.target.id === "supersix-user" || e.target.id === "supersix-user-img") {
+        //     this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true })
+        // }
     }
 
     render () {
@@ -93,9 +93,9 @@ class SuperSix extends Component {
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
                     <Performance meta={this.state.meta.players} />
                 </div>
-                <div className={`supersix supersix-user ${this.state.showUser ? "" : "hidden"}`}>
+                {/* <div className={`supersix supersix-user ${this.state.showUser ? "" : "hidden"}`}>
                     { !this.state.loading ? <User isLoggedIn={this.state.isLoggedIn} userData={this.state.userData}/> : null }
-                </div>
+                </div> */}
             </div>
         )
     }
