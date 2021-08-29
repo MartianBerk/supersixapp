@@ -40,25 +40,25 @@ class GameDetail extends Component {
             teamPerformance: data["match_detail"]["team_performance"],
             headToHead: data["match_detail"]["head_to_head"]
         }))
-        // .then(_ => {
-        //     fetch(Constants.GETPREDICTIONURL)
-        //     .then(response => response.json())
-        //     .then((data) => {
-        //         let state = {};
-        //         if (Object.keys(data["prediction"]).length > 0) {
-        //             state = {
-        //                 selection: data["prediction"]["prediction"],
-        //                 submitted: true,
-        //             };
-        //         }
+        .then(_ => {
+            fetch(Constants.GETPREDICTIONURL)
+            .then(response => response.json())
+            .then((data) => {
+                let state = {};
+                if (Object.keys(data["prediction"]).length > 0) {
+                    state = {
+                        selection: data["prediction"]["prediction"],
+                        submitted: true,
+                    };
+                }
 
-        //         this.setState({
-        //             ...state,
-        //             loading: false
-        //         });
-        //     })
-        //     .catch(/* do nothing */)
-        // })
+                this.setState({
+                    ...state,
+                    loading: false
+                });
+            })
+            .catch(/* do nothing */)
+        })
         .then(_ => {this.setState({ loading: false })})
         .catch(/* do nothing */)
     }
@@ -160,7 +160,7 @@ class GameDetail extends Component {
                         <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.headToHead[this.state.awayTeam])}</span>
                     </p>
                     {/* TODO: This needs to only render if we have playerId. Otherwise a login button to reveal user page. Also, handle submitted predictions.*/}
-                    {/* {this.renderUserSubmit()} */}
+                    {this.renderUserSubmit()}
                 </div>
             )
         )
