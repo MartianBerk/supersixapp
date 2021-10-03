@@ -59,7 +59,7 @@ class Head extends Component {
                     }
                 })
                 .then(_ => {
-                    if (!this.state.specialMessage && [6, 7].indexOf(date.getDay()) === -1) {
+                    if (!this.state.specialMessage && [0, 6].indexOf(date.getDay()) === -1) {
                         this.setState({ specialMessage: "Midweek Madness" })
                         return null;
                     } 
