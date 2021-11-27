@@ -41,9 +41,9 @@ class User extends Component {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: {
+            body: JSON.stringify({
                 email: this.state.email
-            }
+            })
         })
         .then(response => response.json())
         .then(data => this.setState({
