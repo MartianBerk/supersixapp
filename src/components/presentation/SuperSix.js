@@ -69,7 +69,7 @@ class SuperSix extends Component {
                     loading: false
                 }
             }))
-            .catch(e => alert(e)/* do nothing */);
+            .catch(/* do nothing */);
         })
         .catch(/* do nothing */);
 

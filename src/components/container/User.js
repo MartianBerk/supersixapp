@@ -12,8 +12,8 @@ class User extends Component {
 
         let nickname = null;
         if (props.userData.firstname && props.userData.lastname) {
-            if (this.state.playerMeta && this.state.playerMeta[`${props.userData.firstname} ${props.userData.lastname}`] !== undefined) {
-                nickname = this.state.playerMeta[`${props.userData.firstname} ${props.userData.lastname}`]
+            if (props.playerMeta && props.playerMeta[`${props.userData.firstname} ${props.userData.lastname}`] !== undefined) {
+                nickname = props.playerMeta[`${props.userData.firstname} ${props.userData.lastname}`]
             }
         }
 
