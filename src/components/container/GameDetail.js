@@ -37,7 +37,25 @@ class GameDetail extends Component {
             teamPerformance: data["match_detail"]["team_performance"],
             headToHead: data["match_detail"]["head_to_head"]
         }))
-        .then(_ => {this.setState({ loading: false })})
+        .then(_ => {
+            fetch(Constants.GETPREDICTIONURL)
+            .then(response => response.json())
+            .then((data) => {
+                let state = {};
+                if (Object.keys(data["prediction"]).length > 0) {
+                    state = {
+                        selection: data["prediction"]["prediction"],
+                        submitted: true,
+                    };
+                }
+
+                this.setState({
+                    ...state,
+                    loading: false
+                });
+            })
+            .catch(/* do nothing */)
+        })
         .catch(/* do nothing */)
     }
 

@@ -18,17 +18,13 @@ class SuperSix extends Component {
             newUser: false,
             userData: {
                 playerId: null,
-                userId: null,
-                email: null,
-                firstname: null,
-                lastname: null,
                 selections: 0
             },
             loading: true,
             showGames: true,
             showPlayers: false,
             showPerformance: false,
-            showUser: false
+            // showUser: false
         };
 
         fetch(Constants.METAURL)
@@ -59,10 +55,6 @@ class SuperSix extends Component {
                     newUser: newUser,
                     userData: {
                         playerId: userData.player_id,
-                        userId: userData.user_id,
-                        email: userData.email,
-                        firstname: null,
-                        lastname: null
                     },
                     loading: false
                 }
@@ -164,10 +156,6 @@ class SuperSix extends Component {
                                     newUser: newUser,
                                     userData: {
                                         playerId: userData.player_id,
-                                        userId: userData.user_id,
-                                        email: userData.email,
-                                        firstname: userData.firstname,
-                                        lastname: userData.lastname,
                                         selections: 0
                                     }
                                 })
