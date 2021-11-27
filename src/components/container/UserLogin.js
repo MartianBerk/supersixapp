@@ -42,7 +42,7 @@ class UserLogin extends Component {
             },
             body: JSON.stringify({
                 identity_type: identityType,
-                identity_value: this.state.username
+                identity_value: this.state.username.toLowerCase()
             })
         })
         .then(response => response.json())
@@ -86,7 +86,7 @@ class UserLogin extends Component {
             credentials: "same-origin",
             body: JSON.stringify({
                 identity_type: identityType,
-                identity_value: this.state.username,
+                identity_value: this.state.username.toLowerCase(),
                 password: this.state.password,
                 is_first: this.state.newUser
             })
