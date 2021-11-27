@@ -15,8 +15,15 @@ class SuperSix extends Component {
         this.state = {
             meta: {},
             isLoggedIn: false,
-            userData: {},
-            playerId: null,
+            newUser: false,
+            userData: {
+                playerId: null,
+                userId: null,
+                email: null,
+                firstname: null,
+                lastname: null,
+                selections: 0
+            },
             loading: true,
             showGames: true,
             showPlayers: false,
@@ -27,20 +34,41 @@ class SuperSix extends Component {
         fetch(Constants.METAURL)
         .then(response => response.json())
         .then(data => this.setState({ meta: data.meta }))
-        // .then(_ => {
-        //     fetch(Constants.LOGGEDINURL)
-        //     .then(response => response.json())
-        //     .then(data => this.setState({ isLoggedIn: data.user.logged_in, userData: data.user.data }))
-        //     .then(_ => {
-        //         fetch(Constants.GETPLAYERURL)
-        //         .then(response => response.json())
-        //         .then(data => this.setState({ playerId: data.player.id }))
-        //         .then(() => this.setState({ loading: false }))
-        //     .catch(/* do nothing */);
-        //     })
-        //     .catch(/* do nothing */);
-        // })
-        .then(() => this.setState({ loading: false }))
+        .then(_ => {
+            fetch(Constants.LOGGEDINURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: "{}"
+            })
+            .then(response => response.json())
+            .then(data => this.setState((oldState) => {
+                let { is_logged_in, new_user, ...userData } = data;
+                let isLoggedIn = data.is_logged_in || false;
+                let newUser = data.new_user || false;
+
+                // Ensure error here is handled (if no cookie set or cookie uid is invalid)
+                if (data.error) {
+                    userData = {};
+                }
+                
+                return {
+                    ...oldState,
+                    isLoggedIn: isLoggedIn,
+                    newUser: newUser,
+                    userData: {
+                        playerId: userData.player_id,
+                        userId: userData.user_id,
+                        email: userData.email,
+                        firstname: null,
+                        lastname: null
+                    },
+                    loading: false
+                }
+            }))
+            .catch(e => alert(e)/* do nothing */);
+        })
         .catch(/* do nothing */);
 
         this.handleMenuClick = this.handleMenuClick.bind(this);
@@ -56,9 +84,9 @@ class SuperSix extends Component {
         else if (e.target.id === "supersix-performance" || e.target.id === "supersix-performance-img") {
             this.setState({ showGames: false, showPlayers: false, showPerformance: true, showUser: false })
         }
-        // else if (e.target.id === "supersix-user" || e.target.id === "supersix-user-img") {
-        //     this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true })
-        // }
+        else if (e.target.id === "supersix-user" || e.target.id === "supersix-user-img") {
+            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true })
+        }
     }
 
     render () {
@@ -69,36 +97,84 @@ class SuperSix extends Component {
                     <button 
                         className={`supersix-menu-button ${this.state.showGames ? "active" : ""}`}
                         id="supersix-games"
-                        onClick={this.handleMenuClick}><img id="supersix-games-img" onClick={this.handleMenuClick} src='games.png' height='40' width='40' /> 
+                        onClick={this.handleMenuClick}><img id="supersix-games-img" onClick={this.handleMenuClick} src='fixtures.svg' height='40' width='40' /> 
                     </button>
                     <button
                         className={`supersix-menu-button ${this.state.showPlayers ? "active" : ""}`}
                         id="supersix-players"
-                        onClick={this.handleMenuClick}><img id="supersix-scores-img" onClick={this.handleMenuClick} src='scores.png' height='40' width='40' /> 
+                        onClick={this.handleMenuClick}><img id="supersix-scores-img" onClick={this.handleMenuClick} src='scores.svg' height='40' width='40' /> 
                     </button>
                     <button
                         className={`supersix-menu-button ${this.state.showPerformance ? "active" : ""}`}
                         id="supersix-performance"
-                        onClick={this.handleMenuClick}><img id="supersix-performance-img" onClick={this.handleMenuClick} src='performance.png' height='40' width='40' /> 
+                        onClick={this.handleMenuClick}><img id="supersix-performance-img" onClick={this.handleMenuClick} src='leaders.svg' height='40' width='40' /> 
                     </button>
-                    {/* <button
+                    <button
                         className={`supersix-menu-button ${this.state.showUser ? "active" : ""}`}
                         id="supersix-user"
-                        onClick={this.handleMenuClick}><img id="supersix-user-img" onClick={this.handleMenuClick} src='user.png' height='40' width='40' /> 
-                    </button>  */}
+                        onClick={this.handleMenuClick}>
+                            <img id="supersix-user-img" onClick={this.handleMenuClick} src='users.svg' height='40' width='40' /> 
+                    </button> 
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
-                    { !this.state.loading ? <Games meta={{ teams: this.state.meta.teams, gameweeks: this.state.meta.gameweeks }} playerId={this.state.playerId} /> : null }
+                    { !this.state.loading ? <Games
+                                                meta={{
+                                                    teams: this.state.meta.teams,
+                                                    gameweeks: this.state.meta.gameweeks
+                                                }}
+                                                playerId={this.state.userData.playerId}
+                                                playerSelections={this.state.userData.selections}
+                                            /> : null }
                 </div>
                 <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
-                    { !this.state.loading ? <Scores meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }} /> : null }
+                    { !this.state.loading ? <Scores
+                                                playerId={ this.state.userData.playerId }
+                                                meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }}
+                                                sendSelectionsUpstream={(n) => {
+                                                    let userData = {...this.state.userData};
+                                                    userData.selections = n;
+
+                                                    this.setState({ userData: userData })
+                                                }}
+                                            /> : null }
                 </div>
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
-                    <Performance meta={this.state.meta.players} />
+                    { !this.state.loading ? <Performance meta={this.state.meta.players} /> : null }
                 </div>
-                {/* <div className={`supersix supersix-user ${this.state.showUser ? "" : "hidden"}`}>
-                    { !this.state.loading ? <User isLoggedIn={this.state.isLoggedIn} userData={this.state.userData}/> : null }
-                </div> */}
+                <div className={`supersix supersix-user ${this.state.showUser ? "" : "hidden"}`}>
+                    { 
+                        !this.state.loading ? 
+                        <User
+                            playerMeta={this.state.meta["players"]}
+                            isLoggedIn={this.state.isLoggedIn}
+                            newUser={this.state.newUser}
+                            userData={this.state.userData}
+                            onLoginSuccess={(d) => {
+                                let { is_logged_in, new_user, ...userData } = d;
+                                let isLoggedIn = d.is_logged_in || false;
+                                let newUser = d.new_user || false;
+
+                                // Ensure error here is handled (if no cookie set or cookie uid is invalid)
+                                if (d.error) {
+                                    userData = {};
+                                }
+
+                                this.setState({
+                                    isLoggedIn: isLoggedIn,
+                                    newUser: newUser,
+                                    userData: {
+                                        playerId: userData.player_id,
+                                        userId: userData.user_id,
+                                        email: userData.email,
+                                        firstname: userData.firstname,
+                                        lastname: userData.lastname,
+                                        selections: 0
+                                    }
+                                })
+                            }}
+                        /> : null
+                    }
+                </div>
             </div>
         )
     }

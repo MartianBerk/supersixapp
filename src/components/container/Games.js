@@ -9,7 +9,8 @@ class Games extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            playerId: this.props.playerId,
+            playerId: props.playerId,
+            playerSelections: props.playerSelections,
             date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
             live: false,
             games: [],
@@ -128,6 +129,17 @@ class Games extends Component {
         this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 10000);  // 10 sec refresh
     }
 
+    componentDidUpdate(prevProps) {
+        // If a login has been performed and the props playerId updated, update state
+        if (this.props.playerId !== prevProps.playerId) {
+            this.setState({ playerId: this.props.playerId })
+        }
+        
+        if (this.props.playerSelections !== prevProps.playerSelections) {
+            this.setState({ playerSelections: this.props.playerSelections })
+        }
+    }
+
     handleDateClick(event) {
         let dateIndex = this.props.meta.gameweeks.indexOf(this.state.date);
 
@@ -175,7 +187,11 @@ class Games extends Component {
                                                                     homeTeam={game.home_team}
                                                                     awayTeam={game.away_team}
                                                                     gameDate={game.match_date}
-                                                                    gameId={game.id} />
+                                                                    gameId={game.id} 
+                                                                    onPredictionSet={(n) => {
+                                                                        this.setState({playerSelections: this.state.playerSelections + n})}
+                                                                    }
+                                                                 />
                                                                : null}
                 </div>
             )
@@ -188,6 +204,13 @@ class Games extends Component {
                     <div className={this.state.live ? "date-picker-part live" : "date-picker-part"}>{ this.formatMatchDate(this.state.date) }</div>
                     <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) !== this.props.meta.gameweeks.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
                 </div>
+                {
+                    !gameDay && this.state.playerId && this.state.date == this.props.meta.gameweeks[this.props.meta.gameweeks.length - 1] ?
+                    <div className={`games-player-selections${this.state.playerSelections === 6 ? "-complete" : ""}`}>
+                        {this.state.playerSelections} / 6 Selections Made
+                    </div>
+                    : null
+                }
                 {rows.length === 0 ? "No Games" : rows}
             </div>
         )

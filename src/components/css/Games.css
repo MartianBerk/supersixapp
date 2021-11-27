@@ -89,3 +89,15 @@
     padding-left: 25px;
     width: 10px;
 }
+
+.games-player-selections {
+    padding: 3px 0px 3px 0px;
+    background-color: #910909;
+    color: #ccccc3;
+}
+
+.games-player-selections-complete {
+    padding: 3px 0px 3px 0px;
+    background-color: #0d631f;
+    color: #ccccc3;
+}

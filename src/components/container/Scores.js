@@ -18,7 +18,7 @@ class Scores extends Component {
         this.handleDateClick = this.handleDateClick.bind(this);
     }
 
-    getScores(date, purge) {
+    getScores(date) {
         date = new Date(date === undefined ? this.state.date : date);
 
         const year = date.getFullYear();
@@ -30,21 +30,6 @@ class Scores extends Component {
 
         fetch(`${Constants.SCORESURL}?matchDate=${date}`)
         .then(response => response.json())
-        .then(data => {
-            if (purge !== undefined) {
-                this.setState(oldState => {
-                    let newPlayers = [...oldState.players];
-
-                    while (newPlayers.length > 0) {
-                        newPlayers.pop()
-                    }
-
-                    return { games: newPlayers }
-                });
-            }
-
-            return data
-        })
         .then(data => data.scores.forEach((player) => {
             player.name = player.name in this.props.meta.players ? this.props.meta.players[player.name] : player.name;
             
@@ -53,6 +38,10 @@ class Scores extends Component {
 
                 let found = false;
                 for (let i = 0; i < newPlayers.length; i++) {
+                    if (this.props.playerId && this.props.playerId === player.id) {
+                        this.props.sendSelectionsUpstream(player.matches.length);
+                    }
+
                     if (player.name === newPlayers[i].name) {
                         newPlayers[i] = player;
                         found = true;
@@ -138,6 +127,17 @@ class Scores extends Component {
         this.getScores();  // get data first
         this.scoresInterval = null;
         this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 10000);  // 10 sec refresh
+    }
+
+    componentDidUpdate(prevProps) {
+        // If a login has been performed and the props playerId updated, update state
+        if (this.props.playerId && this.props.playerId !== prevProps.playerId) {
+            this.state.players.forEach(player => {
+                if (player.id === this.props.playerId) {
+                    this.props.sendSelectionsUpstream(player.matches.length)
+                }
+            })
+        }
     }
 
     handleDateClick(event) {
