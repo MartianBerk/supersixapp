@@ -9,6 +9,7 @@ class Scores extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            playerId: props.playerId,
             date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
             players: [],
             indexRow: null,
@@ -30,18 +31,43 @@ class Scores extends Component {
 
         fetch(`${Constants.SCORESURL}?matchDate=${date}`)
         .then(response => response.json())
-        .then(data => data.scores.forEach((player) => {
+        .then(data => data.scores.forEach((player, i) => {
             player.name = player.name in this.props.meta.players ? this.props.meta.players[player.name] : player.name;
+
+            if (this.state.playerId && this.state.playerId === player.id) {
+                let shared = false;
+
+                // Only perform duplicate prediction check if all 6 predictions are selected.
+                if (player.matches.length === 6) {
+                    data.scores.forEach((subPlayer, j) => {
+                        if (shared) {
+                            // once shared has been found, no need to continue
+                            return null
+                        }
+                        else if (j === i) {
+                            // skip player
+                            return null;
+                        }
+
+                        let equalPredictions = 0;
+                        subPlayer.matches.forEach((match, k) => {
+                            if (match.prediction === player.matches[k].prediction) {
+                                equalPredictions++;
+                            }
+                        })
+
+                        shared = equalPredictions === 6;
+                    })
+                }
+
+                this.props.sendSelectionsUpstream(player.matches.length, shared)
+            }
             
             this.setState((oldState) => {
                 let newPlayers = [...oldState.players];
 
                 let found = false;
                 for (let i = 0; i < newPlayers.length; i++) {
-                    if (this.props.playerId && this.props.playerId === player.id) {
-                        this.props.sendSelectionsUpstream(player.matches.length);
-                    }
-
                     if (player.name === newPlayers[i].name) {
                         newPlayers[i] = player;
                         found = true;
@@ -132,9 +158,32 @@ class Scores extends Component {
     componentDidUpdate(prevProps) {
         // If a login has been performed and the props playerId updated, update state
         if (this.props.playerId && this.props.playerId !== prevProps.playerId) {
-            this.state.players.forEach(player => {
+            this.state.players.forEach((player, i) => {
                 if (player.id === this.props.playerId) {
-                    this.props.sendSelectionsUpstream(player.matches.length)
+                    let shared = false;
+
+                    // Only perform duplicate prediction check if all 6 predictions are selected.
+                    if (player.matches.length === 6) {
+                        this.state.players.forEach((subPlayer, j) => {
+                            if (shared) {
+                                return null;
+                            }
+                            else if (j === i) {
+                                return null;
+                            }
+    
+                            let equalPredictions = 0;
+                            subPlayer.matches.forEach((match, k) => {
+                                if (match.prediction === player.matches[k].prediction) {
+                                    equalPredictions++;
+                                }
+                            })
+    
+                            shared = equalPredictions === 6;
+                        })
+                    }
+
+                    this.props.sendSelectionsUpstream(player.matches.length, shared)
                 }
             })
         }

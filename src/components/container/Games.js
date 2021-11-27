@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import * as Constants from "../constants.js";
+import GameDetail from './GameDetail.js';
 
 import '../css/Games.css';
-import GameDetail from './GameDetail.js';
 
 class Games extends Component {
     constructor(props) {
@@ -11,6 +11,7 @@ class Games extends Component {
         this.state = {
             playerId: props.playerId,
             playerSelections: props.playerSelections,
+            selectionsShared: props.selectionsShared,
             date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
             live: false,
             games: [],
@@ -138,11 +139,15 @@ class Games extends Component {
     componentDidUpdate(prevProps) {
         // If a login has been performed and the props playerId updated, update state
         if (this.props.playerId !== prevProps.playerId) {
-            this.setState({ playerId: this.props.playerId })
+            this.setState({ playerId: this.props.playerId, indexRow: null })
         }
         
         if (this.props.playerSelections !== prevProps.playerSelections) {
             this.setState({ playerSelections: this.props.playerSelections })
+        }
+
+        if (this.props.selectionsShared !== prevProps.selectionsShared) {
+            this.setState({ selectionsShared: this.props.selectionsShared })
         }
     }
 
@@ -162,45 +167,58 @@ class Games extends Component {
         const today = new Date();
         const gameDate = new Date(this.state.date);
         
-        // only set gameday if before matchday. After or on matchday, ensure gameDay is true.
-        let gameDay = false;
-        if(today.getFullYear() === gameDate.getFullYear() && today.getMonth() === gameDate.getMonth() && today.getDate() === gameDate.getDate()) {
-            gameDay = true;
+        // Lock 1 hour before kickoff
+        let lock = false;
+        if(
+            today.getFullYear() === gameDate.getFullYear() &&
+            today.getMonth() === gameDate.getMonth() &&
+            today.getDate() === gameDate.getDate() &&
+            today.getHours() >= gameDate.getHours() - 1
+        ) {
+            lock = true;
         }
         else if(today > gameDate) {
-            gameDay = true;
+            lock = true;
         }
 
         const rows = this.state.games.map((game, index) => {
             // TODO: note - team names should be no more 14 chars in total for optimum experience. Look into nicknames of sorts
-            // TODO: control GameDetail, scores and minute counter based on date being before game_date.
             return (
                 <div
                     key={index}
                     onMouseDown={(event) => {if (event.target.type != "submit") { this.setState({ indexRow: (this.state.indexRow === index ? null : index) }) }}}
                 >
                     <p className="game">
-                        <span className={"gamesection hometeam" + (gameDay ? " gameday" : "")}>{game.home_team.label}</span>
-                        <span className={"gamesection gamescores" + (gameDay ? " gameday" : "")}>
-                            {gameDay ? <span className="matchscore">
-                                          {game.home_score !== null ? game.home_score : '-'}
-                                          <span className="matchscore-divider">:</span>
-                                          {game.away_score !== null ? game.away_score : '-'}
-                                      </span>
-                                     : <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
+                        <span className={"gamesection hometeam" + (lock ? " gameday" : "")}>{game.home_team.label}</span>
+                        <span className={"gamesection gamescores" + (lock ? " gameday" : "")}>
+                            {lock ? <span className="matchscore">
+                                        {game.home_score !== null ? game.home_score : '-'}
+                                        <span className="matchscore-divider">:</span>
+                                        {game.away_score !== null ? game.away_score : '-'}
+                                    </span>
+                                    : <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
                         </span>
-                        <span className={"gamesection awayteam" + (gameDay ? " gameday" : "")}>{game.away_team.label}</span>
-                        {gameDay ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}
+                        <span className={"gamesection awayteam" + (lock ? " gameday" : "")}>{game.away_team.label}</span>
+                        {lock ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}
                     </p>
-                    {!gameDay && this.state.indexRow === index ? <GameDetail
+                    {!lock && this.state.indexRow === index ? <GameDetail
                                                                     playerId={this.state.playerId}
                                                                     homeTeam={game.home_team.name}
                                                                     awayTeam={game.away_team.name}
                                                                     gameDate={game.match_date}
                                                                     gameId={game.id} 
                                                                     onPredictionSet={(n) => {
-                                                                        this.setState({playerSelections: this.state.playerSelections + n})}
+                                                                        if (this.state.playerSelections < 6) {
+                                                                            this.setState({playerSelections: this.state.playerSelections + n})}
+                                                                        }
                                                                     }
+                                                                    onLoginSelect={() => {
+                                                                        this.setState({
+                                                                            indexRow: null
+                                                                        })
+
+                                                                        this.props.onLoginSelect()
+                                                                    }}
                                                                  />
                                                                : null}
                 </div>
@@ -215,13 +233,14 @@ class Games extends Component {
                     <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) !== this.props.meta.gameweeks.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
                 </div>
                 {
-                    !gameDay && this.state.playerId && this.state.date == this.props.meta.gameweeks[this.props.meta.gameweeks.length - 1] ?
+                    !lock && this.state.playerId && this.state.date == this.props.meta.gameweeks[this.props.meta.gameweeks.length - 1] ?
                     <div className={`games-player-selections${this.state.playerSelections === 6 ? "-complete" : ""}`}>
-                        {this.state.playerSelections} / 6 Selections Made
+                        {this.state.playerSelections} / 6 Selections
+                        {this.state.selectionsShared ? <span> (Possible Split Pot)</span> : null}
                     </div>
                     : null
                 }
-                {rows.length === 0 ? "No Games" : rows}
+                {rows.length === 0 ? null : rows}
             </div>
         )
     }

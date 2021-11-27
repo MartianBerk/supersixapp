@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import * as Constants from "../constants.js";
+import Error from './Error.js';
 
 import '../css/UserLogin.css';
 
@@ -18,7 +19,8 @@ class UserLogin extends Component {
             confirmPassword: null,
             isLoggedIn: props.isLoggedIn,
             newUser: props.newUser || false,
-            validUser: props.validUser || props.newUser || false
+            validUser: props.validUser || props.newUser || false,
+            error: null
         };
 
         this.checkUser = this.checkUser.bind(this);
@@ -27,6 +29,7 @@ class UserLogin extends Component {
 
     checkUser(e) {
         if (!this.state.username) {
+            this.setState({ error: "Enter username." })
             return null
         }
 
@@ -48,20 +51,28 @@ class UserLogin extends Component {
             newUser: data.new_user,
             validUser: data.error ? false : true
         }))
+        .then(_ => {
+            if (!this.state.validUser) {
+                this.setState({ error: "Invalid user." })
+            }
+        })
         .catch(/* do nothing */)
     }
 
     loginUser(e) {
         // TODO: Error Messages
         if (!this.state.username || !this.state.password) {
+            this.setState({ error: "Incomplete form" })
             return null
         }
 
         if (this.state.newUser && !this.state.confirmPassword) {
+            this.setState({ error: "Please confirm password." })
             return null
         }
 
         if (this.state.newUser && this.state.password !== this.state.confirmPassword) {
+            this.setState({ error: "Passwords do not match." })
             return null
         }
 
@@ -84,23 +95,29 @@ class UserLogin extends Component {
         .then(data => {
             this.setState({
                 isLoggedIn: data.is_logged_in,
-                newUser: data.new_user,
-                validUser: data.error ? false : true
+                newUser: data.new_user
             });
 
             return data;
         })
         .then(data => {
-            if (this.props.onSuccess) {
+            if (!data.is_logged_in) {
+                this.setState({ error: "Invalid password." })
+            }
+            else if (this.props.onSuccess) {
                 this.props.onSuccess(data);
             }
         })
-        .catch(/* do nothing */)
+        .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." }))
     }
 
     render () {
         return (
             <div className="userlogin-container">
+                <Error 
+                    error={this.state.error}
+                    onAccept={_ => { this.setState({ error: null }) }}
+                />
                 <p>
                     User ID / Email
                     <br />

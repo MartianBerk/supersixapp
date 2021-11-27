@@ -4,7 +4,6 @@ import * as Constants from "../constants.js";
 import GamePrediction from './GamePrediction.js';
 
 import '../css/GameDetail.css';
-import UserLogin from './UserLogin.js';
 
 class GameDetail extends Component {
     constructor(props) {
@@ -38,7 +37,7 @@ class GameDetail extends Component {
             headToHead: data["match_detail"]["head_to_head"]
         }))
         .then(_ => {
-            fetch(Constants.GETPREDICTIONURL)
+            fetch(`${Constants.GETPREDICTIONURL}?gameId=${this.state.gameId}`)
             .then(response => response.json())
             .then((data) => {
                 let state = {};
@@ -54,7 +53,7 @@ class GameDetail extends Component {
                     loading: false
                 });
             })
-            .catch(/* do nothing */)
+            .catch(this.setState({loading: false}))
         })
         .catch(/* do nothing */)
     }
@@ -107,7 +106,12 @@ class GameDetail extends Component {
                                 playerId={this.state.playerId}
                                 onPreditionSet={this.props.onPreditionSet}
                             /> :
-                            <UserLogin />
+                            <button
+                                className="gameprediction-userlogin-button"
+                                onClick={(e) => this.props.onLoginSelect()}
+                            >
+                                Login
+                            </button>
                         : null
                     }
                 </div>

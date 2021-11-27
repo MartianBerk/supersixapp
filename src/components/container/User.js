@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import * as Constants from "../constants.js";
+import Error from './Error.js';
 import UserLogin from './UserLogin.js';
 
 import '../css/User.css';
@@ -25,8 +26,12 @@ class User extends Component {
             firstname: props.userData.firstname,
             lastname: props.userData.lastname,
             nickname: nickname,
-            activeChanges: false
+            activeChanges: false,
+            error: null
         };
+
+        this.submitChanges = this.submitChanges.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     submitChanges(e) {
@@ -46,13 +51,40 @@ class User extends Component {
             activeChanges: false
         }))
         .catch(e => {
-            alert(e)  // This needs to be an error component
+            this.setState({ error: "Something went wrong.\nPlease try again later." })
+        })
+    }
+
+    logout(e) {
+        fetch(Constants.LOGOUTURL)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.is_logged_in) {
+                this.setState({
+                    isLoggedIn: false,
+                    newUser: false,
+                    userId: null,
+                    email: null,
+                    firstname: null,
+                    lastname: null,
+                    nickname: null,
+                })
+
+                this.props.onLogoutSuccess()
+            }
+        })
+        .catch(e => {
+            this.setState({ error: "Something went wrong.\nPlease try again later." })
         })
     }
 
     render () {
         return (
             <div className="userprofile-container">
+                <Error 
+                    error={this.state.error}
+                    onAccept={_ => { this.setState({ error: null }) }}
+                />
                 <div className="user-profile">
                     {
                         !this.state.isLoggedIn ? 
@@ -96,6 +128,13 @@ class User extends Component {
                         /> :
                         <div className="userprofile-container">
                             <p>{ this.state.userId.toUpperCase() }</p>
+                            <p>
+                                <input
+                                    class="userprofile-submit"
+                                    type="submit"
+                                    value="Logout"
+                                    onClick={this.logout} />
+                            </p>
                             <p>
                                 Email
                                 <br />

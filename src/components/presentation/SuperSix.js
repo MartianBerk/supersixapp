@@ -18,26 +18,31 @@ class SuperSix extends Component {
             newUser: false,
             userData: {
                 playerId: null,
-                selections: 0
+                userId: null,
+                email: null,
+                firstname: null,
+                lastname: null,
+                selections: 0,
+                selectionsShared: false
             },
             loading: true,
             showGames: true,
             showPlayers: false,
             showPerformance: false,
-            // showUser: false
+            showUser: false
         };
 
         fetch(Constants.METAURL)
         .then(response => response.json())
         .then(data => this.setState({ meta: data.meta }))
         .then(_ => {
-            fetch(Constants.LOGGEDINURL, {
+            fetch(Constants.LOGGEDINURL/*, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: "{}"
-            })
+            }*/)
             .then(response => response.json())
             .then(data => this.setState((oldState) => {
                 let { is_logged_in, new_user, ...userData } = data;
@@ -55,6 +60,11 @@ class SuperSix extends Component {
                     newUser: newUser,
                     userData: {
                         playerId: userData.player_id,
+                        userId: userData.user_id,
+                        email: userData.email,
+                        firstname: userData.firstname,
+                        lastname: userData.lastname,
+                        selections: 0
                     },
                     loading: false
                 }
@@ -116,15 +126,20 @@ class SuperSix extends Component {
                                                 }}
                                                 playerId={this.state.userData.playerId}
                                                 playerSelections={this.state.userData.selections}
+                                                selectionsShared={this.state.userData.selectionsShared}
+                                                onLoginSelect={() => {
+                                                    this.setState({ showGames: false, showUser: true })
+                                                }}
                                             /> : null }
                 </div>
                 <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
                     { !this.state.loading ? <Scores
                                                 playerId={ this.state.userData.playerId }
                                                 meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }}
-                                                sendSelectionsUpstream={(n) => {
+                                                sendSelectionsUpstream={(n, shared) => {
                                                     let userData = {...this.state.userData};
                                                     userData.selections = n;
+                                                    userData.selectionsShared = shared;
 
                                                     this.setState({ userData: userData })
                                                 }}
@@ -156,6 +171,24 @@ class SuperSix extends Component {
                                     newUser: newUser,
                                     userData: {
                                         playerId: userData.player_id,
+                                        userId: userData.user_id,
+                                        email: userData.email,
+                                        firstname: userData.firstname,
+                                        lastname: userData.lastname,
+                                        selections: 0
+                                    }
+                                })
+                            }}
+                            onLogoutSuccess={() => {
+                                this.setState({
+                                    isLoggedIn: false,
+                                    newUser: false,
+                                    userData: {
+                                        playerId: null,
+                                        userId: null,
+                                        email: null,
+                                        firstname: null,
+                                        lastname: null,
                                         selections: 0
                                     }
                                 })

@@ -47,8 +47,11 @@ class GamePrediction extends Component {
     }
 
     handleSelectionClick(e) {
-        if (!this.state.submitted && e.target.value !== this.state.selection) {
-            this.setState({ selection: e.target.value });
+        if (e.target.value !== this.state.selection) {
+            this.setState({
+                selection: e.target.value,
+                submitted: false
+            });
         }
     }
 
@@ -71,55 +74,34 @@ class GamePrediction extends Component {
         }
     }
 
-    renderUserSubmit() {
-        if (this.state.playerId) {
-            return (
-                <div className="gameprediction-selection">
-                    <div className="gameprediction-selections">
-                        <button
-                            className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "home" ? " active" : "")}
-                            onClick={this.handleSelectionClick} value="home">
-                                HOME
-                        </button>
-                        <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "draw" ? " active" : "")}
-                            onClick={this.handleSelectionClick} value="draw">
-                                DRAW
-                        </button>
-                        <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "away" ? " active" : "")}
-                            onClick={this.handleSelectionClick} value="away">
-                                AWAY
-                        </button>
-                    </div>
-                    <div className="gameprediction-submit">
-                        <button className={"gameprediction-button gameprediction-button-submit"  + (this.state.submitted ? " active" : "")}
-                            onClick={this.handleSubmitClick}>
-                                {this.state.submitted ? "SUBMITTED" : "SUBMIT"}
-                        </button>
-                    </div>
-                </div>
-            )
-        }
-        else {
-            return (
-                <div className="gameprediction-selection">
-                    <div className="gameprediction-selections">
-                        <p className="gameprediction-row">
-                            <span className="gameprediction-section hometeam"></span>
-                            <span className="gameprediction-section title">Please login to predict?</span>
-                            <span className="gameprediction-section awayteam"></span>
-                        </p>
-                    </div>
-                </div>
-            )
-        }
-    }
-
     render () {
         return (
             !this.state.loading && 
             (
                 <div className="gameprediction-container">
-                    { this.state.playerId ? this.renderUserSubmit() : null /* TODO: insert login here */ }
+                    <div className="gameprediction-selection">
+                        <div className="gameprediction-selections">
+                            <button
+                                className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "home" ? " active" : "")}
+                                onClick={this.handleSelectionClick} value="home">
+                                    HOME
+                            </button>
+                            <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "draw" ? " active" : "")}
+                                onClick={this.handleSelectionClick} value="draw">
+                                    DRAW
+                            </button>
+                            <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "away" ? " active" : "")}
+                                onClick={this.handleSelectionClick} value="away">
+                                    AWAY
+                            </button>
+                        </div>
+                        <div className="gameprediction-submit">
+                            <button className={"gameprediction-button gameprediction-button-submit"  + (this.state.submitted ? " active" : "")}
+                                onClick={this.handleSubmitClick}>
+                                    {this.state.submitted ? "SUBMITTED" : "SUBMIT"}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )
         )

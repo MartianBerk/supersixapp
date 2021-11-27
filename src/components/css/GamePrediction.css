@@ -18,6 +18,10 @@
     transition: 0.3s;
 }
 
+.gameprediction-selection {
+    margin-left: -30px;
+}
+
 .gameprediction-button-selection {
     background-color: #6b6b6b;
     margin-left: 20px;
@@ -33,4 +37,14 @@
 
 .gameprediction-button.active {
     background-color: #287a4f;
+}
+
+.gameprediction-userlogin-button {
+    background-color: #454242;
+    color: #ccccc3;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    width: 100px;
+    height: 25px;
 }
