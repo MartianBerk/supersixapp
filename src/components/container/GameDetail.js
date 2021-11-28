@@ -104,7 +104,7 @@ class GameDetail extends Component {
                             <GamePrediction
                                 gameId={this.state.gameId}
                                 playerId={this.state.playerId}
-                                onPreditionSet={this.props.onPreditionSet}
+                                onPredictionSet={this.props.onPredictionSet}
                             /> :
                             <button
                                 className="gameprediction-userlogin-button"
