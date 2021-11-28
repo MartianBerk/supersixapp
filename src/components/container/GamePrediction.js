@@ -24,7 +24,9 @@ class GamePrediction extends Component {
             return null;
         }
 
-        fetch(`${Constants.GETPREDICTIONURL}?gameId=${this.props.gameId}&playerId=${this.state.playerId}`)
+        fetch(`${Constants.GETPREDICTIONURL}?gameId=${this.props.gameId}&playerId=${this.state.playerId}`, {
+            credentials: "same-origin",
+        })
         .then(response => response.json())
         .then(data => this.setState({
             selection: data.prediction,
@@ -59,6 +61,7 @@ class GamePrediction extends Component {
         if (this.state.selection && !this.state.submitted) {
             fetch(Constants.ADDPREDICTIONURL, {
                 method: "POST",
+                credentials: "same-origin",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     game_id: this.props.gameId,

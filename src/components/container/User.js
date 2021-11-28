@@ -35,9 +35,9 @@ class User extends Component {
     }
 
     submitChanges(e) {
-        // Do I need to add credentials here? If so, will need to in Add Prediction also.
         fetch(Constants.UPDATEDETAILSURL, {
             method: "POST",
+            credentials: "same-origin",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -56,7 +56,9 @@ class User extends Component {
     }
 
     logout(e) {
-        fetch(Constants.LOGOUTURL)
+        fetch(Constants.LOGOUTURL, {
+            credentials: "same-origin",
+        })
         .then(response => response.json())
         .then(data => {
             if (!data.is_logged_in) {
@@ -130,7 +132,7 @@ class User extends Component {
                             <p>{ this.state.userId.toUpperCase() }</p>
                             <p>
                                 <input
-                                    className="userprofile-submit"
+                                    className="userprofile-input userprofile-submit"
                                     type="submit"
                                     value="Logout"
                                     onClick={this.logout} />
@@ -195,7 +197,7 @@ class User extends Component {
                                 this.state.activeChanges ? 
                                 <p>
                                     <input
-                                        class="userprofile-submit"
+                                        class="userprofile-input userprofile-submit"
                                         type="submit"
                                         value="Update"
                                         onClick={this.submitChanges} />
