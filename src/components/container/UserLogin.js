@@ -20,7 +20,7 @@ class UserLogin extends Component {
             confirmPassword: null,
             isLoggedIn: props.isLoggedIn,
             newUser: props.newUser || false,
-            validUser: props.validUser || props.newUser || false,
+            validUser: false,
             error: null
         };
 
