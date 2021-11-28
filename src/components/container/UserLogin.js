@@ -64,7 +64,7 @@ class UserLogin extends Component {
                 this.setState({ error: "Invalid user." })
             }
         })
-        .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." })))
+        .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." }))
     }
 
     loginUser(e) {
