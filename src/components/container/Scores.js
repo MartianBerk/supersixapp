@@ -32,6 +32,7 @@ class Scores extends Component {
         fetch(`${Constants.SCORESURL}?matchDate=${date}`)
         .then(response => response.json())
         .then(data => data.scores.forEach((player, i) => {
+            player.fullname = player.name;
             player.name = player.name in this.props.meta.players ? this.props.meta.players[player.name] : player.name;
 
             if (this.state.playerId && this.state.playerId === player.id) {
@@ -185,6 +186,18 @@ class Scores extends Component {
 
                     this.props.sendSelectionsUpstream(player.matches.length, shared)
                 }
+            })
+        }
+
+        if (this.props.meta && this.props.meta !== prevProps.meta) {
+            this.setState((oldState) => {
+                let newPlayers = [...oldState.players];
+
+                newPlayers.forEach(player => {
+                    player.name = player.fullname in this.props.meta.players ? this.props.meta.players[player.fullname] : player.name;
+                })
+
+                return {players: newPlayers};
             })
         }
     }

@@ -22,6 +22,7 @@ class SuperSix extends Component {
                 email: null,
                 firstname: null,
                 lastname: null,
+                nickname: null,
                 selections: 0,
                 selectionsShared: false
             },
@@ -64,6 +65,7 @@ class SuperSix extends Component {
                         email: userData.email,
                         firstname: userData.firstname,
                         lastname: userData.lastname,
+                        nickname: this.state.meta.players ? this.state.meta.players[`${userData.firstname} ${userData.lastname}`] || null : null,
                         selections: 0
                     },
                     loading: false
@@ -175,6 +177,7 @@ class SuperSix extends Component {
                                         email: userData.email,
                                         firstname: userData.firstname,
                                         lastname: userData.lastname,
+                                        nickname: this.state.meta ? this.state.meta[`${userData.firstname} ${userData.lastname}`] || null : null,
                                         selections: 0
                                     }
                                 })
@@ -189,7 +192,27 @@ class SuperSix extends Component {
                                         email: null,
                                         firstname: null,
                                         lastname: null,
-                                        selections: 0
+                                        nickname: null,
+                                        selections: 0,
+                                        selectionsShared: false
+                                    }
+                                })
+                            }}
+                            onUpdateSuccess={(d) => {
+                                let newMeta = {...this.state.meta};
+
+                                for (const playerName in newMeta.players) {
+                                    if (playerName === `${userData.firstname} ${userData.lastname}`) {
+                                        newMeta.players[playerName] = d.nickname
+                                        break;
+                                    }
+                                }
+
+                                this.setState({
+                                    meta: newMeta,
+                                    userData: {
+                                        email: d.email,
+                                        nickname: d.nickname
                                     }
                                 })
                             }}

@@ -44,16 +44,19 @@ class User extends Component {
                 },
                 body: JSON.stringify({
                     email: this.state.email,
-                    firstname: this.state.firstname,
-                    lastname: this.state.lastname,
                     nickname: this.state.nickname
                 })
             })
             .then(response => response.json())
-            .then(data => this.setState({
-                email: data.email,
-                activeChanges: false
-            }))
+            .then(data => {
+                this.setState({
+                    email: data.email,
+                    nickname: data.nickname,
+                    activeChanges: false
+                })
+
+                this.props.onUpdateSuccess(data)
+            })
             .catch(e => {
                 this.setState({ error: "Something went wrong.\nPlease try again later." })
             })
