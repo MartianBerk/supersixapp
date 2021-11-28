@@ -36,17 +36,18 @@ class User extends Component {
 
     submitChanges(e) {
         if (this.state.activeChanges) {
-            fetch(Constants.UPDATEDETAILSURL, {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: this.state.email,
-                    nickname: this.state.nickname
-                })
-            })
+            // fetch(Constants.UPDATEDETAILSURL, {
+            //     method: "POST",
+            //     credentials: "same-origin",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify({
+            //         email: this.state.email,
+            //         nickname: this.state.nickname
+            //     })
+            // })
+            fetch('user.json')
             .then(response => response.json())
             .then(data => {
                 this.setState({

@@ -48,11 +48,13 @@ class Performance extends Component {
             stat.overall = 0;
             stat.matches = 0;
 
+            stat.fullname = stat.name;
+            stat.name = stat.name in this.props.meta ? this.props.meta[stat.name] : stat.name;
+
             stat.scores.forEach(score => {
                 score.date = this.formatDate(score.date);
                 stat.overall += score.score;
                 stat.matches += score.matches;
-                stat.name = stat.name in this.props.meta ? this.props.meta[stat.name] : stat.name;
             });
 
             stat.percent = stat.overall / stat.matches * 100;
@@ -85,6 +87,20 @@ class Performance extends Component {
 
     componentDidMount() {
         this.getPerformanceStats();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.meta != prevProps.meta) {
+            this.setState((oldState) => {
+                let newData = [...oldState.data];
+
+                newData.forEach(d => {
+                    d.name = d.fullname in this.props.meta ? this.props.meta[d.fullname] : d.name;
+                })
+
+                return {data: newData};
+            })
+        }
     }
 
     handleNameSelect(event) {
