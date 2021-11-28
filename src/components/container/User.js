@@ -138,6 +138,7 @@ class User extends Component {
                         /> :
                         <div className="userprofile-container">
                             <p>{ this.state.userId.toUpperCase() }</p>
+                            <p> {this.state.firstname + " " + this.state.lastname} </p>
                             <p>
                                 <input
                                     className="userprofile-input userprofile-submit"
@@ -155,34 +156,6 @@ class User extends Component {
                                     onChange={e => {
                                         if (this.state.email !== e.target.value) {
                                             this.setState({ email: e.target.value, activeChanges: true })
-                                        }
-                                    }}
-                                />
-                            </p>
-                            <p>
-                                First Name
-                                <br />
-                                <input
-                                    class="userprofile-input"
-                                    type="text"
-                                    value={ this.state.firstname }
-                                    onChange={e => {
-                                        if (this.state.firstname !== e.target.value) {
-                                            this.setState({ firstname: e.target.value, activeChanges: true })
-                                        }
-                                    }}
-                                />
-                            </p>
-                            <p>
-                                Last Name
-                                <br />
-                                <input
-                                    class="userprofile-input"
-                                    type="text"
-                                    value={ this.state.lastname }
-                                    onChange={e => {
-                                        if (this.state.lastname !== e.target.value) {
-                                            this.setState({ lastname: e.target.value, activeChanges: true })
                                         }
                                     }}
                                 />
