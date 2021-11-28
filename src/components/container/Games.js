@@ -241,7 +241,14 @@ class Games extends Component {
                     : null
                 }
                 {rows.length === 0 ? null : rows}
-                <div className="games-whitespace"></div>
+                <div className="games-whitespace">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                </div>
             </div>
         )
     }
