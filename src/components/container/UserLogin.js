@@ -122,7 +122,7 @@ class UserLogin extends Component {
         })
         .then(data => {
             if (!data.is_logged_in) {
-                this.setState({ error: "Invalid password." })
+                this.setState({ error: "Invalid username or password." })
             }
             else if (this.props.onSuccess) {
                 this.props.onSuccess(data);
