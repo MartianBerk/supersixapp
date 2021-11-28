@@ -47,6 +47,13 @@ class UserLogin extends Component {
             })
         })
         .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                this.setState({error: data.error})
+            }
+
+            return data
+        })
         .then(data => this.setState({
             isLoggedIn: data.is_logged_in,
             newUser: data.new_user,
@@ -57,7 +64,7 @@ class UserLogin extends Component {
                 this.setState({ error: "Invalid user." })
             }
         })
-        .catch(/* do nothing */)
+        .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." })))
     }
 
     loginUser(e) {
@@ -98,6 +105,13 @@ class UserLogin extends Component {
             })
         })
         .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                this.setState({error: data.error})
+            }
+
+            return data
+        })
         .then(data => {
             this.setState({
                 isLoggedIn: data.is_logged_in,
