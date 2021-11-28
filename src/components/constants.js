@@ -1,5 +1,4 @@
-// export const BASEURL = "https://superiorsix.co.uk/webapis/supersix";
-export const BASEURL = "http://127.0.0.1:5000/webapis/supersix";
+export const BASEURL = "https://superiorsix.co.uk/webapis/supersix";
 
 // game web apis
 export const MATCHESURL = BASEURL + "/game/livematches";
