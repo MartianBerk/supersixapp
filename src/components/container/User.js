@@ -35,24 +35,29 @@ class User extends Component {
     }
 
     submitChanges(e) {
-        fetch(Constants.UPDATEDETAILSURL, {
-            method: "POST",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: this.state.email
+        if (this.state.activeChanges) {
+            fetch(Constants.UPDATEDETAILSURL, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: this.state.email,
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    nickname: this.state.nickname
+                })
             })
-        })
-        .then(response => response.json())
-        .then(data => this.setState({
-            email: data.email,
-            activeChanges: false
-        }))
-        .catch(e => {
-            this.setState({ error: "Something went wrong.\nPlease try again later." })
-        })
+            .then(response => response.json())
+            .then(data => this.setState({
+                email: data.email,
+                activeChanges: false
+            }))
+            .catch(e => {
+                this.setState({ error: "Something went wrong.\nPlease try again later." })
+            })
+        }
     }
 
     logout(e) {
