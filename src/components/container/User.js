@@ -100,7 +100,6 @@ class User extends Component {
                         !this.state.isLoggedIn ? 
                         <UserLogin
                             loggedIn={ this.props.isLoggedIn }
-                            newUser={ this.props.newUser }
                             onSuccess={ 
                                 (d) => {
                                     let data = {...d};
