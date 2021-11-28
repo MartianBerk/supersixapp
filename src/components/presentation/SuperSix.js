@@ -202,7 +202,7 @@ class SuperSix extends Component {
                                 let newMeta = {...this.state.meta};
 
                                 for (const playerName in newMeta.players) {
-                                    if (playerName === `${userData.firstname} ${userData.lastname}`) {
+                                    if (playerName === `${this.state.userData.firstname} ${this.state.userData.lastname}`) {
                                         newMeta.players[playerName] = d.nickname
                                         break;
                                     }
