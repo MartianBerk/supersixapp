@@ -130,7 +130,7 @@ class User extends Component {
                             <p>{ this.state.userId.toUpperCase() }</p>
                             <p>
                                 <input
-                                    class="userprofile-submit"
+                                    className="userprofile-submit"
                                     type="submit"
                                     value="Logout"
                                     onClick={this.logout} />
@@ -139,6 +139,7 @@ class User extends Component {
                                 Email
                                 <br />
                                 <input
+                                    class="userprofile-input"
                                     type="email"
                                     value={ this.state.email }
                                     onChange={e => {
@@ -152,6 +153,7 @@ class User extends Component {
                                 First Name
                                 <br />
                                 <input
+                                    class="userprofile-input"
                                     type="text"
                                     value={ this.state.firstname }
                                     onChange={e => {
@@ -165,6 +167,7 @@ class User extends Component {
                                 Last Name
                                 <br />
                                 <input
+                                    class="userprofile-input"
                                     type="text"
                                     value={ this.state.lastname }
                                     onChange={e => {
@@ -178,6 +181,7 @@ class User extends Component {
                                 Nickname
                                 <br />
                                 <input
+                                    class="userprofile-input"
                                     type="text"
                                     value={ this.state.nickname }
                                     onChange={e => {

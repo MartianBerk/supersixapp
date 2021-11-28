@@ -4,7 +4,7 @@
     color: #ccccc3;
 }
 
-.userlogin-container input {
+.userlogin-container .userlogin-input {
     background-color: #454242;
     color: #ccccc3;
     font-weight: bold;
@@ -12,6 +12,16 @@
     margin-top: 10px;
 }
 
-.userlogin-submit {
+.userlogin-container .userlogin-input.userlogin-submit {
     width: 75px;
+}
+
+.userlogin-container .userlogin-input.userlogin-password.valid {
+    border: 3px solid rgba(13, 99, 31, 0.7);
+    border-radius: 8px;
+}
+
+.userlogin-container .userlogin-input.userlogin-password.invalid {
+    border: 3px solid rgba(145, 9, 9, 0.7);
+    border-radius: 8px;
 }

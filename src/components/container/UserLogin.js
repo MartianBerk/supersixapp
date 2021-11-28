@@ -10,6 +10,7 @@ class UserLogin extends Component {
         + /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")/.source
         + /@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g.source
     );
+    PWD_COMPLEXITY = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
     constructor(props) {
         super(props);
@@ -71,6 +72,11 @@ class UserLogin extends Component {
             return null
         }
 
+        if (this.state.newUser && !this.state.password.match(this.PWD_COMPLEXITY)) {
+            this.setState({ error: "Password must contain at least one uppercase letter, one lowercase letter and one number." })
+            return null
+        }
+
         if (this.state.newUser && this.state.password !== this.state.confirmPassword) {
             this.setState({ error: "Passwords do not match." })
             return null
@@ -122,6 +128,7 @@ class UserLogin extends Component {
                     User ID / Email
                     <br />
                     <input
+                        className="userlogin-input"
                         type="text" 
                         onChange={e => {this.setState({ username: e.target.value })}}
                     />
@@ -132,6 +139,14 @@ class UserLogin extends Component {
                         Password
                         <br />
                         <input
+                            className={"userlogin-input userlogin-password" + (
+                                this.state.newUser &&
+                                this.state.password
+                                ?
+                                this.state.password.match(this.PWD_COMPLEXITY)
+                                ? " valid" : " invalid"
+                                : ""
+                            )}
                             type="password"
                             onChange={e => {this.setState({ password: e.target.value })}}
                         />
@@ -144,15 +159,26 @@ class UserLogin extends Component {
                         Confirm Password
                         <br />
                         <input
+                            className={"userlogin-input userlogin-password" + (
+                                this.state.newUser &&
+                                this.state.confirmPassword
+                                ?
+                                this.state.confirmPassword === this.state.password &&
+                                this.state.confirmPassword.match(this.PWD_COMPLEXITY)
+                                ? " valid" : " invalid"
+                                : ""
+                            )}
                             type="password"
-                            onChange={e => {this.setState({ confirmPassword: e.target.value })}}
+                            onChange={e => {
+                                this.setState({ confirmPassword: e.target.value })
+                            }}
                         />
                     </p> 
                     : null
                 }
                 <p>
                     <input
-                        class="userlogin-submit"
+                        className="userlogin-input userlogin-submit"
                         type="submit"
                         value={this.state.validUser ? "Login" : "Check"}
                         onClick={this.state.validUser ? this.loginUser : this.checkUser} />
