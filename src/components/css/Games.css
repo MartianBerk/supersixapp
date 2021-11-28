@@ -101,3 +101,7 @@
     background-color: rgba(13, 99, 31, 0.7);
     color: #ccccc3;
 }
+
+.game-whitespace {
+    height: 50px;
+}
