@@ -10,8 +10,8 @@ class Games extends Component {
         super(props);
         this.state = {
             playerId: props.playerId,
-            playerSelections: props.playerSelections,
-            selectionsShared: props.selectionsShared,
+            allPlayerSelections: props.allPlayerSelections || [],
+            playerSelections: props.playerSelections || [null, null, null, null, null, null],
             date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
             live: false,
             games: [],
@@ -143,11 +143,11 @@ class Games extends Component {
         }
         
         if (this.props.playerSelections !== prevProps.playerSelections) {
-            this.setState({ playerSelections: this.props.playerSelections })
+            this.setState({ playerSelections: this.props.playerSelections || [] })
         }
 
-        if (this.props.selectionsShared !== prevProps.selectionsShared) {
-            this.setState({ selectionsShared: this.props.selectionsShared })
+        if (this.props.allPlayerSelections !== prevProps.allPlayerSelections) {
+            this.setState({ allPlayerSelections: this.props.allPlayerSelections || [] })
         }
     }
 
@@ -206,12 +206,7 @@ class Games extends Component {
                                                                     homeTeam={game.home_team.name}
                                                                     awayTeam={game.away_team.name}
                                                                     gameDate={game.match_date}
-                                                                    gameId={game.id} 
-                                                                    onPredictionSet={(n) => {
-                                                                        if (this.state.playerSelections < 6) {
-                                                                            this.setState({playerSelections: this.state.playerSelections + n})}
-                                                                        }
-                                                                    }
+                                                                    gameId={game.id}
                                                                     onLoginSelect={() => {
                                                                         this.setState({
                                                                             indexRow: null
@@ -219,11 +214,35 @@ class Games extends Component {
 
                                                                         this.props.onLoginSelect()
                                                                     }}
+                                                                    onPredictionSet={(selection) => {
+                                                                        let newSelections = [...this.state.playerSelections];
+                                                                        newSelections[this.state.indexRow] = selection;
+
+                                                                        this.setState({ playerSelections: newSelections });
+                                                                    }}
                                                                  />
                                                                : null}
                 </div>
             )
         }) || [];
+
+        let shared = false;
+        let selectionCount = this.state.playerSelections.reduce((t, s) => { return t + (s ? 1 : 0) }, 0)
+
+        if (this.state.playerSelections && this.state.allPlayerSelections) {
+            for (var i = 0; i < this.state.allPlayerSelections.length; i++) {
+                if (shared) {
+                    break;
+                }
+
+                let subShared = true;
+                for (var j = 0; j < this.state.playerSelections.length; j++) {
+                    subShared = subShared && this.state.allPlayerSelections[i][j] === this.state.playerSelections[j];
+                }
+
+                shared = subShared
+            }
+        }
 
         return (
             <div className="games">
@@ -234,9 +253,9 @@ class Games extends Component {
                 </div>
                 {
                     !lock && this.state.playerId && this.state.date == this.props.meta.gameweeks[this.props.meta.gameweeks.length - 1] ?
-                    <div className={`games-player-selections${this.state.playerSelections === 6 ? "-complete" : ""}`}>
-                        {this.state.playerSelections} / 6 Selections
-                        {this.state.selectionsShared ? <span> (Possible Split Pot)</span> : null}
+                    <div className={`games-player-selections${selectionCount === 6 ? "-complete" : ""}`}>
+                        {selectionCount} / 6 Selections
+                        {shared ? <span> (Possible Split Pot)</span> : null}
                     </div>
                     : null
                 }

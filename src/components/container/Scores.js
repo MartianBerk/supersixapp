@@ -60,8 +60,6 @@ class Scores extends Component {
                         shared = equalPredictions === 6;
                     })
                 }
-
-                this.props.sendSelectionsUpstream(player.matches.length, shared)
             }
             
             this.setState((oldState) => {
@@ -83,6 +81,18 @@ class Scores extends Component {
                 return { players: newPlayers };
             });
         }))
+        .then(_ => {
+            let playerIndex = null;
+            const allSelections = this.state.players.map((player, i) => {
+                if (this.state.playerId && player.id === this.state.playerId) {
+                    playerIndex = i;
+                }
+
+                return player.matches.map(match => { return match.prediction })
+            }, playerIndex);
+
+            this.props.sendSelectionsUpstream(allSelections, playerIndex)
+        })
         .then(() => {
             this.setState(oldState => {
                 let player = oldState.players[0];  // only need one players scores to track live

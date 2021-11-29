@@ -14,6 +14,7 @@ class SuperSix extends Component {
         super(props);
         this.state = {
             meta: {},
+            allPlayerSelections: [],
             isLoggedIn: false,
             newUser: false,
             userData: {
@@ -23,8 +24,7 @@ class SuperSix extends Component {
                 firstname: null,
                 lastname: null,
                 nickname: null,
-                selections: 0,
-                selectionsShared: false
+                selections: null
             },
             loading: true,
             showGames: true,
@@ -67,7 +67,6 @@ class SuperSix extends Component {
                         firstname: userData.firstname,
                         lastname: userData.lastname,
                         nickname: this.state.meta.players ? this.state.meta.players[`${userData.firstname} ${userData.lastname}`] || null : null,
-                        selections: 0
                     },
                     loading: false
                 }
@@ -128,8 +127,8 @@ class SuperSix extends Component {
                                                     gameweeks: this.state.meta.gameweeks
                                                 }}
                                                 playerId={this.state.userData.playerId}
+                                                allPlayerSelections={this.state.allPlayerSelections}
                                                 playerSelections={this.state.userData.selections}
-                                                selectionsShared={this.state.userData.selectionsShared}
                                                 onLoginSelect={() => {
                                                     this.setState({ showGames: false, showUser: true })
                                                 }}
@@ -139,12 +138,14 @@ class SuperSix extends Component {
                     { !this.state.loading ? <Scores
                                                 playerId={ this.state.userData.playerId }
                                                 meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }}
-                                                sendSelectionsUpstream={(n, shared) => {
+                                                sendSelectionsUpstream={(selections, i) => {
                                                     let userData = {...this.state.userData};
-                                                    userData.selections = n;
-                                                    userData.selectionsShared = shared;
 
-                                                    this.setState({ userData: userData })
+                                                    if (this.state.userData.playerId) {
+                                                        userData.selections = selections.splice(i, 1)[0];
+                                                    }
+
+                                                    this.setState({ allPlayerSelections: selections, userData: userData })
                                                 }}
                                             /> : null }
                 </div>
