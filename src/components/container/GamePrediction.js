@@ -39,7 +39,7 @@ class GamePrediction extends Component {
                 loading: false
             })
         })
-        .catch(/* do nothing */)
+        .catch(e => this.setState({ error: "Something went wrong, please try again later." }))
     }
 
     componentDidMount() {
@@ -75,7 +75,6 @@ class GamePrediction extends Component {
                 this.setState({ selection: e.target.value })
                 this.props.onPredictionSet(1)
             })
-            .then(_ => {})
             .catch(e => this.setState({ error: e }))
         }
     }
