@@ -169,34 +169,17 @@ class Scores extends Component {
     componentDidUpdate(prevProps) {
         // If a login has been performed and the props playerId updated, update state
         if (this.props.playerId && this.props.playerId !== prevProps.playerId) {
-            this.state.players.forEach((player, i) => {
-                if (player.id === this.props.playerId) {
-                    let shared = false;
-
-                    // Only perform duplicate prediction check if all 6 predictions are selected.
-                    if (player.matches.length === 6) {
-                        this.state.players.forEach((subPlayer, j) => {
-                            if (shared) {
-                                return null;
-                            }
-                            else if (j === i) {
-                                return null;
-                            }
-    
-                            let equalPredictions = 0;
-                            subPlayer.matches.forEach((match, k) => {
-                                if (match.prediction === player.matches[k].prediction) {
-                                    equalPredictions++;
-                                }
-                            })
-    
-                            shared = equalPredictions === 6;
-                        })
-                    }
-
-                    this.props.sendSelectionsUpstream(player.matches.length, shared)
+            let playerIndex = null;
+            
+            const allSelections = this.state.players.map((player, i) => {
+                if (this.state.playerId && player.id === this.state.playerId) {
+                    playerIndex = i;
                 }
-            })
+
+                return player.matches.map(match => { return match.prediction })
+            }, playerIndex);
+
+            this.props.sendSelectionsUpstream(allSelections, playerIndex)
         }
 
         if (this.props.meta && this.props.meta !== prevProps.meta) {
