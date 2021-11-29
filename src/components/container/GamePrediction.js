@@ -12,7 +12,9 @@ class GamePrediction extends Component {
             playerId: props.playerId,
             loading: true,
             selection: null,
-            error: null
+            error: null,
+            updated: false,
+            unset: true
         };
 
         this.handleSelectionClick = this.handleSelectionClick.bind(this);
@@ -36,6 +38,7 @@ class GamePrediction extends Component {
 
             this.setState({
                 selection: data.prediction,
+                unset: false,
                 loading: false
             })
         })
@@ -69,13 +72,15 @@ class GamePrediction extends Component {
             .then(response => response.json())
             .then(d => {
                 if (d.error) {
-                    alert(d.error)
                     this.setState({ error: d.message })
                     return null;
                 }
 
-                this.setState({ selection: d.prediction })
-                this.props.onPredictionSet(1)
+                if (this.state.unset) {
+                    this.props.onPredictionSet(1);
+                }
+
+                this.setState({ selection: d.prediction, unset: false })
             })
             .catch(e => {this.setState({ error: e })})
         }
