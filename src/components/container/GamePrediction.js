@@ -74,8 +74,6 @@ class GamePrediction extends Component {
                     return null;
                 }
 
-                alert(d.prediction)
-
                 this.setState({ selection: d.prediction })
                 this.props.onPredictionSet(1)
             })
