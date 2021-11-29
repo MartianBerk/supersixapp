@@ -39,6 +39,7 @@ class SuperSix extends Component {
         .then(_ => {
             fetch(Constants.LOGGEDINURL, {
                 method: "POST",
+                credentials: "same-origin",
                 headers: {
                     "Content-Type": "application/json"
                 },

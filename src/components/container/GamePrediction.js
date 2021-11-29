@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import * as Constants from "../constants.js";
+import Error from './Error.js';
 
 import '../css/GamePrediction.css';
 
@@ -11,7 +12,7 @@ class GamePrediction extends Component {
             playerId: props.playerId,
             loading: true,
             selection: null,
-            submitted: false
+            error: null
         };
 
         this.handleSelectionClick = this.handleSelectionClick.bind(this);
@@ -30,7 +31,6 @@ class GamePrediction extends Component {
         .then(response => response.json())
         .then(data => this.setState({
             selection: data.prediction,
-            submitted: data.prediction ? true : false,
             loading: false
         }))
         .catch(/* do nothing */)
@@ -50,15 +50,6 @@ class GamePrediction extends Component {
 
     handleSelectionClick(e) {
         if (e.target.value !== this.state.selection) {
-            this.setState({
-                selection: e.target.value,
-                submitted: false
-            });
-        }
-    }
-
-    handleSubmitClick(_) {
-        if (this.state.selection && !this.state.submitted) {
             fetch(Constants.ADDPREDICTIONURL, {
                 method: "POST",
                 credentials: "same-origin",
@@ -66,14 +57,19 @@ class GamePrediction extends Component {
                 body: JSON.stringify({
                     game_id: this.props.gameId,
                     player_id: this.state.playerId,
-                    prediction: this.state.selection
+                    prediction: e.target.value
                 })
             })
-            .then(_ => this.setState({
-                submitted: true
-            }))
-            .then(_ => {this.props.onPredictionSet(1)})
-            .catch(/* do nothing */)
+            .then(d => {
+                if (d.error) {
+                    this.setState({ error: d.message })
+                }
+
+                this.setState({ selection: e.target.value })
+                this.props.onPredictionSet(1)
+            })
+            .then(_ => {})
+            .catch(e => this.setState({ error: e }))
         }
     }
 
@@ -82,6 +78,10 @@ class GamePrediction extends Component {
             !this.state.loading && 
             (
                 <div className="gameprediction-container">
+                    <Error
+                        error={this.state.error}
+                        onAccept={_ => { this.setState({ error: null }) }}
+                    />
                     <div className="gameprediction-selection">
                         <div className="gameprediction-selections">
                             <button
@@ -96,12 +96,6 @@ class GamePrediction extends Component {
                             <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "away" ? " active" : "")}
                                 onClick={this.handleSelectionClick} value="away">
                                     AWAY
-                            </button>
-                        </div>
-                        <div className="gameprediction-submit">
-                            <button className={"gameprediction-button gameprediction-button-submit"  + (this.state.submitted ? " active" : "")}
-                                onClick={this.handleSubmitClick}>
-                                    {this.state.submitted ? "SUBMITTED" : "SUBMIT"}
                             </button>
                         </div>
                     </div>

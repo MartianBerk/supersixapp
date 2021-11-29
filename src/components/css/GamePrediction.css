@@ -16,6 +16,7 @@
     height: 30px;
     border: 0;
     transition: 0.3s;
+    border-radius: 10px;
 }
 
 .gameprediction-selection {
@@ -29,10 +30,6 @@
     border: 0;
     transition: 0.3s;
     width: 20%;
-}
-
-.gameprediction-button-submit {
-    width: 23%;
 }
 
 .gameprediction-button.active {
