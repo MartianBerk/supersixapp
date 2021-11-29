@@ -38,7 +38,7 @@ class GamePrediction extends Component {
 
             this.setState({
                 selection: data.prediction,
-                unset: false,
+                unset: data.prediction === null,
                 loading: false
             })
         })
