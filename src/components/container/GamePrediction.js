@@ -29,10 +29,17 @@ class GamePrediction extends Component {
             credentials: "same-origin",
         })
         .then(response => response.json())
-        .then(data => this.setState({
-            selection: data.prediction,
-            loading: false
-        }))
+        .then(data => {
+            if (data.error) {
+                this.setState({ error: data.message, loading: false })
+                return null;
+            }
+
+            this.setState({
+                selection: data.prediction,
+                loading: false
+            })
+        })
         .catch(/* do nothing */)
     }
 
@@ -63,6 +70,7 @@ class GamePrediction extends Component {
             .then(d => {
                 if (d.error) {
                     this.setState({ error: d.message })
+                    return null;
                 }
 
                 this.setState({ selection: e.target.value })
