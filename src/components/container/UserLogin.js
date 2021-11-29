@@ -80,7 +80,7 @@ class UserLogin extends Component {
         }
 
         if (this.state.newUser && !this.state.password.match(this.PWD_COMPLEXITY)) {
-            this.setState({ error: "Password must contain at least one uppercase letter, one lowercase letter and one number." })
+            this.setState({ error: "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter and one number." })
             return null
         }
 
