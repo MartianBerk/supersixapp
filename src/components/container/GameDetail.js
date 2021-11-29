@@ -34,27 +34,9 @@ class GameDetail extends Component {
         .then(data => this.setState({
             leaguePosition: data["match_detail"]["league_position"],
             teamPerformance: data["match_detail"]["team_performance"],
-            headToHead: data["match_detail"]["head_to_head"]
+            headToHead: data["match_detail"]["head_to_head"],
+            loading: false
         }))
-        .then(_ => {
-            fetch(`${Constants.GETPREDICTIONURL}?gameId=${this.state.gameId}`)
-            .then(response => response.json())
-            .then((data) => {
-                let state = {};
-                if (Object.keys(data["prediction"]).length > 0) {
-                    state = {
-                        selection: data["prediction"]["prediction"],
-                        submitted: true,
-                    };
-                }
-
-                this.setState({
-                    ...state,
-                    loading: false
-                });
-            })
-            .catch(this.setState({loading: false}))
-        })
         .catch(/* do nothing */)
     }
 
