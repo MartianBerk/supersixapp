@@ -37,15 +37,14 @@ class SuperSix extends Component {
         .then(response => response.json())
         .then(data => this.setState({ meta: data.meta }))
         .then(_ => {
-            // fetch(Constants.LOGGEDINURL, {
-            //     method: "POST",
-            //     credentials: "same-origin",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: "{}"
-            // })
-            fetch("user.json")
+            fetch(Constants.LOGGEDINURL, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: "{}"
+            })
             .then(response => response.json())
             .then(data => this.setState((oldState) => {
                 let { is_logged_in, new_user, ...userData } = data;
