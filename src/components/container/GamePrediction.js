@@ -66,16 +66,20 @@ class GamePrediction extends Component {
                     prediction: e.target.value
                 })
             })
+            .then(response => response.json())
             .then(d => {
                 if (d.error) {
+                    alert(d.error)
                     this.setState({ error: d.message })
                     return null;
                 }
 
-                this.setState({ selection: e.target.value })
+                alert(d.prediction)
+
+                this.setState({ selection: d.prediction })
                 this.props.onPredictionSet(1)
             })
-            .catch(e => this.setState({ error: e }))
+            .catch(e => {this.setState({ error: e })})
         }
     }
 

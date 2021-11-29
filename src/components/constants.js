@@ -19,7 +19,8 @@ export const UPDATEDETAILSURL = BASEURL + "/user/updatedetails";
 
 // access control web apis
 const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.length - 17) + "/accesscontrol/api"
-export const LOGGEDINURL = ACCESSCONTROLURL + "/checkuser";
+// export const LOGGEDINURL = ACCESSCONTROLURL + "/checkuser";
+export const LOGGEDINURL = "user.json";
 export const LOGINURL = ACCESSCONTROLURL + "/login";
 export const LOGOUTURL = ACCESSCONTROLURL + "/logout";
 
