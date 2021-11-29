@@ -16,7 +16,6 @@ class GamePrediction extends Component {
         };
 
         this.handleSelectionClick = this.handleSelectionClick.bind(this);
-        this.handleSubmitClick = this.handleSubmitClick.bind(this);
     }
 
     fetchPredictionData() {
