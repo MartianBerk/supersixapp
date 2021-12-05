@@ -45,7 +45,7 @@ class Head extends Component {
         fetch(Constants.SPECIALMESSAGEURL)
         .then(response => response.json())
         .then(data => {
-            if (!data.message) {
+            if (!data.message && date) {
                 fetch(Constants.BANKHOLIDAYSURL)
                 .then(response => response.json())
                 .then(data => {
