@@ -33,7 +33,7 @@ class Head extends Component {
         let date = null;
         
         if (this.state.date) {
-            
+            date = new Date(this.state.nextDate);
         }
         
         fetch(Constants.SPECIALMESSAGEURL)
@@ -44,9 +44,7 @@ class Head extends Component {
                 .then(response => response.json())
                 .then(data => {
                     const events = data["england-and-wales"]["events"] || [];
-                    
-                    date = new Date(this.state.nextDate);
- 
+   
                     const year = date.getFullYear().toString();
 
                     let month = (date.getMonth() + 1).toString();
