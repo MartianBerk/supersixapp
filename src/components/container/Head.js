@@ -30,18 +30,12 @@ class Head extends Component {
     }
 
     isSpecialEvent() {
-        let date = new Date(this.state.nextDate);
-
-        const year = date.getFullYear().toString();
-
-        let month = (date.getMonth() + 1).toString();
-        month = month >= 10 ? month : "0" + month;
-
-        let day = date.getDate().toString();
-        day = day >= 10 ? day : "0" + day;
-
-        const dateString = `${year}-${month}-${day}`;
-
+        let date = null;
+        
+        if (this.state.date) {
+            
+        }
+        
         fetch(Constants.SPECIALMESSAGEURL)
         .then(response => response.json())
         .then(data => {
@@ -50,6 +44,18 @@ class Head extends Component {
                 .then(response => response.json())
                 .then(data => {
                     const events = data["england-and-wales"]["events"] || [];
+                    
+                    date = new Date(this.state.nextDate);
+ 
+                    const year = date.getFullYear().toString();
+
+                    let month = (date.getMonth() + 1).toString();
+                    month = month >= 10 ? month : "0" + month;
+
+                    let day = date.getDate().toString();
+                    day = day >= 10 ? day : "0" + day;
+
+                    const dateString = `${year}-${month}-${day}`;
 
                     for(var i = 0; i < events.length; i++) {
                         if (events[i].date === dateString) {
