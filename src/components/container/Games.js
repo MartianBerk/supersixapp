@@ -259,7 +259,7 @@ class Games extends Component {
                     !lock && this.state.playerId && this.state.date == this.props.meta.gameweeks[this.props.meta.gameweeks.length - 1] ?
                     <div className={`games-player-selections${selectionCount === 6 ? "-complete" : ""}`}>
                         {selectionCount} / 6 Selections
-                        {shared ? <span> (Possible Split Pot)</span> : null}
+                        {selectionCount === 6 && shared ? <span> (Possible Split Pot)</span> : null}
                     </div>
                     : null
                 }
