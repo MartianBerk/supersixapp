@@ -10,18 +10,18 @@ export const AGGREGATESTATSURL = BASEURL + "/stats/aggregate";
 
 export const SPECIALMESSAGEURL = BASEURL + "/game/specialmessage";
 
-// export const GETPLAYERURL = BASEURL + "/player/get";
-export const GETPLAYERURL = "player.json";
-
 export const GETMATCHDETAILURL = BASEURL + "/game/matchdetail";
 
-export const GETPREDICTIONURL = "prediction.json"
+// user web apis
+export const GETPREDICTIONURL = BASEURL + "/user/getprediction";
+export const ADDPREDICTIONURL = BASEURL + "/user/addprediction";
+export const UPDATEDETAILSURL = BASEURL + "/user/updatedetails";
 
 // access control web apis
-const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.lengh - 8) + "/accesscontrol"
-// export const LOGGEDINURL = ACCESSCONTROLURL + "/isloggedin";
-export const LOGGEDINURL = "checkloggedin.json"
+const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.length - 17) + "/accesscontrol/api"
+export const LOGGEDINURL = ACCESSCONTROLURL + "/checkuser";
 export const LOGINURL = ACCESSCONTROLURL + "/login";
+export const LOGOUTURL = ACCESSCONTROLURL + "/logout";
 
 // special web apis
 export const BANKHOLIDAYSURL = "https://www.gov.uk/bank-holidays.json"
