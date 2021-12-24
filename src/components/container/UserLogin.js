@@ -26,6 +26,7 @@ class UserLogin extends Component {
 
         this.checkUser = this.checkUser.bind(this);
         this.loginUser = this.loginUser.bind(this);
+        this.forgotPassword = this.forgotPassword.bind(this);
     }
 
     checkUser(e) {
@@ -150,7 +151,7 @@ class UserLogin extends Component {
             if (data.error) {
                 this.setState({error: data.error});
             }
-            else {
+            else if (data.request_sent) {
                 this.setState({error: "Password reset email sent."});
             }
         })
