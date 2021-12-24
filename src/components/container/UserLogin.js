@@ -148,7 +148,10 @@ class UserLogin extends Component {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                this.setState({error: data.error})
+                this.setState({error: data.error});
+            }
+            else {
+                this.setState({error: "Password reset email sent."});
             }
         })
         .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." }))
@@ -225,7 +228,7 @@ class UserLogin extends Component {
                     this.state.validUser ?
                     <p>
                         <input
-                            className="userlogin-input userlogin-submit"
+                            className="userlogin-input userlogin-resetpwd"
                             type="submit"
                             value="Forgot Password"
                             onClick={this.forgotPassword}
