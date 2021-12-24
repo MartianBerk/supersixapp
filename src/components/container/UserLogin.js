@@ -131,6 +131,29 @@ class UserLogin extends Component {
         .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." }))
     }
 
+    forgotPassword(e) {
+        const identityType = this.state.username.match(this.EMAIL_REGEX) ? "email" : "user_id";
+
+        fetch(Constants.FORGOTPASSWORDURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "same-origin",
+            body: JSON.stringify({
+                identity_type: identityType,
+                identity_value: this.state.username.toLowerCase()
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                this.setState({error: data.error})
+            }
+        })
+        .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." }))
+    }
+
     render () {
         return (
             <div className="userlogin-container">
@@ -195,8 +218,21 @@ class UserLogin extends Component {
                         className="userlogin-input userlogin-submit"
                         type="submit"
                         value={this.state.validUser ? "Login" : "Check"}
-                        onClick={this.state.validUser ? this.loginUser : this.checkUser} />
+                        onClick={this.state.validUser ? this.loginUser : this.checkUser}
+                    />
                 </p>
+                {
+                    this.state.validUser ?
+                    <p>
+                        <input
+                            className="userlogin-input userlogin-submit"
+                            type="submit"
+                            value="Forgot Password"
+                            onClick={this.forgotPassword}
+                        />
+                    </p>
+                    : null
+                }
             </div>
         )
     }

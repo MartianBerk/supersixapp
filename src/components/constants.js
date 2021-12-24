@@ -22,6 +22,7 @@ const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.length - 17) + "/accesscon
 export const LOGGEDINURL = ACCESSCONTROLURL + "/checkuser";
 export const LOGINURL = ACCESSCONTROLURL + "/login";
 export const LOGOUTURL = ACCESSCONTROLURL + "/logout";
+export const FORGOTPASSWORDURL = ACCESSCONTROLURL + "/forgotpassword";
 
 // special web apis
 export const BANKHOLIDAYSURL = "https://www.gov.uk/bank-holidays.json"
