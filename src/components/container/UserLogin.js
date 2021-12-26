@@ -226,7 +226,7 @@ class UserLogin extends Component {
                     />
                 </p>
                 {
-                    this.state.validUser ?
+                    this.state.validUser && !this.state.newUser ?
                     <p>
                         <input
                             className="userlogin-input userlogin-resetpwd"
