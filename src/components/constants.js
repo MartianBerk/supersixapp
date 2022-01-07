@@ -12,7 +12,7 @@ export const CURRENTROUNDURL = BASEURL + "/game/currentround";
 
 export const AGGREGATESTATSURL = BASEURL + "/stats/aggregate";
 // export const AGGREGATESTATSURL = "stats.json";
-export const WINNERSURL = "/stats/winners";
+export const WINNERSURL = BASEURL + "/stats/winners";
 // export const WINNERSURL = "historicrounds.json";
 
 export const SPECIALMESSAGEURL = BASEURL + "/game/specialmessage";
