@@ -43,7 +43,7 @@ class Performance extends Component {
     getCurrentRoundPerformanceStats() {
         let startDate = new Date(this.state.currentRoundStartDate);
 
-        fetch(`${Constants.AGGREGATESTATSURL}?start_date${startDate.getDate()}-${startDate.getMonth() + 1}-${startDate.getFullYear()}`)
+        fetch(`${Constants.AGGREGATESTATSURL}?start_date=${startDate.getDate()}-${startDate.getMonth() + 1}-${startDate.getFullYear()}`)
         .then(response => response.json())
         .then(data => data.stats.forEach((stat, i) => {
             stat.lineColour = null;
