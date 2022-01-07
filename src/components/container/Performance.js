@@ -352,36 +352,30 @@ class Performance extends Component {
         return (
             <div className="performancecontainer">
                 <div className="performance">
-                    {
-                        this.state.render
-                        ?
-                        <div className="performance-container">
-                            <div className="performance-date-picker">
-                                <div className="performance-date-picker-part">
-                                    {
-                                        this.state.viewIndex > 0
-                                        ? <div id="performance-date-picker-left" onClick={this.handleDateClick}>{"<"}</div> 
-                                        : <div id="performance-date-picker-left">{""}</div>
-                                    }
-                                </div>
-                                <div className={"performance-date-picker-part"}>
-                                    { this.VIEWS[this.state.viewIndex][0].toUpperCase() + this.VIEWS[this.state.viewIndex].slice(1) }
-                                </div>
-                                <div className="performance-date-picker-part">
-                                    {
-                                        this.state.viewIndex < this.VIEWS.length - 1
-                                        ? <div id="performance-date-picker-right" onClick={this.handleDateClick}>{">"}</div>
-                                        : <div id="performance-date-picker-right">{""}</div>
-                                    }
-                                </div>
+                    <div className="performance-container">
+                        <div className="performance-date-picker">
+                            <div className="performance-date-picker-part">
+                                {
+                                    this.state.viewIndex > 0
+                                    ? <div id="performance-date-picker-left" onClick={this.handleDateClick}>{"<"}</div> 
+                                    : <div id="performance-date-picker-left">{""}</div>
+                                }
                             </div>
+                            <div className={"performance-date-picker-part"}>
+                                { this.VIEWS[this.state.viewIndex][0].toUpperCase() + this.VIEWS[this.state.viewIndex].slice(1) }
+                            </div>
+                            <div className="performance-date-picker-part">
+                                {
+                                    this.state.viewIndex < this.VIEWS.length - 1
+                                    ? <div id="performance-date-picker-right" onClick={this.handleDateClick}>{">"}</div>
+                                    : <div id="performance-date-picker-right">{""}</div>
+                                }
+                            </div>
+                        </div>
                             {
-                                this.state.viewIndex < 2 ? this.renderPerformance() : this.renderWinners()
+                                this.state.render ? (this.state.viewIndex < 2 ? this.renderPerformance() : this.renderWinners()) : null
                             }
                         </div>
-                        :
-                        null
-                    }
                 </div>
             </div>
         )
