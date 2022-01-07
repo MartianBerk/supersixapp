@@ -6,23 +6,42 @@ import LineGraph from "../container/graphs/LineGraph.js";
 import '../css/Performance.css';
 
 class Performance extends Component {
+    VIEWS = ["current", "historic", "winners"];
+
     constructor(props) {
         super(props);
         this.state = {
-            currentRoundStartDate: props.currentRoundStartDate,
+            currentRoundStartDate: props.startDate,
+            startDate: props.startDate,
+            endDate: null,
             data: [],
-            renderLineGraph: false,
-            sortColumn: { column: "overall", desc: true }
+            winners: [],
+            render: false,
+            sortColumn: { column: "percent", desc: true },
+            viewIndex: 0
         };
 
         this.handleNameSelect = this.handleNameSelect.bind(this);
         this.handleColourSelect = this.handleColourSelect.bind(this);
         this.handleColumnSort = this.handleColumnSort.bind(this);
+        this.handleDateClick = this.handleDateClick.bind(this);
     }
 
-    formatDate(date) {
+    formatDate(date, format) {
         date = new Date(date);
-        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+
+        if (format === "dd mmm yyyy") {
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+
+            return day + " " + months[month] + " " + year;
+        }
+        else {
+            return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+        }
     }
 
     sortStats(column, direction) {
@@ -40,10 +59,21 @@ class Performance extends Component {
         }
     }
 
-    getCurrentRoundPerformanceStats() {
-        let startDate = new Date(this.state.currentRoundStartDate);
+    getPerformanceStats() {
+        let startDate = this.state.startDate ? new Date(this.state.startDate) : null;
+        let endDate = this.state.endDate ? new Date(this.state.endDate) : null;
 
-        fetch(`${Constants.AGGREGATESTATSURL}?start_date=${startDate.getDate()}-${startDate.getMonth() + 1}-${startDate.getFullYear()}`)
+        let url = Constants.AGGREGATESTATSURL;
+
+        if (startDate) {
+            url = url + `?start_date=${startDate.getDate()}-${startDate.getMonth() + 1}-${startDate.getFullYear()}`;
+        }
+
+        if (endDate) {
+            url = url + (startDate ? "&" : "?") + `?end_date=${endDate.getDate()}-${endDate.getMonth() + 1}-${endDate.getFullYear()}`;
+        }
+
+        fetch(url)
         .then(response => response.json())
         .then(data => data.stats.forEach((stat, i) => {
             stat.lineColour = null;
@@ -75,21 +105,45 @@ class Performance extends Component {
                 }
 
                 newData.push(stat);
-
-                newData.sort(this.sortStats("overall", "desc"));
+                newData.sort(this.sortStats("percent", "desc"));
 
                 return { data: newData };
             });
 
             if ((i + 1) === data.stats.length) {
-                this.setState({ renderLineGraph: true });
+                this.setState({ render: true });
             }
         }))
         .catch(/* do nothing */);
     }
 
+    getWinners() {
+        fetch(Constants.WINNERSURL)
+        .then(response => response.json())
+        .then(data => {
+            this.setState(() => {
+                let winners = data.rounds;
+
+                winners.sort((a, b) => {
+                    if(a.round_id < b.round_id)
+                        return 1;
+                    else if(a.round_id > b.round_id)
+                        return -1;
+                    else
+                        return 0
+                })
+
+                return {
+                    winners: winners,
+                    render: true
+                }
+            })
+        })
+        .catch(/* do nothing */);
+    }
+
     componentDidMount() {
-        this.getCurrentRoundPerformanceStats();
+        this.getPerformanceStats();
     }
 
     componentDidUpdate(prevProps) {
@@ -165,15 +219,39 @@ class Performance extends Component {
         })
     }
 
-    render() {
-        const overall = (
+    handleDateClick(event) {
+        const viewIndex = this.state.viewIndex + (event.target.id === "performance-date-picker-right" ? 1 : -1);
+        let startDate = null;
+
+        if (viewIndex === 0) {
+            startDate = this.state.currentRoundStartDate;
+        }
+
+        this.setState({
+            viewIndex: viewIndex,
+            startDate: startDate,
+            render: false,
+            data: []
+        }, () => {
+            if (viewIndex < 2) {
+                this.getPerformanceStats();
+            }
+            else {
+                this.getWinners();
+            }
+        });
+    }
+
+    renderPerformance() {
+        return (
             <div className="overall-stats">
                 <LineGraph
                     height={200}
                     width={300}
                     backgroundColour="#635f5f"
                     axisColour="#000000"
-                    gridColour="#ffffff"
+                    gridColour={this.state.data.length > 0 && this.state.data[0].scores.length > 20 ? null : "#ffffff"}
+                    textColour="#ffffff"
                     data={this.state.data.filter(player => { return player.show ? player : null })}
                     xAxis="date"
                     yAxis="score"
@@ -191,7 +269,7 @@ class Performance extends Component {
                                 </span>
                             </th>
                             <th id="overall-column" className="table-column-header table-column-header-sort" onClick={this.handleColumnSort}>
-                                <span id="overall-title" className="table-column-header-contents" onClick={this.handleColumnSort}>Current</span>
+                                <span id="overall-title" className="table-column-header-contents" onClick={this.handleColumnSort}>Correct</span>
                                 <span id="overall-sort" className="table-column-header-contents">
                                     {this.state.sortColumn.column === "overall" ? <img className="table-sort" src={this.state.sortColumn.desc ? "expand.png" : "shrink.png"} height="10" width="10" /> : ""}
                                 </span>
@@ -237,11 +315,73 @@ class Performance extends Component {
                 </div>
             </div>
         )
+    }
 
+    renderWinners() {
+        return (
+            <div className="overall-stats">
+                <div className="performance-table">
+                    <table>
+                        <thead>
+                            <th className="table-column-header">Winner</th>
+                            <th className="table-column-header">Won</th>
+                            <th className="table-column-header">Jackpot</th>
+                            <th className="table-column-header">Gameweeks</th>
+                            <th className="table-column-header">Players</th>
+                        </thead>
+                        <tbody>
+                            {this.state.winners.map((round, i) => {
+                                return (
+                                    <tr className={i % 2 === 0 ? "table-row-even" : "table-row-odd"}>
+                                        <td>{round.winner}</td>
+                                        <td>{this.formatDate(round.end_date, "dd mmm yyyy")}</td>
+                                        <td>{"£" + round.jackpot / 100}</td>
+                                        <td>{round.matches}</td>
+                                        <td>{round.players}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        )
+    }
+
+    render() {
         return (
             <div className="performancecontainer">
                 <div className="performance">
-                    {this.state.renderLineGraph && overall}
+                    {
+                        this.state.render
+                        ?
+                        <div className="performance-container">
+                            <div className="performance-date-picker">
+                                <div className="performance-date-picker-part">
+                                    {
+                                        this.state.viewIndex > 0
+                                        ? <div id="performance-date-picker-left" onClick={this.handleDateClick}>{"<"}</div> 
+                                        : <div id="performance-date-picker-left">{""}</div>
+                                    }
+                                </div>
+                                <div className={"performance-date-picker-part"}>
+                                    { this.VIEWS[this.state.viewIndex][0].toUpperCase() + this.VIEWS[this.state.viewIndex].slice(1) }
+                                </div>
+                                <div className="performance-date-picker-part">
+                                    {
+                                        this.state.viewIndex < this.VIEWS.length - 1
+                                        ? <div id="performance-date-picker-right" onClick={this.handleDateClick}>{">"}</div>
+                                        : <div id="performance-date-picker-right">{""}</div>
+                                    }
+                                </div>
+                            </div>
+                            {
+                                this.state.viewIndex < 2 ? this.renderPerformance() : this.renderWinners()
+                            }
+                        </div>
+                        :
+                        null
+                    }
                 </div>
             </div>
         )

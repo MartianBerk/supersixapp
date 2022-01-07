@@ -152,7 +152,7 @@ class SuperSix extends Component {
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
                     { 
                         !this.state.loading && this.state.meta.gameweeks.length > 0
-                        ? <Performance meta={this.state.meta.players} currentRoundStartDate={this.state.meta.gameweeks[0]} />
+                        ? <Performance meta={this.state.meta.players} startDate={this.state.meta.gameweeks[0]} />
                         : null 
                     }  
                 </div>
