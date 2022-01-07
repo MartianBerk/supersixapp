@@ -150,7 +150,11 @@ class SuperSix extends Component {
                                             /> : null }
                 </div>
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
-                    { !this.state.loading ? <Performance meta={this.state.meta.players} /> : null }
+                    { 
+                        !this.state.loading && this.state.meta.gameweeks.length > 0
+                        ? <Performance meta={this.state.meta.players} currentRoundStartDate={this.state.meta.gameweeks[0]} />
+                        : null 
+                    }  
                 </div>
                 <div className={`supersix supersix-user ${this.state.showUser ? "" : "hidden"}`}>
                     { 

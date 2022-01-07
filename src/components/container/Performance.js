@@ -9,6 +9,7 @@ class Performance extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentRoundStartDate: props.currentRoundStartDate,
             data: [],
             renderLineGraph: false,
             sortColumn: { column: "overall", desc: true }
@@ -39,8 +40,10 @@ class Performance extends Component {
         }
     }
 
-    getPerformanceStats() {
-        fetch(Constants.AGGREGATESTATSURL)
+    getCurrentRoundPerformanceStats() {
+        let startDate = new Date(this.state.currentRoundStartDate);
+
+        fetch(`${Constants.AGGREGATESTATSURL}?start_date${startDate.getDate()}-${startDate.getMonth() + 1}-${startDate.getFullYear()}`)
         .then(response => response.json())
         .then(data => data.stats.forEach((stat, i) => {
             stat.lineColour = null;
@@ -86,7 +89,7 @@ class Performance extends Component {
     }
 
     componentDidMount() {
-        this.getPerformanceStats();
+        this.getCurrentRoundPerformanceStats();
     }
 
     componentDidUpdate(prevProps) {
