@@ -326,8 +326,6 @@ class Performance extends Component {
                             <th className="table-column-header">Winner</th>
                             <th className="table-column-header">Won</th>
                             <th className="table-column-header">Jackpot</th>
-                            <th className="table-column-header">Gameweeks</th>
-                            <th className="table-column-header">Players</th>
                         </thead>
                         <tbody>
                             {this.state.winners.map((round, i) => {
@@ -336,8 +334,6 @@ class Performance extends Component {
                                         <td>{round.winner}</td>
                                         <td>{this.formatDate(round.end_date, "dd mmm yyyy")}</td>
                                         <td>{"£" + round.jackpot / 100}</td>
-                                        <td>{round.matches}</td>
-                                        <td>{round.players}</td>
                                     </tr>
                                 )
                             })}
