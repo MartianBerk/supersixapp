@@ -178,7 +178,7 @@ class Performance extends Component {
             this.setState(oldState => {
                 let newData = [...oldState.data];
                 newData[index].show = true;
-                newData[index].lineColour = newData[index].lineColour ? newData[index].lineColour : "#000000";
+                newData[index].lineColour = newData[index].lineColour ? newData[index].lineColour : "#ffffff";
     
                 return { data: newData };
             });
@@ -307,7 +307,7 @@ class Performance extends Component {
                                             {Math.round(player.percent)}%
                                         </td>
                                         <td className="color-picker-container">
-                                            <input className="color-picker" type="color" id={`${i}-player-colorpicker`} onInput={this.handleColourSelect} />    
+                                            <input className="color-picker" type="color" id={`${i}-player-colorpicker`} value="#ffffff" onInput={this.handleColourSelect} />    
                                             <input
                                                 className="line-reveal"
                                                 type="checkbox"
