@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import Error from './Error.js';
 
 import '../css/GamePrediction.css';
@@ -17,6 +17,8 @@ class GamePrediction extends Component {
         };
 
         this.handleSelectionClick = this.handleSelectionClick.bind(this);
+
+        this.requests = new Requests();
     }
 
     fetchPredictionData() {
@@ -25,9 +27,17 @@ class GamePrediction extends Component {
             return null;
         }
 
-        fetch(`${Constants.GETPREDICTIONURL}?gameId=${this.props.gameId}&playerId=${this.state.playerId}`, {
-            credentials: "same-origin",
-        })
+        this.requests.fetch(
+            "GETPREDICTIONURL",
+            "GET",
+            {
+                gameId: this.props.gameId,
+                playerId: this.state.playerId
+            },
+            null,
+            null,
+            "same-origin"
+        )
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -57,16 +67,20 @@ class GamePrediction extends Component {
 
     handleSelectionClick(e) {
         if (e.target.value !== this.state.selection) {
-            fetch(Constants.ADDPREDICTIONURL, {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
+            this.requests.fetch(
+                "ADDPREDICTIONURL", 
+                "POST",
+                null,
+                {
+                    "Content-Type": "application/json"
+                },
+                {
                     game_id: this.props.gameId,
                     player_id: this.state.playerId,
                     prediction: e.target.value
-                })
-            })
+                },
+                "same-origin"
+            )
             .then(response => response.json())
             .then(d => {
                 if (d.error) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import Predictions from "./Predictions.js";
 
 import '../css/Scores.css';
@@ -29,7 +29,9 @@ class Scores extends Component {
 
         var live = false;
 
-        fetch(`${Constants.SCORESURL}?matchDate=${date}`)
+        const requests = new Requests();
+
+        requests.fetch("SCORESURL", "GET", { matchDate: date })
         .then(response => response.json())
         .then(data => data.scores.forEach((player, i) => {
             player.fullname = player.name;

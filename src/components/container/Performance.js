@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants";
+import { Requests } from "../requests.js";
 import LineGraph from "../container/graphs/LineGraph.js";
 
 import '../css/Performance.css';
@@ -27,6 +27,8 @@ class Performance extends Component {
         this.handleColourSelect = this.handleColourSelect.bind(this);
         this.handleColumnSort = this.handleColumnSort.bind(this);
         this.handleDateClick = this.handleDateClick.bind(this);
+
+        this.requests = new Requests()
     }
 
     formatDate(date, format) {
@@ -64,18 +66,21 @@ class Performance extends Component {
     getPerformanceStats() {
         let startDate = this.state.startDate ? new Date(this.state.startDate) : null;
         let endDate = this.state.endDate ? new Date(this.state.endDate) : null;
-
-        let url = Constants.AGGREGATESTATSURL;
+        let params = {}
 
         if (startDate) {
-            url = url + `?start_date=${startDate.getDate()}-${startDate.getMonth() + 1}-${startDate.getFullYear()}`;
+            params["start_date"] = `${startDate.getDate()}-${startDate.getMonth() + 1}-${startDate.getFullYear()}`;
         }
 
         if (endDate) {
-            url = url + (startDate ? "&" : "?") + `?end_date=${endDate.getDate()}-${endDate.getMonth() + 1}-${endDate.getFullYear()}`;
+            params["end_date"] = `${endDate.getDate()}-${endDate.getMonth() + 1}-${endDate.getFullYear()}`;
         }
 
-        fetch(url)
+        this.requests.fetch(
+            "AGGREGATESTATSURL",
+            "GET",
+            params
+        )
         .then(response => response.json())
         .then(data => data.stats.forEach((stat, i) => {
             stat.show = false;
@@ -121,7 +126,7 @@ class Performance extends Component {
     }
 
     getWinners() {
-        fetch(Constants.WINNERSURL)
+        this.requests.fetch("WINNERSURL")
         .then(response => response.json())
         .then(data => {
             this.setState(() => {

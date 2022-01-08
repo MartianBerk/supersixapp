@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import Games from "../container/Games.js";
 import Performance from "../container/Performance.js";
 import Scores from "../container/Scores.js";
@@ -33,18 +33,20 @@ class SuperSix extends Component {
             showUser: false
         };
 
-        fetch(Constants.METAURL)
+        const requests = new Requests()
+
+        requests.fetch("METAURL")
         .then(response => response.json())
         .then(data => this.setState({ meta: data.meta }))
         .then(_ => {
-            fetch(Constants.LOGGEDINURL, {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
+            requests.fetch(
+                "LOGGEDINURL",
+                "POST",
+                null,
+                {
                     "Content-Type": "application/json"
-                },
-                body: "{}"
-            })
+                }
+            )
             .then(response => response.json())
             .then(data => this.setState((oldState) => {
                 let { is_logged_in, new_user, ...userData } = data;

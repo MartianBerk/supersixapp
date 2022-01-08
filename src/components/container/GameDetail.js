@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js"
 import GamePrediction from './GamePrediction.js';
 
 import '../css/GameDetail.css';
@@ -29,7 +29,17 @@ class GameDetail extends Component {
         const day = gameDate.getDate() > 9 ? gameDate.getDate() : "0" + gameDate.getDate();
         gameDate = [day, month, year].join("-");
 
-        fetch(`${Constants.GETMATCHDETAILURL}?hometeam=${this.state.homeTeam}&awayteam=${this.state.awayTeam}&matchdate=${gameDate}`)
+        const requests = new Requests();
+
+        requests.fetch(
+            "GETMATCHDETAILURL",
+            "GET",
+            {
+                hometeam: this.state.homeTeam,
+                awayteam: this.state.awayTeam,
+                matchdate: gameDate
+            }
+        )
         .then(response => response.json())
         .then(data => this.setState({
             leaguePosition: data["match_detail"]["league_position"],

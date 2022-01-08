@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 
 import '../css/Head.css';
 
@@ -15,18 +15,8 @@ class Head extends Component {
             rounds: null,
             specialMessage: null
         };
-    }
 
-    fetchCurrentRound() {
-        fetch(Constants.CURRENTROUNDURL)
-        .then(response => response.json())
-        .then(data => this.setState({
-            jackpot: data.current_round.jackpot,
-            startDate: data.current_round.start_date,
-            nextDate: data.current_round.current_match_date,
-            rounds: data.current_round.matches
-        }))
-        .catch(/* do nothing */)
+        this.requests = new Requests()
     }
 
     isSpecialEvent() {
@@ -36,11 +26,11 @@ class Head extends Component {
             date = new Date(this.state.nextDate);
         }
         
-        fetch(Constants.SPECIALMESSAGEURL)
+        this.requests.fetch("SPECIALMESSAGEURL")
         .then(response => response.json())
         .then(data => {
             if (!data.message && date) {
-                fetch(Constants.BANKHOLIDAYSURL)
+                this.requests.fetch("BANKHOLIDAYSURL")
                 .then(response => response.json())
                 .then(data => {
                     const events = data["england-and-wales"]["events"] || [];
@@ -79,7 +69,7 @@ class Head extends Component {
     }
 
     getData() {
-        fetch(Constants.CURRENTROUNDURL)
+        this.requests.fetch("CURRENTROUNDURL")
         .then(response => response.json())
         .then(data => this.setState({
             jackpot: data.current_round.jackpot,
