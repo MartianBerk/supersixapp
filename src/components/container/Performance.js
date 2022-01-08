@@ -18,7 +18,8 @@ class Performance extends Component {
             winners: [],
             render: false,
             sortColumn: { column: "percent", desc: true },
-            viewIndex: 0
+            viewIndex: 0,
+            playerId: props.playerId
         };
 
         this.handleNameSelect = this.handleNameSelect.bind(this);
@@ -91,6 +92,7 @@ class Performance extends Component {
             });
 
             stat.percent = stat.overall / stat.matches * 100;
+            stat.show = this.state.playerId && this.state.playerId === stat.playerid;
 
             // this allows for effective updating of a states array and rerendering
             this.setState((oldState) => {
@@ -147,7 +149,7 @@ class Performance extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.meta != prevProps.meta) {
+        if (this.props.meta !== prevProps.meta) {
             this.setState((oldState) => {
                 let newData = [...oldState.data];
 
@@ -157,6 +159,15 @@ class Performance extends Component {
 
                 return {data: newData};
             })
+        }
+
+        if (this.props.playerId !== prevProps.playerId) {
+            for(let i = 0; i < this.state.data.length; i++) {
+                if (this.state.data[i].playerid === this.props.playerId) {
+                    this.state.data[i].show = true;
+                    break;
+                }
+            }
         }
     }
 
