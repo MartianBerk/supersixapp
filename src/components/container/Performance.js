@@ -7,6 +7,7 @@ import '../css/Performance.css';
 
 class Performance extends Component {
     VIEWS = ["current", "historic", "winners"];
+    DEFAULT_LINE_COLOUR = "#ffffff";
 
     constructor(props) {
         super(props);
@@ -77,7 +78,6 @@ class Performance extends Component {
         fetch(url)
         .then(response => response.json())
         .then(data => data.stats.forEach((stat, i) => {
-            stat.lineColour = null;
             stat.show = false;
             stat.overall = 0;
             stat.matches = 0;
@@ -93,6 +93,7 @@ class Performance extends Component {
 
             stat.percent = stat.overall / stat.matches * 100;
             stat.show = this.state.playerId && this.state.playerId === stat.playerid;
+            stat.lineColour = this.state.playerId && this.state.playerId === stat.playerid ? this.DEFAULT_LINE_COLOUR : null;
 
             // this allows for effective updating of a states array and rerendering
             this.setState((oldState) => {
@@ -162,12 +163,19 @@ class Performance extends Component {
         }
 
         if (this.props.playerId !== prevProps.playerId) {
-            for(let i = 0; i < this.state.data.length; i++) {
-                if (this.state.data[i].playerid === this.props.playerId) {
-                    this.state.data[i].show = true;
-                    break;
+            this.setState((oldState) => {
+                let newData = [...oldState.data];
+
+                for(let i = 0; i < newData.length; i++) {
+                    if (newData[i].playerid === this.props.playerId) {
+                        newData[i].show = true;
+                        newData[i].lineColour = this.DEFAULT_LINE_COLOUR;
+                        break;
+                    }
                 }
-            }
+
+                return {data: newData};
+            })
         }
     }
 
@@ -178,7 +186,7 @@ class Performance extends Component {
             this.setState(oldState => {
                 let newData = [...oldState.data];
                 newData[index].show = true;
-                newData[index].lineColour = newData[index].lineColour ? newData[index].lineColour : "#ffffff";
+                newData[index].lineColour = newData[index].lineColour ? newData[index].lineColour : this.DEFAULT_LINE_COLOUR;
     
                 return { data: newData };
             });
@@ -261,7 +269,7 @@ class Performance extends Component {
                     width={300}
                     backgroundColour="#635f5f"
                     axisColour="#000000"
-                    gridColour={this.state.data.length > 0 && this.state.data[0].scores.length > 20 ? null : "#ffffff"}
+                    gridColour={this.state.data.length > 0 && this.state.data[0].scores.length > 20 ? null : this.DEFAULT_LINE_COLOUR}
                     textColour="#ffffff"
                     data={this.state.data.filter(player => { return player.show ? player : null })}
                     xAxis="date"
@@ -307,7 +315,7 @@ class Performance extends Component {
                                             {Math.round(player.percent)}%
                                         </td>
                                         <td className="color-picker-container">
-                                            <input className="color-picker" type="color" id={`${i}-player-colorpicker`} value="#ffffff" onInput={this.handleColourSelect} />    
+                                            <input className="color-picker" type="color" id={`${i}-player-colorpicker`} value={this.DEFAULT_LINE_COLOUR} onInput={this.handleColourSelect} />    
                                             <input
                                                 className="line-reveal"
                                                 type="checkbox"
