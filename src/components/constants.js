@@ -26,9 +26,9 @@ export const ADDPREDICTIONURL = BASEURL + "/user/addprediction";
 export const UPDATEDETAILSURL = BASEURL + "/user/updatedetails";
 
 // access control web apis
-// const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.length - 17) + "/accesscontrol/api"
+const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.length - 17) + "/accesscontrol/api"
 export const LOGGEDINURL = ACCESSCONTROLURL + "/checkuser";
-export const LOGGEDINURL = "checkuser.json";
+// export const LOGGEDINURL = "checkuser.json";
 export const LOGINURL = ACCESSCONTROLURL + "/login";
 export const LOGOUTURL = ACCESSCONTROLURL + "/logout";
 export const FORGOTPASSWORDURL = ACCESSCONTROLURL + "/forgotpassword";
