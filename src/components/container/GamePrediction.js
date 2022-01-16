@@ -34,7 +34,9 @@ class GamePrediction extends Component {
                 gameId: this.props.gameId,
                 playerId: this.state.playerId
             },
-            null,
+            {
+                "Content-Type": "application/json"
+            },
             null,
             "same-origin"
         )

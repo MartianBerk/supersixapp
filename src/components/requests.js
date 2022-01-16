@@ -12,7 +12,9 @@ export class Requests {
         WINNERSURL: "historicrounds.json",
         SPECIALMESSAGEURL: "specialmessage.json",
         LOGGEDINURL: "checkuser.json",
-        LOGINURL: "login.json"
+        LOGINURL: "login.json",
+        GETMATCHDETAILURL: "matchdetail.json",
+        GETPREDICTIONURL: "prediction.json"
     };
 
     constructor() {
@@ -24,6 +26,7 @@ export class Requests {
     fetch(key, method, params, headers, body, credentials) {
         // Ensure GET is always used in dev mode
         method = this.DEVELOPMENT ? "GET" : method || "GET";
+        headers = headers || {};
         body = this.DEVELOPMENT ? null : body;
         credentials = this.DEVELOPMENT ? "include" : credentials || "include";
 
@@ -45,7 +48,8 @@ export class Requests {
         }
 
         return new Promise((resolve, reject) => (
-            fetch(url, {
+            fetch(url,
+            {
                 method: method,
                 headers: headers,
                 credentials: credentials,
@@ -55,6 +59,7 @@ export class Requests {
                 return resolve(res)
             })
             .catch(err => {
+                alert(err)
                 return reject(err)
             })
         ))   
