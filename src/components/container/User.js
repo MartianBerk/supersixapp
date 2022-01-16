@@ -38,7 +38,7 @@ class User extends Component {
 
     submitChanges(e) {
         if (this.state.activeChanges) {
-            this.state.fetch(
+            this.requests.fetch(
                 "UPDATEDETAILSURL",
                 "POST",
                 null,
@@ -68,7 +68,14 @@ class User extends Component {
     }
 
     logout(e) {
-        fetch("LOGOUTURL", "GET", null, null, null, "same-origin")
+        this.requests.fetch(
+            "LOGOUTURL",
+            "GET",
+            null,
+            null,
+            null,
+            "same-origin"
+        )
         .then(response => response.json())
         .then(data => {
             if (!data.is_logged_in) {
