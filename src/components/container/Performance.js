@@ -8,6 +8,8 @@ import '../css/Performance.css';
 class Performance extends Component {
     VIEWS = ["current", "historic", "winners"];
     DEFAULT_LINE_COLOUR = "#ffffff";
+    DEFAULT_BACKGROUND_COLOUR = "#19571e";
+    DEFAULT_BACKGROUND_COLOUR_GRADIENT_END = "#5cb863";
 
     constructor(props) {
         super(props);
@@ -272,7 +274,9 @@ class Performance extends Component {
                 <LineGraph
                     height={200}
                     width={300}
-                    backgroundColour="#635f5f"
+                    backgroundColourGradient={true}
+                    backgroundColour={this.DEFAULT_BACKGROUND_COLOUR}
+                    backgroundColourGradientFinish={this.DEFAULT_BACKGROUND_COLOUR_GRADIENT_END}
                     axisColour="#000000"
                     gridColour={this.state.data.length > 0 && this.state.data[0].scores.length > 20 ? null : this.DEFAULT_LINE_COLOUR}
                     textColour="#ffffff"

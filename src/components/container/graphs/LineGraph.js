@@ -1,7 +1,6 @@
 // This should eventually be something that can be included in a reporting module of some description.
 import React, { useEffect, useRef } from 'react';
 
-import '../../css/graphs/LineGraph.css';
 
 const LineGraph = props => {
     const canvasRef = useRef(null);
@@ -22,6 +21,17 @@ const LineGraph = props => {
 
         const context = canvas.getContext("2d");
 
+        // Determine fill style
+        if (props.backgroundColourGradient) {
+            const gradient = context.createLinearGradient(0, props.height, 0, -200);
+            gradient.addColorStop(0, props.backgroundColour);
+            gradient.addColorStop(1, props.backgroundColourGradientFinish);
+            context.fillStyle = gradient;
+        }
+        else {
+            context.fillStyle = props.backgroundColour;
+        }
+
         const leftIndent = 30;
         const rightIndent = 10
         const bottomIndent = 20;
@@ -31,8 +41,7 @@ const LineGraph = props => {
 
         // draw graph outline
         context.strokeStyle = props.axisColour;
-        context.fillStyle = props.backgroundColour;
-        context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         
         // draw x axis
         drawLine(context, leftIndent, props.height - bottomIndent, xLength, props.height - bottomIndent)
