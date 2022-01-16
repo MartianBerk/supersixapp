@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import Error from './Error.js';
 
 import '../css/UserLogin.css';
@@ -26,6 +26,9 @@ class UserLogin extends Component {
 
         this.checkUser = this.checkUser.bind(this);
         this.loginUser = this.loginUser.bind(this);
+        this.forgotPassword = this.forgotPassword.bind(this);
+
+        this.requests = new Requests();
     }
 
     checkUser(e) {
@@ -36,16 +39,18 @@ class UserLogin extends Component {
 
         const identityType = this.state.username.match(this.EMAIL_REGEX) ? "email" : "user_id";
 
-        fetch(Constants.LOGGEDINURL, {
-            method: "POST",
-            headers: {
+        this.requests.fetch(
+            "LOGGEDINURL",
+            "POST",
+            null,
+            {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
+            {
                 identity_type: identityType,
                 identity_value: this.state.username.toLowerCase()
-            })
-        })
+            }
+        )
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -91,19 +96,21 @@ class UserLogin extends Component {
 
         const identityType = this.state.username.match(this.EMAIL_REGEX) ? "email" : "user_id";
 
-        fetch(Constants.LOGINURL, {
-            method: "POST",
-            headers: {
+        this.requests.fetch(
+            "LOGINURL",
+            "POST",
+            null,
+            {
                 "Content-Type": "application/json"
             },
-            credentials: "same-origin",
-            body: JSON.stringify({
+            {
                 identity_type: identityType,
                 identity_value: this.state.username.toLowerCase(),
                 password: this.state.password,
                 is_first: this.state.newUser
-            })
-        })
+            },
+            "same-origin"
+        )
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -126,6 +133,34 @@ class UserLogin extends Component {
             }
             else if (this.props.onSuccess) {
                 this.props.onSuccess(data);
+            }
+        })
+        .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." }))
+    }
+
+    forgotPassword(e) {
+        const identityType = this.state.username.match(this.EMAIL_REGEX) ? "email" : "user_id";
+
+        this.requests.fetch(
+            "FORGOTPASSWORDURL",
+            "POST",
+            null,
+            {
+                "Content-Type": "application/json"
+            },
+            {
+                identity_type: identityType,
+                identity_value: this.state.username.toLowerCase()
+            },
+            "same-origin"
+        )
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                this.setState({error: data.error});
+            }
+            else if (data.request_sent) {
+                this.setState({error: "Password reset email sent."});
             }
         })
         .catch(e => this.setState({ error: "Something went wrong.\nPlease try again later." }))
@@ -195,8 +230,21 @@ class UserLogin extends Component {
                         className="userlogin-input userlogin-submit"
                         type="submit"
                         value={this.state.validUser ? "Login" : "Check"}
-                        onClick={this.state.validUser ? this.loginUser : this.checkUser} />
+                        onClick={this.state.validUser ? this.loginUser : this.checkUser}
+                    />
                 </p>
+                {
+                    this.state.validUser && !this.state.newUser ?
+                    <p>
+                        <input
+                            className="userlogin-input userlogin-resetpwd"
+                            type="submit"
+                            value="Forgot Password"
+                            onClick={this.forgotPassword}
+                        />
+                    </p>
+                    : null
+                }
             </div>
         )
     }

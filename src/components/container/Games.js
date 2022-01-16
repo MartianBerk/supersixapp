@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import GameDetail from './GameDetail.js';
 
 import '../css/Games.css';
@@ -31,7 +31,9 @@ class Games extends Component {
 
         var live = false;
 
-        fetch(`${Constants.MATCHESURL}?matchDate=${date}`)
+        const requests = new Requests();
+
+        requests.fetch("MATCHESURL", "GET", { matchDate: date })
         .then(response => response.json())
         .then(data => {
             if (purge !== undefined) {
@@ -186,17 +188,31 @@ class Games extends Component {
             return (
                 <div
                     key={index}
-                    onMouseDown={(event) => {if (event.target.type != "submit") { this.setState({ indexRow: (this.state.indexRow === index ? null : index) }) }}}
+                    onMouseDown={
+                        game.status === "POSTPONED" ? 
+                            null 
+                        : (event) => {
+                            if (event.target.type != "submit") {
+                                this.setState({ indexRow: (this.state.indexRow === index ? null : index) })
+                            }
+                        }
+                    }
                 >
                     <p className="game">
                         <span className={"gamesection hometeam" + (lock ? " gameday" : "")}>{game.home_team.label}</span>
                         <span className={"gamesection gamescores" + (lock ? " gameday" : "")}>
-                            {lock ? <span className="matchscore">
-                                        {game.home_score !== null ? game.home_score : '-'}
+                            {
+                                lock ? 
+                                    <span className="matchscore">
+                                        {game.status === "POSTPONED" ? "P : P" : game.home_score !== null ? game.home_score : '-'}
                                         <span className="matchscore-divider">:</span>
-                                        {game.away_score !== null ? game.away_score : '-'}
+                                        {game.status === "POSTPONED" ? "P : P" : game.away_score !== null ? game.away_score : '-'}
                                     </span>
-                                    : <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
+                                : 
+                                game.status === "POSTPONED" ?
+                                    "P : P"
+                                :
+                                <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
                         </span>
                         <span className={"gamesection awayteam" + (lock ? " gameday" : "")}>{game.away_team.label}</span>
                         {lock ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}

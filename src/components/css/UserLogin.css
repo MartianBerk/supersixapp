@@ -16,6 +16,10 @@
     width: 75px;
 }
 
+.userlogin-input.userlogin-resetpwd {
+    width: 150px;
+}
+
 .userlogin-container .userlogin-input.userlogin-password.valid {
     border: 3px solid rgba(13, 99, 31, 0.7);
     border-radius: 8px;
