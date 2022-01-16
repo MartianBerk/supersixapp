@@ -45,7 +45,9 @@ class SuperSix extends Component {
                 null,
                 {
                     "Content-Type": "application/json"
-                }
+                },
+                {},
+                "same-origin"
             )
             .then(response => response.json())
             .then(data => this.setState((oldState) => {
