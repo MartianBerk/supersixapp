@@ -1,7 +1,6 @@
 // This should eventually be something that can be included in a reporting module of some description.
 import React, { useEffect, useRef } from 'react';
 
-import '../../css/graphs/LineGraph.css';
 
 const LineGraph = props => {
     const canvasRef = useRef(null);
@@ -22,6 +21,17 @@ const LineGraph = props => {
 
         const context = canvas.getContext("2d");
 
+        // Determine fill style
+        if (props.backgroundColourGradient) {
+            const gradient = context.createLinearGradient(0, props.height, 0, -200);
+            gradient.addColorStop(0, props.backgroundColour);
+            gradient.addColorStop(1, props.backgroundColourGradientFinish);
+            context.fillStyle = gradient;
+        }
+        else {
+            context.fillStyle = props.backgroundColour;
+        }
+
         const leftIndent = 30;
         const rightIndent = 10
         const bottomIndent = 20;
@@ -31,8 +41,7 @@ const LineGraph = props => {
 
         // draw graph outline
         context.strokeStyle = props.axisColour;
-        context.fillStyle = props.backgroundColour;
-        context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         
         // draw x axis
         drawLine(context, leftIndent, props.height - bottomIndent, xLength, props.height - bottomIndent)
@@ -52,29 +61,33 @@ const LineGraph = props => {
             });
         });
 
-        // TODO: make x axis labels optional??
-        // add x axis labels
-        let i = 0;
-        xRange.forEach(_value => {
+        // add x axis grid lines
+        if (props.gridColour) {
             context.fillStyle = props.gridColour;
             context.strokeStyle = props.gridColour;
-            // context.fillText(_value, leftIndent + (xLength / (xRange.size + 1)) * i, (props.height - bottomIndent));
-            
-            // draw grid lines
-            drawLine(context, leftIndent + ((xLength - leftIndent) / (xRange.size - 1) * i), props.height - bottomIndent, leftIndent + ((xLength - leftIndent) / (xRange.size - 1) * i), topIndent, 0.2);
 
-            i++;
-        });
+            let i = 0;
+            xRange.forEach(_value => {
+                // draw grid lines
+                drawLine(context, leftIndent + ((xLength - leftIndent) / (xRange.size - 1) * i), props.height - bottomIndent, leftIndent + ((xLength - leftIndent) / (xRange.size - 1) * i), topIndent, 0.2);
 
+                i++;
+            });
+        }
+        
         // add y axis labels
         let yRange = new Array(yMax);
-        for (i = 0; i <= yRange.length; i++) {
-            context.fillStyle = props.gridColour;
-            context.strokeStyle = props.gridColour;
+        for (let i = 0; i <= yRange.length; i++) {
+            context.fillStyle = props.textColour;
+            context.strokeStyle = props.textColour;
             context.fillText(i, leftIndent / 2, props.height - bottomIndent - (yLength / yMax * i));
             
             // draw grid lines
-            drawLine(context, leftIndent, props.height - bottomIndent - (yLength / yMax * i), xLength, props.height - bottomIndent - (yLength / yMax * i), 0.2);
+            if (props.gridColour) {
+                context.fillStyle = props.gridColour;
+                context.strokeStyle = props.gridColour;
+                drawLine(context, leftIndent, props.height - bottomIndent - (yLength / yMax * i), xLength, props.height - bottomIndent - (yLength / yMax * i), 0.2);
+            }
         }
 
         // draw graph data

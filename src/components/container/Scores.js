@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import Predictions from "./Predictions.js";
 
 import '../css/Scores.css';
+
 
 class Scores extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            playerId: props.playerId,
             date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
             players: [],
             indexRow: null,
@@ -18,7 +20,7 @@ class Scores extends Component {
         this.handleDateClick = this.handleDateClick.bind(this);
     }
 
-    getScores(date, purge) {
+    getScores(date) {
         date = new Date(date === undefined ? this.state.date : date);
 
         const year = date.getFullYear();
@@ -28,25 +30,40 @@ class Scores extends Component {
 
         var live = false;
 
-        fetch(`${Constants.SCORESURL}?matchDate=${date}`)
+        const requests = new Requests();
+
+        requests.fetch("SCORESURL", "GET", { matchDate: date })
         .then(response => response.json())
-        .then(data => {
-            if (purge !== undefined) {
-                this.setState(oldState => {
-                    let newPlayers = [...oldState.players];
-
-                    while (newPlayers.length > 0) {
-                        newPlayers.pop()
-                    }
-
-                    return { games: newPlayers }
-                });
-            }
-
-            return data
-        })
-        .then(data => data.scores.forEach((player) => {
+        .then(data => data.scores.forEach((player, i) => {
+            player.fullname = player.name;
             player.name = player.name in this.props.meta.players ? this.props.meta.players[player.name] : player.name;
+
+            if (this.state.playerId && this.state.playerId === player.id) {
+                let shared = false;
+
+                // Only perform duplicate prediction check if all 6 predictions are selected.
+                if (player.matches.length === 6) {
+                    data.scores.forEach((subPlayer, j) => {
+                        if (shared) {
+                            // once shared has been found, no need to continue
+                            return null
+                        }
+                        else if (j === i) {
+                            // skip player
+                            return null;
+                        }
+
+                        let equalPredictions = 0;
+                        subPlayer.matches.forEach((match, k) => {
+                            if (match.prediction === player.matches[k].prediction) {
+                                equalPredictions++;
+                            }
+                        })
+
+                        shared = equalPredictions === 6;
+                    })
+                }
+            }
             
             this.setState((oldState) => {
                 let newPlayers = [...oldState.players];
@@ -67,6 +84,18 @@ class Scores extends Component {
                 return { players: newPlayers };
             });
         }))
+        .then(_ => {
+            let playerIndex = null;
+            const allSelections = this.state.players.map((player, i) => {
+                if (this.state.playerId && player.id === this.state.playerId) {
+                    playerIndex = i;
+                }
+
+                return player.matches.map(match => { return match.prediction })
+            }, playerIndex);
+
+            this.props.sendSelectionsUpstream(allSelections, playerIndex)
+        })
         .then(() => {
             this.setState(oldState => {
                 let player = oldState.players[0];  // only need one players scores to track live
@@ -140,6 +169,35 @@ class Scores extends Component {
         this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 10000);  // 10 sec refresh
     }
 
+    componentDidUpdate(prevProps) {
+        // If a login has been performed and the props playerId updated, update state
+        if (this.props.playerId && this.props.playerId !== prevProps.playerId) {
+            let playerIndex = null;
+            
+            const allSelections = this.state.players.map((player, i) => {
+                if (this.state.playerId && player.id === this.state.playerId) {
+                    playerIndex = i;
+                }
+
+                return player.matches.map(match => { return match.prediction })
+            }, playerIndex);
+
+            this.props.sendSelectionsUpstream(allSelections, playerIndex)
+        }
+
+        if (this.props.meta && this.props.meta !== prevProps.meta) {
+            this.setState((oldState) => {
+                let newPlayers = [...oldState.players];
+
+                newPlayers.forEach(player => {
+                    player.name = player.fullname in this.props.meta.players ? this.props.meta.players[player.fullname] : player.name;
+                })
+
+                return {players: newPlayers};
+            })
+        }
+    }
+
     handleDateClick(event) {
         let dateIndex = this.props.meta.gameweeks.indexOf(this.state.date);
 
@@ -172,13 +230,17 @@ class Scores extends Component {
 
         return (
             <div className="scorescontainer">
-                <div className="date-picker">
-                    <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) ? <div id="date-picker-left" onClick={this.handleDateClick}>{"<"}</div> : <div id="date-picker-left">{""}</div>}</div>
-                    <div className={this.state.live ? "date-picker-part live" : "date-picker-part"}>{ this.formatMatchDate(this.state.date) }</div>
-                    <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) !== this.props.meta.gameweeks.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
-                </div>
+                {
+                    this.state.date ? 
+                    <div className="date-picker">
+                        <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) ? <div id="date-picker-left" onClick={this.handleDateClick}>{"<"}</div> : <div id="date-picker-left">{""}</div>}</div>
+                        <div className={this.state.live ? "date-picker-part live" : "date-picker-part"}>{ this.formatMatchDate(this.state.date) }</div>
+                        <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) !== this.props.meta.gameweeks.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
+                    </div>
+                    : null
+                }
                 <div className="scores">
-                    {rows.length === 0 ? <span style={{fontWeight: "bold"}}>No Scores</span> : rows}
+                    {rows.length === 0 ? null : rows}
                 </div>
             </div>
         )

@@ -1,0 +1,19 @@
+.userprofile-container {
+    margin: auto;
+    font-weight: bold;
+    color: #ccccc3;
+    text-align: center;
+    
+}
+
+.userprofile-input {
+    background-color: #454242;
+    color: #ccccc3;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.userprofile-submit {
+    width: 75px;
+}

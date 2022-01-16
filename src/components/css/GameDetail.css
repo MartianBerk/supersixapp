@@ -36,35 +36,3 @@
     padding-left: 5px;
     padding-right: 5px;
 }
-
-.gamedetail-selections {
-    overflow-x: hidden;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.gamedetail-button {
-    background-color: #6b6b6b;
-    color: #ccccc3;
-    font-weight: bold;
-    height: 30px;
-    border: 0;
-    transition: 0.3s;
-}
-
-.gamedetail-button-selection {
-    background-color: #6b6b6b;
-    margin-left: 20px;
-    margin-right: 20px;
-    border: 0;
-    transition: 0.3s;
-    width: 20%;
-}
-
-.gamedetail-button-submit {
-    width: 23%;
-}
-
-.gamedetail-button.active {
-    background-color: #287a4f;
-}

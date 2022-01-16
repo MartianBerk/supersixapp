@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
+import GameDetail from './GameDetail.js';
 
 import '../css/Games.css';
-import GameDetail from './GameDetail.js';
 
 class Games extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            playerId: this.props.playerId,
+            playerId: props.playerId,
+            allPlayerSelections: props.allPlayerSelections || [],
+            playerSelections: props.playerSelections || [null, null, null, null, null, null],
             date: props.meta.gameweeks[props.meta.gameweeks.length - 1],
             live: false,
             games: [],
@@ -29,7 +31,9 @@ class Games extends Component {
 
         var live = false;
 
-        fetch(`${Constants.MATCHESURL}?matchDate=${date}`)
+        const requests = new Requests();
+
+        requests.fetch("MATCHESURL", "GET", { matchDate: date })
         .then(response => response.json())
         .then(data => {
             if (purge !== undefined) {
@@ -134,6 +138,21 @@ class Games extends Component {
         this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 10000);  // 10 sec refresh
     }
 
+    componentDidUpdate(prevProps) {
+        // If a login has been performed and the props playerId updated, update state
+        if (this.props.playerId !== prevProps.playerId) {
+            this.setState({ playerId: this.props.playerId, indexRow: null })
+        }
+        
+        if (this.props.playerSelections !== prevProps.playerSelections) {
+            this.setState({ playerSelections: this.props.playerSelections || [] })
+        }
+
+        if (this.props.allPlayerSelections !== prevProps.allPlayerSelections) {
+            this.setState({ allPlayerSelections: this.props.allPlayerSelections || [] })
+        }
+    }
+
     handleDateClick(event) {
         let dateIndex = this.props.meta.gameweeks.indexOf(this.state.date);
 
@@ -150,55 +169,127 @@ class Games extends Component {
         const today = new Date();
         const gameDate = new Date(this.state.date);
         
-        // only set gameday if before matchday. After or on matchday, ensure gameDay is true.
-        let gameDay = false;
-        if(today.getFullYear() === gameDate.getFullYear() && today.getMonth() === gameDate.getMonth() && today.getDate() === gameDate.getDate()) {
-            gameDay = true;
+        // Lock 1 hour before kickoff
+        let lock = false;
+        if(
+            today.getFullYear() === gameDate.getFullYear() &&
+            today.getMonth() === gameDate.getMonth() &&
+            today.getDate() === gameDate.getDate() &&
+            today.getHours() >= gameDate.getHours() - 1
+        ) {
+            lock = true;
         }
         else if(today > gameDate) {
-            gameDay = true;
+            lock = true;
         }
 
         const rows = this.state.games.map((game, index) => {
             // TODO: note - team names should be no more 14 chars in total for optimum experience. Look into nicknames of sorts
-            // TODO: control GameDetail, scores and minute counter based on date being before game_date.
             return (
                 <div
                     key={index}
-                    onMouseDown={(event) => {if (event.target.type != "submit") { this.setState({ indexRow: (this.state.indexRow === index ? null : index) }) }}}
+                    onMouseDown={
+                        game.status === "POSTPONED" ? 
+                            null 
+                        : (event) => {
+                            if (event.target.type != "submit") {
+                                this.setState({ indexRow: (this.state.indexRow === index ? null : index) })
+                            }
+                        }
+                    }
                 >
                     <p className="game">
-                        <span className={"gamesection hometeam" + (gameDay ? " gameday" : "")}>{game.home_team.label}</span>
-                        <span className={"gamesection gamescores" + (gameDay ? " gameday" : "")}>
-                            {gameDay ? <span className="matchscore">
-                                          {game.home_score !== null ? game.home_score : '-'}
-                                          <span className="matchscore-divider">:</span>
-                                          {game.away_score !== null ? game.away_score : '-'}
-                                      </span>
-                                     : <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
+                        <span className={"gamesection hometeam" + (lock ? " gameday" : "")}>{game.home_team.label}</span>
+                        <span className={"gamesection gamescores" + (lock ? " gameday" : "")}>
+                            {
+                                lock ? 
+                                    <span className="matchscore">
+                                        {game.status === "POSTPONED" ? "P : P" : game.home_score !== null ? game.home_score : '-'}
+                                        <span className="matchscore-divider">:</span>
+                                        {game.status === "POSTPONED" ? "P : P" : game.away_score !== null ? game.away_score : '-'}
+                                    </span>
+                                : 
+                                game.status === "POSTPONED" ?
+                                    "P : P"
+                                :
+                                <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
                         </span>
-                        <span className={"gamesection awayteam" + (gameDay ? " gameday" : "")}>{game.away_team.label}</span>
-                        {gameDay ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}
+                        <span className={"gamesection awayteam" + (lock ? " gameday" : "")}>{game.away_team.label}</span>
+                        {lock ? <span className="gamesection matchtime">{this.calculateExpired(game)}</span> : null}
                     </p>
-                    {!gameDay && this.state.indexRow === index ? <GameDetail
+                    {!lock && this.state.indexRow === index ? <GameDetail
                                                                     playerId={this.state.playerId}
                                                                     homeTeam={game.home_team.name}
                                                                     awayTeam={game.away_team.name}
                                                                     gameDate={game.match_date}
-                                                                    gameId={game.id} />
+                                                                    gameId={game.id}
+                                                                    onLoginSelect={() => {
+                                                                        this.setState({
+                                                                            indexRow: null
+                                                                        })
+
+                                                                        this.props.onLoginSelect()
+                                                                    }}
+                                                                    onPredictionSet={(selection) => {
+                                                                        let newSelections = [...this.state.playerSelections];
+                                                                        newSelections[this.state.indexRow] = selection;
+
+                                                                        this.setState({ playerSelections: newSelections });
+                                                                    }}
+                                                                 />
                                                                : null}
                 </div>
             )
         }) || [];
 
+        let shared = false;
+        let selectionCount = this.state.playerSelections.reduce((t, s) => { return t + (s ? 1 : 0) }, 0)
+
+        if (this.state.playerSelections && this.state.allPlayerSelections) {
+            for (var i = 0; i < this.state.allPlayerSelections.length; i++) {
+                if (shared) {
+                    break;
+                }
+
+                let subShared = true;
+                for (var j = 0; j < this.state.playerSelections.length; j++) {
+                    subShared = subShared && this.state.allPlayerSelections[i][j] === this.state.playerSelections[j];
+                }
+
+                shared = subShared
+            }
+        }
+
         return (
             <div className="games">
-                <div className="date-picker">
+                {
+                    this.state.date ?
+                    <div className="date-picker">
                     <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) ? <div id="date-picker-left" onClick={this.handleDateClick}>{"<"}</div> : <div id="date-picker-left">{""}</div>}</div>
                     <div className={this.state.live ? "date-picker-part live" : "date-picker-part"}>{ this.formatMatchDate(this.state.date) }</div>
                     <div className="date-picker-part">{this.props.meta.gameweeks.indexOf(this.state.date) !== this.props.meta.gameweeks.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
+                    </div>
+                    : null
+                }
+                {
+                    !lock && this.state.playerId && this.state.date == this.props.meta.gameweeks[this.props.meta.gameweeks.length - 1] ?
+                    <div className={`games-player-selections${selectionCount === 6 ? "-complete" : ""}`}>
+                        {selectionCount} / 6 Selections
+                        {selectionCount === 6 && shared ? <span> (Possible Split Pot)</span> : null}
+                    </div>
+                    : null
+                }
+                {
+                    rows.length === 0 ? null : rows
+                }
+                <div className="games-whitespace">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                 </div>
-                {rows.length === 0 ? "No Games" : rows}
             </div>
         )
     }

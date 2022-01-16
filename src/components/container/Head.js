@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 
 import '../css/Head.css';
 
@@ -15,41 +15,35 @@ class Head extends Component {
             rounds: null,
             specialMessage: null
         };
-    }
 
-    fetchCurrentRound() {
-        fetch(Constants.CURRENTROUNDURL)
-        .then(response => response.json())
-        .then(data => this.setState({
-            jackpot: data.current_round.jackpot,
-            startDate: data.current_round.start_date,
-            nextDate: data.current_round.current_match_date,
-            rounds: data.current_round.matches
-        }))
-        .catch(/* do nothing */)
+        this.requests = new Requests()
     }
 
     isSpecialEvent() {
-        let date = new Date(this.state.nextDate);
-
-        const year = date.getFullYear().toString();
-
-        let month = (date.getMonth() + 1).toString();
-        month = month >= 10 ? month : "0" + month;
-
-        let day = date.getDate().toString();
-        day = day >= 10 ? day : "0" + day;
-
-        const dateString = `${year}-${month}-${day}`;
-
-        fetch(Constants.SPECIALMESSAGEURL)
+        let date = null;
+        
+        if (this.state.date) {
+            date = new Date(this.state.nextDate);
+        }
+        
+        this.requests.fetch("SPECIALMESSAGEURL")
         .then(response => response.json())
         .then(data => {
-            if (!data.message) {
-                fetch(Constants.BANKHOLIDAYSURL)
+            if (!data.message && date) {
+                this.requests.fetch("BANKHOLIDAYSURL")
                 .then(response => response.json())
                 .then(data => {
                     const events = data["england-and-wales"]["events"] || [];
+   
+                    const year = date.getFullYear().toString();
+
+                    let month = (date.getMonth() + 1).toString();
+                    month = month >= 10 ? month : "0" + month;
+
+                    let day = date.getDate().toString();
+                    day = day >= 10 ? day : "0" + day;
+
+                    const dateString = `${year}-${month}-${day}`;
 
                     for(var i = 0; i < events.length; i++) {
                         if (events[i].date === dateString) {
@@ -59,7 +53,7 @@ class Head extends Component {
                     }
                 })
                 .then(_ => {
-                    if (!this.state.specialMessage && date.getDay() !== 6) {
+                    if (!this.state.specialMessage && [0, 6].indexOf(date.getDay()) === -1) {
                         this.setState({ specialMessage: "Midweek Madness" })
                         return null;
                     } 
@@ -75,7 +69,7 @@ class Head extends Component {
     }
 
     getData() {
-        fetch(Constants.CURRENTROUNDURL)
+        this.requests.fetch("CURRENTROUNDURL")
         .then(response => response.json())
         .then(data => this.setState({
             jackpot: data.current_round.jackpot,
