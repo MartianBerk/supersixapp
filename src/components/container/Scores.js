@@ -5,6 +5,7 @@ import Predictions from "./Predictions.js";
 
 import '../css/Scores.css';
 
+
 class Scores extends Component {
     constructor(props) {
         super(props);

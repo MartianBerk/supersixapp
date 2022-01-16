@@ -40,7 +40,7 @@ export class Requests {
             url = url + "?";
 
             Object.keys(params).forEach(key => {
-                url = url + `${key}=${params[key]}`;
+                url = url + `${key}=${params[key]}&`;
             });
         }
 
