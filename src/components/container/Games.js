@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import GameDetail from './GameDetail.js';
 
 import '../css/Games.css';
@@ -31,7 +31,9 @@ class Games extends Component {
 
         var live = false;
 
-        fetch(`${Constants.MATCHESURL}?matchDate=${date}`)
+        const requests = new Requests();
+
+        requests.fetch("MATCHESURL", "GET", { matchDate: date })
         .then(response => response.json())
         .then(data => {
             if (purge !== undefined) {

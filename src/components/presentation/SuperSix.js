@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import Games from "../container/Games.js";
 import Performance from "../container/Performance.js";
 import Scores from "../container/Scores.js";
@@ -33,18 +33,22 @@ class SuperSix extends Component {
             showUser: false
         };
 
-        fetch(Constants.METAURL)
+        const requests = new Requests()
+
+        requests.fetch("METAURL")
         .then(response => response.json())
         .then(data => this.setState({ meta: data.meta }))
         .then(_ => {
-            fetch(Constants.LOGGEDINURL, {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
+            requests.fetch(
+                "LOGGEDINURL",
+                "POST",
+                null,
+                {
                     "Content-Type": "application/json"
                 },
-                body: "{}"
-            })
+                {},
+                "same-origin"
+            )
             .then(response => response.json())
             .then(data => this.setState((oldState) => {
                 let { is_logged_in, new_user, ...userData } = data;
@@ -152,7 +156,7 @@ class SuperSix extends Component {
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
                     { 
                         !this.state.loading && this.state.meta.gameweeks.length > 0
-                        ? <Performance meta={this.state.meta.players} currentRoundStartDate={this.state.meta.gameweeks[0]} />
+                        ? <Performance meta={this.state.meta.players} startDate={this.state.meta.gameweeks[0]} playerId={this.state.userData.playerId} />
                         : null 
                     }  
                 </div>

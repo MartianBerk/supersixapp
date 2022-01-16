@@ -9,6 +9,24 @@
     overflow-y: scroll;
 }
 
+.performance-date-picker {
+    color: #ccccc3;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 0px 20px 0px;
+    overflow: hidden;
+}
+
+.performance-date-picker-part {
+    float: left;
+    width: 33.33%;
+}
+
+#performance-date-picker-left, #performance-date-picker-right {
+    cursor: pointer;
+    height: 10px;
+}
+
 .line-graph-legend {
     font-weight: bold;
     font-size: 20px;

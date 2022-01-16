@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import Error from './Error.js';
 import UserLogin from './UserLogin.js';
 
@@ -32,21 +32,25 @@ class User extends Component {
 
         this.submitChanges = this.submitChanges.bind(this);
         this.logout = this.logout.bind(this);
+
+        this.requests = new Requests();
     }
 
     submitChanges(e) {
         if (this.state.activeChanges) {
-            fetch(Constants.UPDATEDETAILSURL, {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
+            this.state.fetch(
+                "UPDATEDETAILSURL",
+                "POST",
+                null,
+                {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
+                {
                     email: this.state.email,
                     nickname: this.state.nickname
-                })
-            })
+                },
+                "same-origin"
+            )
             .then(response => response.json())
             .then(data => {
                 this.setState({
@@ -64,9 +68,7 @@ class User extends Component {
     }
 
     logout(e) {
-        fetch(Constants.LOGOUTURL, {
-            credentials: "same-origin",
-        })
+        fetch("LOGOUTURL", "GET", null, null, null, "same-origin")
         .then(response => response.json())
         .then(data => {
             if (!data.is_logged_in) {

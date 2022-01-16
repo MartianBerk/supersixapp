@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as Constants from "../constants.js";
+import { Requests } from "../requests.js";
 import Error from './Error.js';
 
 import '../css/UserLogin.css';
@@ -27,6 +27,8 @@ class UserLogin extends Component {
         this.checkUser = this.checkUser.bind(this);
         this.loginUser = this.loginUser.bind(this);
         this.forgotPassword = this.forgotPassword.bind(this);
+
+        this.requests = new Requests();
     }
 
     checkUser(e) {
@@ -37,16 +39,18 @@ class UserLogin extends Component {
 
         const identityType = this.state.username.match(this.EMAIL_REGEX) ? "email" : "user_id";
 
-        fetch(Constants.LOGGEDINURL, {
-            method: "POST",
-            headers: {
+        this.requests.fetch(
+            "LOGGEDINURL",
+            "POST",
+            null,
+            {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
+            {
                 identity_type: identityType,
                 identity_value: this.state.username.toLowerCase()
-            })
-        })
+            }
+        )
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -92,19 +96,21 @@ class UserLogin extends Component {
 
         const identityType = this.state.username.match(this.EMAIL_REGEX) ? "email" : "user_id";
 
-        fetch(Constants.LOGINURL, {
-            method: "POST",
-            headers: {
+        this.requests.fetch(
+            "LOGINURL",
+            "POST",
+            null,
+            {
                 "Content-Type": "application/json"
             },
-            credentials: "same-origin",
-            body: JSON.stringify({
+            {
                 identity_type: identityType,
                 identity_value: this.state.username.toLowerCase(),
                 password: this.state.password,
                 is_first: this.state.newUser
-            })
-        })
+            },
+            "same-origin"
+        )
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -135,17 +141,19 @@ class UserLogin extends Component {
     forgotPassword(e) {
         const identityType = this.state.username.match(this.EMAIL_REGEX) ? "email" : "user_id";
 
-        fetch(Constants.FORGOTPASSWORDURL, {
-            method: "POST",
-            headers: {
+        this.requests.fetch(
+            "FORGOTPASSWORDURL",
+            "POST",
+            null,
+            {
                 "Content-Type": "application/json"
             },
-            credentials: "same-origin",
-            body: JSON.stringify({
+            {
                 identity_type: identityType,
                 identity_value: this.state.username.toLowerCase()
-            })
-        })
+            },
+            "same-origin"
+        )
         .then(response => response.json())
         .then(data => {
             if (data.error) {
