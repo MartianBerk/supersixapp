@@ -29,7 +29,14 @@ class Head extends Component {
         .then(response => response.json())
         .then(data => {
             if (!data.message && date) {
-                this.requests.fetch("BANKHOLIDAYSURL")
+                this.requests.fetch(
+                    "BANKHOLIDAYSURL",
+                    "GET",
+                    null,
+                    null,
+                    null,
+                    "undefined"
+                )
                 .then(response => response.json())
                 .then(data => {
                     const events = data["england-and-wales"]["events"] || [];
