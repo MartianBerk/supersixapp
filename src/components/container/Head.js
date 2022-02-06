@@ -21,7 +21,6 @@ class Head extends Component {
 
     isSpecialEvent() {
         let date = null;
-
         if (this.state.nextDate) {
             date = new Date(this.state.nextDate);
         }
