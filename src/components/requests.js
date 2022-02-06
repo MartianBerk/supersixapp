@@ -28,7 +28,7 @@ export class Requests {
         method = this.DEVELOPMENT ? "GET" : method || "GET";
         headers = headers || {};
         body = this.DEVELOPMENT ? null : body;
-        credentials = this.DEVELOPMENT ? "include" : credentials || "include";
+        credentials = this.DEVELOPMENT ? undefined : credentials || "include";
 
         let url = null;
         
@@ -59,7 +59,6 @@ export class Requests {
                 return resolve(res)
             })
             .catch(err => {
-                alert(err)
                 return reject(err)
             })
         ))   
