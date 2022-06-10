@@ -204,9 +204,9 @@ class Games extends Component {
                             {
                                 lock ? 
                                     <span className="matchscore">
-                                        {game.status === "POSTPONED" ? "P : P" : game.home_score !== null ? game.home_score : '-'}
+                                        {game.status === "POSTPONED" ? "P" : game.home_score !== null ? game.home_score : '-'}
                                         <span className="matchscore-divider">:</span>
-                                        {game.status === "POSTPONED" ? "P : P" : game.away_score !== null ? game.away_score : '-'}
+                                        {game.status === "POSTPONED" ? "P" : game.away_score !== null ? game.away_score : '-'}
                                     </span>
                                 : 
                                 game.status === "POSTPONED" ?

@@ -2,7 +2,7 @@ import * as Constants from "./constants";
 
 
 export class Requests {
-    DEVELOPMENT = false;
+    DEVELOPMENT = true;
     OVERRIDES = {
         MATCHESURL: "matches.json",
         SCORESURL: "scores.json",
@@ -14,7 +14,11 @@ export class Requests {
         LOGGEDINURL: "checkuser.json",
         LOGINURL: "login.json",
         GETMATCHDETAILURL: "matchdetail.json",
-        GETPREDICTIONURL: "prediction.json"
+        GETPREDICTIONURL: "prediction.json",
+        CHECKPERMISSIONURL: "permission.json",
+        LISTLEAGUESURL: "leagues.json",
+        LISTMATCHESURL: "matchesselector.json",
+        ADDMATCHESURL: "matchesadd.json"
     };
 
     constructor() {
