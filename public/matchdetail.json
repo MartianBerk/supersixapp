@@ -1,0 +1,34 @@
+{
+    "match_detail": {
+        "head_to_head": {
+            "Brentford": [
+                "WIN",
+                "WIN"
+            ],
+            "Everton": [
+                "LOSE",
+                "LOSE"
+            ]
+        },
+        "league_position": {
+            "Brentford": "8",
+            "Everton": "17"
+        },
+        "team_performance": {
+            "Brentford": [
+                "WIN",
+                "LOSE",
+                "DRAW",
+                "WIN",
+                "LOSE"
+            ],
+            "Everton": [
+                "LOSE",
+                "LOSE",
+                "LOSE",
+                "LOSE",
+                "DRAW"
+            ]
+        }
+    }
+}

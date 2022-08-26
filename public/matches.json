@@ -1,0 +1,70 @@
+{
+    "matches": [
+        {
+            "away_score": null,
+            "away_team": "Aston Villa",
+            "game_number": 1,
+            "home_score": null,
+            "home_team": "Crystal Palace",
+            "id": 4968,
+            "match_date": "2022-08-20T14:00:00Z",
+            "match_minute": null,
+            "status": "SCHEDULED"
+        },
+        {
+            "away_score": null,
+            "away_team": "Nottingham",
+            "game_number": 2,
+            "home_score": null,
+            "home_team": "Everton",
+            "id": 4969,
+            "match_date": "2022-08-20T14:00:00Z",
+            "match_minute": null,
+            "status": "SCHEDULED"
+        },
+        {
+            "away_score": null,
+            "away_team": "Brentford",
+            "game_number": 3,
+            "home_score": null,
+            "home_team": "Fulham",
+            "id": 4970,
+            "match_date": "2022-08-20T14:00:00Z",
+            "match_minute": null,
+            "status": "SCHEDULED"
+        },
+        {
+            "away_score": null,
+            "away_team": "Southampton",
+            "game_number": 4,
+            "home_score": null,
+            "home_team": "Leicester",
+            "id": 4972,
+            "match_date": "2022-08-20T14:00:00Z",
+            "match_minute": null,
+            "status": "SCHEDULED"
+        },
+        {
+            "away_score": null,
+            "away_team": "Rotherham",
+            "game_number": 5,
+            "home_score": null,
+            "home_team": "QPR",
+            "id": 5163,
+            "match_date": "2022-08-20T14:00:00Z",
+            "match_minute": null,
+            "status": "SCHEDULED"
+        },
+        {
+            "away_score": null,
+            "away_team": "Middlesbrough",
+            "game_number": 6,
+            "home_score": null,
+            "home_team": "Reading",
+            "id": 5164,
+            "match_date": "2022-08-20T14:00:00Z",
+            "match_minute": null,
+            "status": "SCHEDULED"
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "meta": {
+        "gameweeks": [
+            "2022-08-06T14:00:00Z",
+            "2022-08-13T14:00:00Z",
+            "2022-08-20T14:00:00Z"
+        ],
+        "players": {
+            "Andy Galvin": "Galv",
+            "Chris Shaw": "Proj",
+            "Craig Clark": "Craig",
+            "Dean Cox": "Delano",
+            "Gary Osmond": "Ozzy",
+            "Greg Perkins": "Greg",
+            "Hannah Small": "Smally",
+            "Jason Cox": "Jason",
+            "Lewis Watts": "Lou-Lou",
+            "Luke Igo": "Lukey",
+            "Martin Baker": "Martin",
+            "Michael Barclay": "Ginge",
+            "Sam Cross": "Sammy",
+            "Stefan Cox": "Steffo",
+            "Stuart Allen": "Stu"
+        },
+        "teams": {
+            "Manchester City": "Man City",
+            "Manchester Utd": "Man Utd",
+            "Middlesbrough": "M'brough"
+        }
+    }
+}

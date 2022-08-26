@@ -1,0 +1,60 @@
+{
+    "leagues": [
+        {
+            "code": "FLC",
+            "current_matchday": 2,
+            "id": 1,
+            "name": "Football League Cup",
+            "start_date": "Tue, 09 Aug 2022 00:00:00 GMT"
+        },
+        {
+            "code": "FAC",
+            "current_matchday": null,
+            "id": 2,
+            "name": "FA Cup",
+            "start_date": "Sat, 03 Sep 2022 00:00:00 GMT"
+        },
+        {
+            "code": "ENL",
+            "current_matchday": 46,
+            "id": 3,
+            "name": "National League",
+            "start_date": "Fri, 02 Oct 2020 00:00:00 GMT"
+        },
+        {
+            "code": "EL2",
+            "current_matchday": 5,
+            "id": 4,
+            "name": "League Two",
+            "start_date": "Sat, 30 Jul 2022 00:00:00 GMT"
+        },
+        {
+            "code": "EL1",
+            "current_matchday": 5,
+            "id": 5,
+            "name": "League One",
+            "start_date": "Sat, 30 Jul 2022 00:00:00 GMT"
+        },
+        {
+            "code": "ELC",
+            "current_matchday": 5,
+            "id": 6,
+            "name": "Championship",
+            "start_date": "Fri, 29 Jul 2022 00:00:00 GMT"
+        },
+        {
+            "code": "PL",
+            "current_matchday": 3,
+            "id": 7,
+            "name": "Premier League",
+            "start_date": "Fri, 05 Aug 2022 00:00:00 GMT"
+        },
+        {
+            "code": "COM",
+            "current_matchday": null,
+            "id": 8,
+            "name": "FA Community Shield",
+            "start_date": "Sat, 07 Aug 2021 00:00:00 GMT"
+        }
+    ]
+}
