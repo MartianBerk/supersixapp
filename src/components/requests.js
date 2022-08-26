@@ -16,8 +16,8 @@ export class Requests {
         GETMATCHDETAILURL: "matchdetail.json",
         GETPREDICTIONURL: "prediction.json",
         CHECKPERMISSIONURL: "permission.json",
-        LISTLEAGUESURL: "leagues.json",
-        LISTMATCHESURL: "matchesselector.json",
+        LISTLEAGUESURL: "listleagues.json",
+        LISTMATCHESURL: "listmatches.json",
         ADDMATCHESURL: "matchesadd.json"
     };
 

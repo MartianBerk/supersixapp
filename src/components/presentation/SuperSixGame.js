@@ -59,7 +59,7 @@ class SuperSixGame extends Component {
                     userData = {};
                 }
 
-                this.props.onLoginSuccess(userData.user_id);
+                this.props.onLoginSuccess(userData.user_id, userData.player_id, this.state.meta);
                 
                 return {
                     ...oldState,
@@ -193,7 +193,7 @@ class SuperSixGame extends Component {
                                     }
                                 })
 
-                                this.props.onLoginSuccess(userData.user_id);
+                                this.props.onLoginSuccess(userData.user_id, userData.player_id, this.state.meta);
                             }}
                             onLogoutSuccess={() => {
                                 this.setState({

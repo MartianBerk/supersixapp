@@ -10,21 +10,13 @@ class SuperSixAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            meta: {},
-            userId: props.userId,
-            loading: true,
             showGames: true,
             showPlayers: false,
             showPerformance: false,
             showUser: false
         };
 
-        const requests = new Requests()
-
-        requests.fetch("METAURL")
-        .then(response => response.json())
-        .then(data => this.setState({ meta: data.meta, loading: false }))
-        .catch(/* do nothing */);
+        const requests = new Requests();
 
         this.handleMenuClick = this.handleMenuClick.bind(this);
     }
@@ -71,21 +63,22 @@ class SuperSixAdmin extends Component {
                     </button> 
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
-                    { !this.state.loading ? <GameSelector
-                                                meta={{
-                                                    teams: this.state.meta.teams,
-                                                    gameweeks: this.state.meta.gameweeks
-                                                }}
-                                            /> : null }
+                    <GameSelector
+                        playerId={this.props.playerId }
+                        meta={{
+                            teams: this.props.meta.teams,
+                            gameweeks: this.props.meta.gameweeks
+                        }}
+                    /> 
                 </div>
                 {/* <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
                     { !this.state.loading ? <Scores
-                                                playerId={ this.state.userData.playerId }
+                                                playerId={ this.props.playerId }
                                                 meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }}
                                                 sendSelectionsUpstream={(selections, i) => {
                                                     let userData = {...this.state.userData};
 
-                                                    if (this.state.userData.playerId) {
+                                                    if (this.props.playerId) {
                                                         userData.selections = selections.splice(i, 1)[0];
                                                     }
 
@@ -96,7 +89,7 @@ class SuperSixAdmin extends Component {
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
                     { 
                         !this.state.loading && this.state.meta.gameweeks.length > 0
-                        ? <Performance meta={this.state.meta.players} startDate={this.state.meta.gameweeks[0]} playerId={this.state.userData.playerId} />
+                        ? <Performance meta={this.state.meta.players} startDate={this.state.meta.gameweeks[0]} playerId={this.props.playerId} />
                         : null 
                     }  
                 </div> */}
@@ -104,7 +97,7 @@ class SuperSixAdmin extends Component {
                     { 
                         !this.state.loading ? 
                         <User
-                            playerMeta={this.state.meta["players"]}
+                            playerMeta={this.props.meta["players"]}
                             isLoggedIn={true}
                             userData={
                                 { userId: this.props.userId }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import GameDetail from './GameDetail.js';
 import { Requests } from "../requests.js";
 
 import "../css/Games.css";
@@ -12,32 +13,117 @@ class GameSelector extends Component {
             date: null,
             leagues: {},
             matches: [],
+            dates: [],
             matchLookup: {},
-            selected: []
+            selected: [],
+            selectedDate: null,
+            matchRow: null
         }
 
         this.leagueOrder = [7, 6, 5, 4];  // PL, ELC, EL1, EL2
 
         this.requests = new Requests();
 
+        this.handleDateClick = this.handleDateClick.bind(this);
         this.handleMatchAdd = this.handleMatchAdd.bind(this);
         this.handleMatchDrop = this.handleMatchDrop.bind(this);
-        this.handleMatchesLoad = this.handleMatchesLoad.bind(this);
         this.handleMatchesSubmit = this.handleMatchesSubmit.bind(this);
     }
 
-    loadLeagues() {
+    loadData() {
         this.requests.fetch("LISTLEAGUESURL")
         .then(response => response.json())
         .then(data => this.setState({ leagues: data.leagues.reduce((leagues, league) => {
             leagues[league.id] = league.name
             return leagues
         }, {})}))
+        .then(_ => {
+            this.requests.fetch("LISTMATCHESURL")
+            .then(response => response.json())
+            .then(data => this.setState((_) => {
+                let matches = [];
+                let matchLookup = {};
+                let selected = [];
+                let dates = [];
+
+                data.matches.forEach(match => {
+                    matches.push(match)
+                    matchLookup[match.id] = match;
+
+                    var matchDate = this.formatDate(new Date(match.match_date));
+                    if (dates.indexOf(matchDate) === -1) {
+                        dates.push(matchDate);
+                    }
+
+                    if (match.use_match) {
+                        selected.push(match);
+                    }
+                });
+            
+                return { matches: matches, matchLookup: matchLookup, selected: selected, dates: dates };
+            }))
+            .then(() => {
+                this.setState((oldState) => {
+                    let newMatches = [...oldState.matches];
+                    let newDates = [...oldState.dates];
+
+                    // sort (date then league then time)
+                    newMatches.sort((a, b) => {
+                        const aLeague = this.leagueOrder.indexOf(a.league_id);
+                        const bLeague = this.leagueOrder.indexOf(b.league_id);
+                        const aDate = this.formatDate(new Date(a.match_date));
+                        const bDate = this.formatDate(new Date(b.match_date));
+
+                        if (aDate > bDate) {
+                            return 1
+                        }
+                        else if (aDate < bDate) {
+                            return -1
+                        }
+                        else {
+                            if (aLeague > bLeague) {
+                                return 1
+                            }
+                            else if (aLeague < bLeague) {
+                                return -1
+                            }
+                            else {
+                                if (a.match_date > b.match_date) {
+                                    return 1
+                                }
+                                else if (a.match_date < b.match_date) {
+                                    return -1
+                                }
+                                else {
+                                    return 0
+                                }
+                            }
+                        }
+                    });
+
+                    // sort dates separately for date picker
+                    newDates.sort((a, b) => {
+                        if (a.match_date > b.match_date) {
+                            return 1
+                        }
+                        else if (a.match_date < b.match_date) {
+                            return -1
+                        }
+                        else {
+                            return 0;
+                        }
+                    });
+
+                    return { matches: newMatches, dates: newDates, selectedDate: newDates[0] };
+                })
+            })
+            .catch(/* do nothing */);
+        })
         .catch(/* do nothing */);
     }
 
     componentDidMount() {
-        this.loadLeagues();
+        this.loadData();
     }
 
     formatDate(date) {
@@ -53,73 +139,15 @@ class GameSelector extends Component {
         return `${hours}:${minutes}`;
     }
 
-    handleMatchesLoad(_) {
-        this.setState({ matches: [], selected: [] });
+    handleDateClick(event) {
+        let dateIndex = this.state.dates.indexOf(this.state.selectedDate);
 
-        let matchDate = document.getElementById("matchselector-date").value;
+        switch(event.target.id) {
+            case "date-picker-left": dateIndex--; break;
+            case "date-picker-right": dateIndex++; break;
+        };
 
-        if (matchDate) {
-            matchDate = new Date(matchDate);
-            this.setState({ date: matchDate });
-
-            this.requests.fetch(
-                "LISTMATCHESURL",
-                null,
-                {
-                    matchDate: this.formatDate(matchDate)
-                }
-            )
-            .then(response => response.json())
-            .then(data => this.setState((_) => {
-                let matches = [];
-                let matchLookup = {};
-                let selected = [];
-
-                data.matches.forEach(match => {
-                    matches.push(match)
-                    matchLookup[match.id] = match;
-
-                    if (match.use_match) {
-                        selected.push(match);
-                    }
-                });
-            
-                return { matches: matches, matchLookup: matchLookup, selected: selected };
-            }))
-            .then(() => {
-                // sort
-
-                this.setState((oldState) => {
-                    let newMatches = [...oldState.matches];
-
-                    newMatches.sort((a, b) => {
-                        const aLeague = this.leagueOrder.indexOf(a.league_id);
-                        const bLeague = this.leagueOrder.indexOf(b.league_id);
-
-                        if (aLeague > bLeague) {
-                            return 1
-                        }
-                        else if (aLeague < bLeague) {
-                            return -1
-                        }
-                        else {
-                            if (a.match_date < b.match_date) {
-                                return -1
-                            }
-                            else if (a.match_date > b.match_date) {
-                                return 1
-                            }
-                            else {
-                                return 0
-                            }
-                        }
-                    });
-                    
-                    return { matches: newMatches };
-                })
-            })
-            .catch(e => alert(e));
-        }
+        this.setState({ selectedDate: this.state.dates[dateIndex] });
     }
 
     handleMatchesSubmit(_) {
@@ -133,13 +161,12 @@ class GameSelector extends Component {
             return { id: match.id, game_number: match.game_number };
         })
 
-        // TODO: refresh once submitted
+        // TODO: highlight button when submitted (check selected for fresh loads)
         this.requests.fetch(
             "ADDMATCHESURL",
             "POST",
             {
                 matchDate: matchDate
-
             },
             {
                 "Content-Type": "application/json"
@@ -214,57 +241,83 @@ class GameSelector extends Component {
             return null;
         }
         
-        let leagueMarker = 0
+        let leagueMarker = 0;
+        let timeMarker = 0;
         const selected = this.state.selected.map(s => { return s.id });
 
         return (
             <div className="matchselector">
                 <div className="matchselector-submit">
                     {this.state.matches.map(match => {
-                        const row = match.home_team + " Vs " + match.away_team + " - " + this.formatMatchTime(match.match_date) + " (" + match.status + ")";
-
-                        if (match.league_id !== leagueMarker) {
-                            leagueMarker = match.league_id;
-                            return (
-                                <div>
-                                    <h4>{this.state.leagues[match.league_id]}</h4>
-                                    <div className="matchselector-submit-match">
-                                        <div className="matchselector-submit-match-section">{row}</div>
-                                        <div className="matchselector-submit-match-section">
-                                            <button
-                                                id={`matchselector-${match.id}`}
-                                                className="matchselector-button"
-                                                onClick={selected.indexOf(match.id) > -1 ? this.handleMatchDrop : this.handleMatchAdd}>
-                                                    {selected.indexOf(match.id) > -1 ? "Drop" : "Add"} Match
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
+                        if (this.formatDate(new Date(match.match_date)) !== this.state.selectedDate) {
+                            return null;
                         }
-                        else {
-                            leagueMarker = match.league_id;
-                            return (
+
+                        const matchTime = this.formatMatchTime(match.match_date);
+                        let lMark = leagueMarker;
+                        let tMark = timeMarker;
+                        leagueMarker = match.league_id;
+                        timeMarker = matchTime;
+
+                        return (
+                            <div>
+                                {
+                                    match.league_id !== lMark ?
+                                    <h4>{this.state.leagues[match.league_id]}</h4> :
+                                    null
+                                }
+                                {
+                                    matchTime !== tMark ?
+                                    <h5>{matchTime}</h5> :
+                                    null
+                                }
                                 <div className="matchselector-submit-match">
-                                    <div className="matchselector-submit-match-section">{row}</div>
-                                    <div className="matchselector-submit-match-section">
+                                    <div
+                                        className="matchselector-submit-match-section"
+                                        onMouseDown={(e) => { 
+                                            if(e.target.type !== "submit" && match.status !== "POSTPONED") {
+                                                this.setState({ matchRow: match.id === this.state.matchRow ? null : match.id });
+                                            }
+                                        }}
+                                    >
+                                        {
+                                            match.home_team + " Vs " + match.away_team + " - " + " (" + match.status + ")"
+                                        }
+                                    </div>
+                                    {
+                                        this.state.matchRow === match.id ?
+                                        <GameDetail
+                                            playerId={this.props.playerId}
+                                            homeTeam={match.home_team}
+                                            awayTeam={match.away_team}
+                                            gameDate={match.match_date}
+                                            gameId={match.id}
+                                            // onPredictionSet={(selection) => {
+                                            //     let newSelections = [...this.state.playerSelections];
+                                            //     newSelections[this.state.indexRow] = selection;
+
+                                            //     this.setState({ playerSelections: newSelections });
+                                            // }}
+                                        /> :
+                                        null
+                                    }
+                                    {/* <div className="matchselector-submit-match-section">
                                         <button
                                             id={`matchselector-${match.id}`}
                                             className="matchselector-button"
                                             onClick={selected.indexOf(match.id) > -1 ? this.handleMatchDrop : this.handleMatchAdd}>
                                                 {selected.indexOf(match.id) > -1 ? "Drop" : "Add"} Match
                                         </button>
-                                    </div>
+                                    </div> */}
                                 </div>
-                            )
-                        }
+                            </div>
+                        )
                     })}
                 </div>
             </div>
         )
     }
 
-    // TODO: Add/Drop doesn't work properly - investigate.
     renderMatchSubmission() {
         if (this.state.matches.length === 0) {
             return null;
@@ -295,14 +348,19 @@ class GameSelector extends Component {
 
     render() {
         return (
-            <div className="matchselector-container">
+            <div className="games">
                 <h2>Matches</h2>
                 <div className="matchselector-load">
                     <h4>Match Date</h4>
-                    <input className="matchselector-load" type="date" id="matchselector-date" />
-                    <button className="matchselector-button" id="matchselector-load" onClick={this.handleMatchesLoad}> 
-                        Load Matches
-                    </button>
+                    {
+                        this.state.selectedDate ?
+                        <div className="date-picker">
+                            <div className="date-picker-part">{this.state.dates.indexOf(this.state.selectedDate) ? <div id="date-picker-left" onClick={this.handleDateClick}>{"<"}</div> : <div id="date-picker-left">{""}</div>}</div>
+                            <div className="date-picker-part">{this.state.selectedDate}</div>
+                            <div className="date-picker-part">{this.state.dates.indexOf(this.state.selectedDate) !== this.state.dates.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
+                        </div>
+                        : null
+                    }
                 </div>
                 {[
                     this.renderMatchSelector(),

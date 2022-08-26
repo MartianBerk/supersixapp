@@ -9,7 +9,7 @@ import '../css/SuperSix.css';
 class SuperSix extends Component {
     constructor(props) {
         super(props);
-        this.state = { userId: null, adminMode: false };
+        this.state = { userId: null, playerId: null, meta: null, adminMode: false };
     }
 
     render () {
@@ -24,15 +24,17 @@ class SuperSix extends Component {
                 {
                     this.state.adminMode ?
                     <SuperSixAdmin
+                        meta={this.state.meta}
                         userId={this.state.userId}
+                        playerId={this.state.playerId}
                         onLogoutSuccess={() => {
                             this.setState({ userId: null, adminMode: false });
                         }}
                     />
                     :
                     <SuperSixGame
-                        onLoginSuccess={(userId) => {
-                            this.setState({ userId: userId });
+                        onLoginSuccess={(userId, playerId, meta) => {
+                            this.setState({ userId: userId, playerId: playerId, meta: meta });
                         }}
                         onLogoutSuccess={() => {
                             this.setState({ userId: null, adminMode: false });
