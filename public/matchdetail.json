@@ -1,28 +1,28 @@
 {
     "match_detail": {
         "head_to_head": {
-            "Brentford": [
+            "Manchester City": [
                 "WIN",
                 "WIN"
             ],
-            "Everton": [
+            "Crystal Palace": [
                 "LOSE",
                 "LOSE"
             ]
         },
         "league_position": {
-            "Brentford": "8",
-            "Everton": "17"
+            "Manchester City": "8",
+            "Crystal Palace": "17"
         },
         "team_performance": {
-            "Brentford": [
+            "Manchester City": [
                 "WIN",
                 "LOSE",
                 "DRAW",
                 "WIN",
                 "LOSE"
             ],
-            "Everton": [
+            "Crystal Palace": [
                 "LOSE",
                 "LOSE",
                 "LOSE",
