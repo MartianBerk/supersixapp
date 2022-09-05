@@ -179,7 +179,7 @@ class GameSelector extends Component {
                                 </span>
                                 <span className="matchselector-leaguebreak">
                                     {
-                                        match.league_id !== lMark ?
+                                        match.league_id !== lMark || matchTime !== lMark ?
                                         <h5>{this.state.leagues[match.league_id]}</h5> :
                                         null
                                     }
