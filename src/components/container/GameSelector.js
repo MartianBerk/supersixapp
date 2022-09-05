@@ -123,7 +123,6 @@ class GameSelector extends Component {
         const day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
         const weekday = weekdays[date.getDay()];
 
-
         return weekday + " " + day + " " + months[month];
     }
 
