@@ -260,7 +260,7 @@ class GameSelector extends Component {
                         : null
                     }
                 </div>
-                <div className={`gameselector-selections${selections ? "-complete" : ""}`}>
+                <div className={`gameselector-selections${selections == 6 ? "-complete" : ""}`}>
                     {selections} / 6 Selections
                 </div>
                 <br />
