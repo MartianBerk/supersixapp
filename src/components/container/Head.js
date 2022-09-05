@@ -13,10 +13,21 @@ class Head extends Component {
             startDate: null,
             nextDate: null,
             rounds: null,
-            specialMessage: null
+            specialMessage: null,
+            userId: props.userId,
+            adminMode: false
         };
 
         this.requests = new Requests()
+
+        this.handleLogoClick = this.handleLogoClick.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        // If a login has been performed and the props userId updated, update state
+        if (this.props.userId !== prevProps.userId) {
+            this.setState({ userId: this.props.userId });
+        }
     }
 
     isSpecialEvent() {
@@ -114,6 +125,40 @@ class Head extends Component {
         return date + " " + hours + ":" + mins.substr(-2) + ":" + secs.substr(-2);
     }
 
+    handleLogoClick(e) {
+        if (this.state.userId) {
+            this.requests.fetch(
+                "CHECKPERMISSIONURL",
+                null,
+                {
+                    "permission": "ADMIN"
+                },
+                {
+                    "Content-Type": "application/json"
+                },
+                null,
+                "same-origin"
+            )
+            .then(response => response.json())
+            .then(data => {
+                if (data.ADMIN) {
+                    let adminMode = !this.state.adminMode;
+
+                    this.setState({ adminMode: adminMode });
+                    this.props.setAdmin(adminMode);
+                }
+                else {
+                    this.setState({ adminMode: false })
+                    this.props.setAdmin(false);
+                }
+            })
+        }
+        else {
+            this.setState({ adminMode: false });
+            this.props.setAdmin(false);
+        }
+    }
+
     render () {
         return (
             <div className="head">
@@ -123,8 +168,8 @@ class Head extends Component {
                         <h3>{ this.state.rounds || 0 }</h3>
                     </div>
                     <div className="logo">
-                        <img id="supersix-logo" src='logo.png' height='70' width='80' />
-                        <div className="banner-text">{this.state.specialMessage}</div>
+                        <img id="supersix-logo" src={this.state.adminMode ? 'logo-admin.png' : 'logo.png'} height='70' width='80' onClick={this.handleLogoClick} />
+                        <div className="banner-text admin">{this.state.adminMode ? 'Admin Mode' : this.state.specialMessage}</div>
                     </div>
                     <div className="jackpot">
                         <h2>Jackpot</h2>

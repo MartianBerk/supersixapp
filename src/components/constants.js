@@ -18,6 +18,17 @@ export const GETPREDICTIONURL = BASEURL + "/user/getprediction";
 export const ADDPREDICTIONURL = BASEURL + "/user/addprediction";
 export const UPDATEDETAILSURL = BASEURL + "/user/updatedetails";
 
+// admin web apis
+export const LISTLEAGUESURL = BASEURL + "/admin/listleagues";
+export const LISTMATCHESURL = BASEURL + "/admin/listmatchesnew";
+export const GETMATCHURL = BASEURL + "/admin/getmatch";
+export const ADDMATCHURL = BASEURL + "/admin/addmatch";
+export const DROPMATCHURL = BASEURL + "/admin/dropmatch";
+
+// user admin web apis
+const ADMINURL = BASEURL.substring(0, BASEURL.length - 17) + "/admin"
+export const CHECKPERMISSIONURL = ADMINURL + "/permissions/check";
+
 // access control web apis
 const ACCESSCONTROLURL = BASEURL.substring(0, BASEURL.length - 17) + "/accesscontrol/api"
 export const LOGGEDINURL = ACCESSCONTROLURL + "/checkuser";

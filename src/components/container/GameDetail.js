@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Requests } from "../requests.js"
 import GamePrediction from './GamePrediction.js';
+import GameSelection from './GameSelection.js';
 
 import '../css/GameDetail.css';
 
@@ -92,18 +93,26 @@ class GameDetail extends Component {
                     {/* TODO: This needs to only render if we have playerId. Otherwise a login button to reveal user page. Also, handle submitted predictions.*/}
                     { 
                         !this.state.loading ? 
-                            this.state.playerId ?
-                            <GamePrediction
+                            this.props.adminMode ?
+                            <GameSelection
                                 gameId={this.state.gameId}
-                                playerId={this.state.playerId}
-                                onPredictionSet={this.props.onPredictionSet}
+                                onSelectionSet={this.props.onSelection}
+                                selectionNumber={this.props.selectionNumber}
                             /> :
-                            <button
-                                className="gameprediction-userlogin-button"
-                                onClick={(e) => this.props.onLoginSelect()}
-                            >
-                                Login
-                            </button>
+                            (
+                                this.state.playerId ?
+                                <GamePrediction
+                                    gameId={this.state.gameId}
+                                    playerId={this.state.playerId}
+                                    onPredictionSet={this.props.onSelection}
+                                /> :
+                                <button
+                                    className="gameprediction-userlogin-button"
+                                    onClick={(e) => this.props.onLoginSelect()}
+                                >
+                                    Login
+                                </button>
+                            )
                         : null
                     }
                 </div>

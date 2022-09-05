@@ -12,8 +12,7 @@ class GamePrediction extends Component {
             playerId: props.playerId,
             loading: true,
             selection: null,
-            error: null,
-            updated: false
+            error: null
         };
 
         this.handleSelectionClick = this.handleSelectionClick.bind(this);

@@ -14,7 +14,14 @@ export class Requests {
         LOGGEDINURL: "checkuser.json",
         LOGINURL: "login.json",
         GETMATCHDETAILURL: "matchdetail.json",
-        GETPREDICTIONURL: "prediction.json"
+        GETPREDICTIONURL: "prediction.json",
+        CHECKPERMISSIONURL: "permission.json",
+        LISTLEAGUESURL: "listleagues.json",
+        LISTMATCHESURL: "listmatches.json",
+        ADDMATCHESURL: "matchesadd.json",
+        GETMATCHURL: "match.json",
+        ADDMATCHURL: "add_match.json",
+        DROPMATCHURL: "drop_match.json"
     };
 
     constructor() {

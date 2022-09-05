@@ -1,4 +1,5 @@
 .games {
+    color: #ccccc3;
     margin: auto;
     font-weight: bold;
     padding-top: 10px;
@@ -8,7 +9,6 @@
 }
 
 .date-picker {
-    color: #ccccc3;
     font-size: 20px;
     padding: 10px 0px 20px 0px;
     overflow: hidden;
