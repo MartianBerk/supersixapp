@@ -27,21 +27,13 @@ class User extends Component {
             lastname: props.userData.lastname,
             nickname: nickname,
             activeChanges: false,
-            error: null,
-            adminMode: props.adminMode
+            error: null
         };
 
         this.submitChanges = this.submitChanges.bind(this);
         this.logout = this.logout.bind(this);
 
         this.requests = new Requests();
-    }
-
-    componentDidUpdate(prevProps) {
-        // If a login has been performed and the props userId updated, update state
-        if (this.props.adminMode !== prevProps.adminMode) {
-            this.setState({ adminMode: this.props.adminMode });
-        }
     }
 
     submitChanges(e) {
@@ -154,68 +146,51 @@ class User extends Component {
                         /> :
                         <div className="userprofile-container">
                             <p>{ this.state.userId.toUpperCase() }</p>
-                            {
-                                !this.state.adminMode
-                                ?
-                                <div>
-                                    <p> {this.state.firstname + " " + this.state.lastname} </p>
-                                </div>
-                                :
-                                null
-                            }
+                            <p> {this.state.firstname + " " + this.state.lastname} </p>
                             <p>
                                 <input
                                     className="userprofile-input userprofile-submit"
                                     type="submit"
                                     value="Logout"
-                                    onClick={this.logout}
+                                    onClick={this.logout} />
+                            </p>
+                            <p>
+                                Email
+                                <br />
+                                <input
+                                    class="userprofile-input"
+                                    type="email"
+                                    value={ this.state.email }
+                                    onChange={e => {
+                                        if (this.state.email !== e.target.value) {
+                                            this.setState({ email: e.target.value, activeChanges: true })
+                                        }
+                                    }}
+                                />
+                            </p>
+                            <p>
+                                Nickname
+                                <br />
+                                <input
+                                    class="userprofile-input"
+                                    type="text"
+                                    value={ this.state.nickname }
+                                    onChange={e => {
+                                        if (this.state.nickname !== e.target.value) {
+                                            this.setState({ nickname: e.target.value, activeChanges: true })
+                                        }
+                                    }}
                                 />
                             </p>
                             {
-                                !this.state.adminMode
-                                ?
-                                <div>
-                                    <p>
-                                        Email
-                                        <br />
-                                        <input
-                                            class="userprofile-input"
-                                            type="email"
-                                            value={ this.state.email }
-                                            onChange={e => {
-                                                if (this.state.email !== e.target.value) {
-                                                    this.setState({ email: e.target.value, activeChanges: true })
-                                                }
-                                            }}
-                                        />
-                                    </p>
-                                    <p>
-                                        Nickname
-                                        <br />
-                                        <input
-                                            class="userprofile-input"
-                                            type="text"
-                                            value={ this.state.nickname }
-                                            onChange={e => {
-                                                if (this.state.nickname !== e.target.value) {
-                                                    this.setState({ nickname: e.target.value, activeChanges: true })
-                                                }
-                                            }}
-                                        />
-                                    </p>
-                                    {
-                                        this.state.activeChanges ? 
-                                        <p>
-                                            <input
-                                                class="userprofile-input userprofile-submit"
-                                                type="submit"
-                                                value="Update"
-                                                onClick={this.submitChanges} />
-                                        </p>
-                                        :
-                                        null
-                                    }
-                                </div>
+                                this.state.activeChanges ? 
+                                <p>
+                                    <input
+                                        class="userprofile-input userprofile-submit"
+                                        type="submit"
+                                        value="Update"
+                                        onClick={this.submitChanges} />
+                                </p>
                                 :
                                 null
                             }

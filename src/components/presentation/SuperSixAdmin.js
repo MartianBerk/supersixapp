@@ -105,7 +105,6 @@ class SuperSixAdmin extends Component {
                             userData={
                                 { userId: this.props.userId }
                             }
-                            adminMode={true}
                             onLogoutSuccess={() => {
                                 this.props.onLogoutSuccess();
                             }}
