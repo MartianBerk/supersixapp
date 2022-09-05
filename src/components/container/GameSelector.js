@@ -229,7 +229,7 @@ class GameSelector extends Component {
                                             selectionNumber={
                                                 this.state.selections.indexOf(match.id) > -1 ? 
                                                 this.state.selections.indexOf(match.id) + 1 : 
-                                                this.state.selections.indexOf(null)
+                                                this.state.selections.indexOf(null) + 1
 
                                             }
                                         /> :
