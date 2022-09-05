@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import GameDetail from './GameDetail.js';
 import { Requests } from "../requests.js";
 
-import "../css/Games.css";
+import "../css/GameSelector.css";
 
 class GameSelector extends Component {
     constructor(props) {
@@ -15,35 +15,32 @@ class GameSelector extends Component {
             matches: [],
             dates: [],
             matchLookup: {},
-            selected: [],
+            selections: [null, null, null, null, null, null],
             selectedDate: null,
             matchRow: null
         }
 
         this.leagueOrder = [7, 6, 5, 4];  // PL, ELC, EL1, EL2
 
-        this.requests = new Requests();
-
         this.handleDateClick = this.handleDateClick.bind(this);
-        this.handleMatchAdd = this.handleMatchAdd.bind(this);
-        this.handleMatchDrop = this.handleMatchDrop.bind(this);
-        this.handleMatchesSubmit = this.handleMatchesSubmit.bind(this);
     }
 
     loadData() {
-        this.requests.fetch("LISTLEAGUESURL")
+        const requests = new Requests();
+
+        requests.fetch("LISTLEAGUESURL")
         .then(response => response.json())
         .then(data => this.setState({ leagues: data.leagues.reduce((leagues, league) => {
             leagues[league.id] = league.name
             return leagues
         }, {})}))
         .then(_ => {
-            this.requests.fetch("LISTMATCHESURL")
+            requests.fetch("LISTMATCHESURL")
             .then(response => response.json())
             .then(data => this.setState((_) => {
                 let matches = [];
                 let matchLookup = {};
-                let selected = [];
+                let selections = [null, null, null, null, null, null];
                 let dates = [];
 
                 data.matches.forEach(match => {
@@ -56,11 +53,11 @@ class GameSelector extends Component {
                     }
 
                     if (match.use_match) {
-                        selected.push(match);
+                        selections.splice(match.game_number - 1, 1, match.id)
                     }
                 });
             
-                return { matches: matches, matchLookup: matchLookup, selected: selected, dates: dates };
+                return { matches: matches, matchLookup: matchLookup, selections: selections, dates: dates };
             }))
             .then(() => {
                 this.setState((oldState) => {
@@ -71,13 +68,11 @@ class GameSelector extends Component {
                     newMatches.sort((a, b) => {
                         const aLeague = this.leagueOrder.indexOf(a.league_id);
                         const bLeague = this.leagueOrder.indexOf(b.league_id);
-                        const aDate = this.formatDate(new Date(a.match_date));
-                        const bDate = this.formatDate(new Date(b.match_date));
 
-                        if (aDate > bDate) {
+                        if (a.match_date > b.match_date) {
                             return 1
                         }
-                        else if (aDate < bDate) {
+                        else if (a.match_date < b.match_date) {
                             return -1
                         }
                         else {
@@ -86,17 +81,6 @@ class GameSelector extends Component {
                             }
                             else if (aLeague < bLeague) {
                                 return -1
-                            }
-                            else {
-                                if (a.match_date > b.match_date) {
-                                    return 1
-                                }
-                                else if (a.match_date < b.match_date) {
-                                    return -1
-                                }
-                                else {
-                                    return 0
-                                }
                             }
                         }
                     });
@@ -150,92 +134,6 @@ class GameSelector extends Component {
         this.setState({ selectedDate: this.state.dates[dateIndex] });
     }
 
-    handleMatchesSubmit(_) {
-        if (this.state.selected.length !== 6) {
-            alert("Must select six matches");  // TODO: render into error component
-            return false;
-        }
-
-        const matchDate = this.formatDate(this.state.date);
-        const selected = this.state.selected.map(match => {
-            return { id: match.id, game_number: match.game_number };
-        })
-
-        // TODO: highlight button when submitted (check selected for fresh loads)
-        this.requests.fetch(
-            "ADDMATCHESURL",
-            "POST",
-            {
-                matchDate: matchDate
-            },
-            {
-                "Content-Type": "application/json"
-            },
-            selected
-        )
-        .then(response => response.json())
-        .catch(/* do nothing */);
-    }
-
-    handleMatchAdd(e) {
-        let id = e.target.id.split("-");
-
-        if (id.length == 2) {
-            if (this.state.selected.length == 6) {
-                alert("Already selected six games.")  // TODO: error component for better rendering.
-                return null;
-            }
-
-            id = parseInt(id[1]);
-            const gameNumbers = [1, 2, 3, 4, 5, 6];
-            let selected = [...this.state.selected];
-
-            let inserted = false;
-            for (let i = 0; i < selected.length; i++) {
-                if (selected[i].game_number !== gameNumbers[i]) {
-                    let match = this.state.matchLookup[id];
-                    match.game_number = gameNumbers[i];
-                    selected.splice(i, 0, this.state.matchLookup[id]);
-                    inserted = true;
-                    break;
-                }
-            } 
-            
-            if (!inserted) {
-                let match = this.state.matchLookup[id];
-                match.game_number = selected.length + 1;
-                selected.push(match);
-            }
-
-            this.setState({ selected: selected });
-        }
-    }
-
-    handleMatchDrop(e) {
-        let id = e.target.id.split("-");
-
-        if (id.length == 2) {
-            id = parseInt(id[1]);
-
-            this.setState((oldState) => {
-                let selected = [...oldState.selected];
-                
-                let removeIndex = null;
-                for (let i = 0; i < selected.length; i++) {
-                    if (selected[i].id === id) {
-                        removeIndex = i;
-                        break
-                    }
-                }
-
-                if (removeIndex !== null) {
-                    selected.splice(removeIndex, 1);
-                    return { selected: selected };
-                }
-            })
-        }
-    }
-
     renderMatchSelector() {
         if (this.state.matches.length === 0) {
             return null;
@@ -243,7 +141,6 @@ class GameSelector extends Component {
         
         let leagueMarker = 0;
         let timeMarker = 0;
-        const selected = this.state.selected.map(s => { return s.id });
 
         return (
             <div className="matchselector">
@@ -261,54 +158,71 @@ class GameSelector extends Component {
 
                         return (
                             <div>
-                                {
-                                    match.league_id !== lMark ?
-                                    <h4>{this.state.leagues[match.league_id]}</h4> :
-                                    null
-                                }
-                                {
-                                    matchTime !== tMark ?
-                                    <h5>{matchTime}</h5> :
-                                    null
-                                }
+                                <span className="matchselector-timebreak">
+                                    {
+                                        matchTime !== tMark ?
+                                        <h4>{matchTime}</h4> :
+                                        null
+                                    }
+                                </span>
+                                <span className="matchselector-leaguebreak">
+                                    {
+                                        match.league_id !== lMark ?
+                                        <h5>{this.state.leagues[match.league_id]}</h5> :
+                                        null
+                                    }
+                                </span>
                                 <div className="matchselector-submit-match">
                                     <div
-                                        className="matchselector-submit-match-section"
+                                        className={"matchselector-submit-match-section" + (this.state.selections.indexOf(match.id) > -1 ? " selected" : "")}
                                         onMouseDown={(e) => { 
                                             if(e.target.type !== "submit" && match.status !== "POSTPONED") {
                                                 this.setState({ matchRow: match.id === this.state.matchRow ? null : match.id });
                                             }
                                         }}
                                     >
+                                        <span className="gameselection hometeam">{match.home_team}</span>
+                                        <span className="gameselection gameexpander">
                                         {
-                                            match.home_team + " Vs " + match.away_team + " - " + " (" + match.status + ")"
+                                            match.status === "POSTPONED" ?
+                                            "P : P" :
+                                            <img src={this.state.matchRow === match.id ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />
                                         }
+                                        </span>
+                                        <span className="gameselection awayteam">{match.away_team}</span>
                                     </div>
                                     {
                                         this.state.matchRow === match.id ?
                                         <GameDetail
                                             playerId={this.props.playerId}
+                                            adminMode={true}
                                             homeTeam={match.home_team}
                                             awayTeam={match.away_team}
                                             gameDate={match.match_date}
                                             gameId={match.id}
-                                            // onPredictionSet={(selection) => {
-                                            //     let newSelections = [...this.state.playerSelections];
-                                            //     newSelections[this.state.indexRow] = selection;
+                                            onSelection={(drop) => {
+                                                this.setState(() => {
+                                                    let newSelections = [...this.state.selections];
 
-                                            //     this.setState({ playerSelections: newSelections });
-                                            // }}
+                                                    if (drop) {
+                                                        newSelections.splice(newSelections.indexOf(match.id), 1, null);
+                                                    }
+                                                    else {
+                                                        newSelections.splice(newSelections.indexOf(null), 1, match.id);
+                                                    }
+
+                                                    return {selections: newSelections}
+                                                });
+                                            }}
+                                            selectionNumber={
+                                                this.state.selections.indexOf(match.id) > -1 ? 
+                                                this.state.selections.indexOf(match.id) + 1 : 
+                                                this.state.selections.indexOf(null)
+
+                                            }
                                         /> :
                                         null
                                     }
-                                    {/* <div className="matchselector-submit-match-section">
-                                        <button
-                                            id={`matchselector-${match.id}`}
-                                            className="matchselector-button"
-                                            onClick={selected.indexOf(match.id) > -1 ? this.handleMatchDrop : this.handleMatchAdd}>
-                                                {selected.indexOf(match.id) > -1 ? "Drop" : "Add"} Match
-                                        </button>
-                                    </div> */}
                                 </div>
                             </div>
                         )
@@ -318,40 +232,12 @@ class GameSelector extends Component {
         )
     }
 
-    renderMatchSubmission() {
-        if (this.state.matches.length === 0) {
-            return null;
-        }
-
-        const gameNumbers = [1, 2, 3, 4, 5, 6];
-
-        return (
-            <div className="matchsubmission">
-                <h4>Selected Matches {this.state.date ? "for " + this.formatDate(this.state.date) : null}</h4>
-                {gameNumbers.map((g, i) => {
-                    return (
-                        <div className="matchsubmission-match">
-                            <div className="matchsubmission-match-section matchsubmission-match-id">
-                                {g}
-                            </div>
-                            <div className="matchsubmission-match-section">
-                                {this.state.selected.length >= g ? (this.state.selected[i].home_team + " Vs " + this.state.selected[i].away_team) : null}
-                            </div>
-                        </div>
-                    )
-                })}
-                <br />
-                {this.state.date ? <button className="matchsubmission-button" onClick={this.handleMatchesSubmit}>Submit</button> : null}
-            </div>
-        )
-    }
-
     render() {
+        const selections = this.state.selections.filter(s => s !== null).length;
+
         return (
             <div className="games">
-                <h2>Matches</h2>
                 <div className="matchselector-load">
-                    <h4>Match Date</h4>
                     {
                         this.state.selectedDate ?
                         <div className="date-picker">
@@ -362,9 +248,12 @@ class GameSelector extends Component {
                         : null
                     }
                 </div>
+                <div className={`gameselector-selections${selections ? "-complete" : ""}`}>
+                    {selections} / 6 Selections
+                </div>
+                <br />
                 {[
-                    this.renderMatchSelector(),
-                    this.renderMatchSubmission()
+                    this.renderMatchSelector()
                 ]}
             </div>
         )

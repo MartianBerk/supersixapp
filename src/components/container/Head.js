@@ -169,7 +169,7 @@ class Head extends Component {
                     </div>
                     <div className="logo">
                         <img id="supersix-logo" src={this.state.adminMode ? 'logo-admin.png' : 'logo.png'} height='70' width='80' onClick={this.handleLogoClick} />
-                        <div className="banner-text admin">{this.state.adminMode ? 'ADMIN Mode' : this.state.specialMessage}</div>
+                        <div className="banner-text admin">{this.state.adminMode ? 'Admin Mode' : this.state.specialMessage}</div>
                     </div>
                     <div className="jackpot">
                         <h2>Jackpot</h2>

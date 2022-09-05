@@ -230,7 +230,7 @@ class Games extends Component {
 
                                                                         this.props.onLoginSelect()
                                                                     }}
-                                                                    onPredictionSet={(selection) => {
+                                                                    onSelection={(selection) => {
                                                                         let newSelections = [...this.state.playerSelections];
                                                                         newSelections[this.state.indexRow] = selection;
 

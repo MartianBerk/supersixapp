@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import { Requests } from "../requests.js";
 import GameSelector from '../container/GameSelector.js';
-import User from "../container/User.js";
 
 import '../css/SuperSix.css';
 
@@ -48,12 +47,12 @@ class SuperSixAdmin extends Component {
                     <button
                         className={`supersix-menu-button ${this.state.showPlayers ? "active" : ""}`}
                         id="supersix-players"
-                        onClick={this.handleMenuClick}><img id="supersix-scores-img" onClick={this.handleMenuClick} src='scores.svg' height='40' width='40' /> 
+                        onClick={this.handleMenuClick}><img id="supersix-scores-img" onClick={this.handleMenuClick} src='scores-admin.svg' height='40' width='40' /> 
                     </button>
                     <button
                         className={`supersix-menu-button ${this.state.showPerformance ? "active" : ""}`}
                         id="supersix-performance"
-                        onClick={this.handleMenuClick}><img id="supersix-performance-img" onClick={this.handleMenuClick} src='leaders.svg' height='40' width='40' /> 
+                        onClick={this.handleMenuClick}><img id="supersix-performance-img" onClick={this.handleMenuClick} src='leaders-admin.svg' height='40' width='40' /> 
                     </button>
                     <button
                         className={`supersix-menu-button ${this.state.showUser ? "active" : ""}`}
@@ -64,15 +63,17 @@ class SuperSixAdmin extends Component {
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
                     <GameSelector
-                        playerId={this.props.playerId }
+                        playerId={ this.props.playerId }
+                        adminMode={ true }
                         meta={{
                             teams: this.props.meta.teams,
                             gameweeks: this.props.meta.gameweeks
                         }}
                     /> 
                 </div>
-                {/* <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
-                    { !this.state.loading ? <Scores
+                <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
+                    {null  /* TODO: Implement as prediction submitter */}
+                    {/* { !this.state.loading ? <Scores
                                                 playerId={ this.props.playerId }
                                                 meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }}
                                                 sendSelectionsUpstream={(selections, i) => {
@@ -84,17 +85,19 @@ class SuperSixAdmin extends Component {
 
                                                     this.setState({ allPlayerSelections: selections, userData: userData })
                                                 }}
-                                            /> : null }
+                                            /> : null } */}
                 </div>
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
-                    { 
+                    {null  /* TODO: Implement as prediction submitter */}
+                    {/* { 
                         !this.state.loading && this.state.meta.gameweeks.length > 0
                         ? <Performance meta={this.state.meta.players} startDate={this.state.meta.gameweeks[0]} playerId={this.props.playerId} />
                         : null 
-                    }  
-                </div> */}
+                    }   */}
+                </div>
                 <div className={`supersix supersix-user ${this.state.showUser ? "" : "hidden"}`}>
-                    { 
+                    {null  /* TODO: Implement as player submitter */}
+                    {/* { 
                         !this.state.loading ? 
                         <User
                             playerMeta={this.props.meta["players"]}
@@ -107,7 +110,7 @@ class SuperSixAdmin extends Component {
                                 this.props.onLogoutSuccess();
                             }}
                         /> : null
-                    }
+                    } */}
                 </div>
             </div>
         )
