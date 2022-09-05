@@ -64,7 +64,7 @@ class GameSelector extends Component {
                     let newMatches = [...oldState.matches];
                     let newDates = [...oldState.dates];
 
-                    // sort (date then league then time)
+                    // sort (date then league (we get time for free from dat sort))
                     newMatches.sort((a, b) => {
                         const aLeague = this.leagueOrder.indexOf(a.league_id);
                         const bLeague = this.leagueOrder.indexOf(b.league_id);
@@ -87,10 +87,13 @@ class GameSelector extends Component {
 
                     // sort dates separately for date picker
                     newDates.sort((a, b) => {
-                        if (a.match_date > b.match_date) {
+                        const aDate = new Date(a.match_date);
+                        const bDate = new Date(b.match_date);
+
+                        if (aDate > bDate) {
                             return 1
                         }
-                        else if (a.match_date < b.match_date) {
+                        else if (aDate < bDate) {
                             return -1
                         }
                         else {
@@ -110,8 +113,18 @@ class GameSelector extends Component {
         this.loadData();
     }
 
-    formatDate(date) {
-        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    formatDate(matchDate) {
+        let date = new Date(matchDate);
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        const month = date.getMonth();
+        const day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+        const weekday = weekdays[date.getDay()];
+
+
+        return weekday + " " + day + " " + months[month];
     }
 
     formatMatchTime(matchDate) {
