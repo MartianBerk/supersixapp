@@ -20,7 +20,6 @@ class PlayerPredictions extends Component {
         this.requests = new Requests();
 
         this.handleDateClick = this.handleDateClick.bind(this);
-        this.handlePredictionClick = this.handlePredictionClick.bind(this);
     }
 
     componentDidMount() {
@@ -102,10 +101,6 @@ class PlayerPredictions extends Component {
         };
 
         this.setState({ selectedDate: this.state.dates[dateIndex] });
-    }
-
-    handlePredictionClick(event) {
-        event.stopPropagation();
     }
 
     render() {
