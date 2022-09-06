@@ -1,0 +1,109 @@
+{
+    "players": [
+        {
+            "first_name": "Martin",
+            "id": 1,
+            "join_date": "Mon, 12 Oct 2020 20:19:48 GMT",
+            "last_name": "Baker",
+            "retired": false
+        },
+        {
+            "first_name": "Greg",
+            "id": 2,
+            "join_date": "Mon, 12 Oct 2020 21:08:49 GMT",
+            "last_name": "Perkins",
+            "retired": false
+        },
+        {
+            "first_name": "Dean",
+            "id": 3,
+            "join_date": "Wed, 14 Oct 2020 19:22:43 GMT",
+            "last_name": "Cox",
+            "retired": false
+        },
+        {
+            "first_name": "Stefan",
+            "id": 4,
+            "join_date": "Wed, 14 Oct 2020 19:24:10 GMT",
+            "last_name": "Cox",
+            "retired": false
+        },
+        {
+            "first_name": "Chris",
+            "id": 5,
+            "join_date": "Wed, 14 Oct 2020 20:18:15 GMT",
+            "last_name": "Shaw",
+            "retired": false
+        },
+        {
+            "first_name": "Gary",
+            "id": 6,
+            "join_date": "Wed, 14 Oct 2020 20:19:11 GMT",
+            "last_name": "Osmond",
+            "retired": false
+        },
+        {
+            "first_name": "Michael",
+            "id": 7,
+            "join_date": "Wed, 14 Oct 2020 20:19:48 GMT",
+            "last_name": "Barclay",
+            "retired": false
+        },
+        {
+            "first_name": "Jason",
+            "id": 8,
+            "join_date": "Sat, 17 Oct 2020 14:17:55 GMT",
+            "last_name": "Cox",
+            "retired": false
+        },
+        {
+            "first_name": "Craig",
+            "id": 9,
+            "join_date": "Sat, 17 Oct 2020 14:18:04 GMT",
+            "last_name": "Clark",
+            "retired": false
+        },
+        {
+            "first_name": "Stuart",
+            "id": 10,
+            "join_date": "Sat, 17 Oct 2020 14:18:17 GMT",
+            "last_name": "Allen",
+            "retired": false
+        },
+        {
+            "first_name": "Sam",
+            "id": 12,
+            "join_date": "Sat, 17 Oct 2020 14:18:31 GMT",
+            "last_name": "Cross",
+            "retired": false
+        },
+        {
+            "first_name": "Andy",
+            "id": 13,
+            "join_date": "Sat, 17 Oct 2020 14:19:07 GMT",
+            "last_name": "Galvin",
+            "retired": false
+        },
+        {
+            "first_name": "Lewis",
+            "id": 14,
+            "join_date": "Sat, 17 Oct 2020 14:27:24 GMT",
+            "last_name": "Watts",
+            "retired": false
+        },
+        {
+            "first_name": "Luke",
+            "id": 15,
+            "join_date": "Sun, 13 Dec 2020 09:08:54 GMT",
+            "last_name": "Igo",
+            "retired": false
+        },
+        {
+            "first_name": "Hannah",
+            "id": 16,
+            "join_date": "Sun, 12 Sep 2021 00:00:00 GMT",
+            "last_name": "Small",
+            "retired": false
+        }
+    ]
+}

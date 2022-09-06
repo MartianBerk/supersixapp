@@ -1,0 +1,41 @@
+.player-predictions {
+    color: #ccccc3;
+    margin: auto;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 50%;
+    overflow-y: scroll;
+}
+
+.player-predictions-player {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin: auto;
+    overflow: hidden;
+    width: 80%;
+}
+
+.player-predictions-player-section {
+    float: left;
+    width: 45%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.player-predictions-player-section.complete {
+    color: #287a4f;
+}
+
+.player-predictions-player-match {
+    margin: auto;
+    overflow: hidden;
+    width: 95%;
+}
+
+.player-predictions-player-match-section {
+    float: left;
+    width: 33%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

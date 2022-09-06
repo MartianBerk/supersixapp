@@ -1,0 +1,18 @@
+.player-predictions-player-match-button {
+    float: left;
+    width: 30%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #6b6b6b;
+    color: #ccccc3;
+    font-weight: bold;
+    border: 0;
+    transition: 0.3s;
+    border-radius: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.player-predictions-player-match-button.active {
+    background-color: #287a4f;
+}

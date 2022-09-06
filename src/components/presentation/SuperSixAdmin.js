@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Requests } from "../requests.js";
 import GameSelector from '../container/GameSelector.js';
+import PlayerPredictions from '../container/PlayerPredictions.js';
 
 import '../css/SuperSix.css';
 
@@ -14,8 +15,6 @@ class SuperSixAdmin extends Component {
             showPerformance: false,
             showUser: false
         };
-
-        const requests = new Requests();
 
         this.handleMenuClick = this.handleMenuClick.bind(this);
     }
@@ -64,31 +63,13 @@ class SuperSixAdmin extends Component {
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
                     <GameSelector
                         playerId={ this.props.playerId }
-                        adminMode={ true }
-                        meta={{
-                            teams: this.props.meta.teams,
-                            gameweeks: this.props.meta.gameweeks
-                        }}
                     /> 
                 </div>
                 <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
-                    {null  /* TODO: Implement as prediction submitter */}
-                    {/* { !this.state.loading ? <Scores
-                                                playerId={ this.props.playerId }
-                                                meta={{ players: this.state.meta.players, gameweeks: this.state.meta.gameweeks }}
-                                                sendSelectionsUpstream={(selections, i) => {
-                                                    let userData = {...this.state.userData};
-
-                                                    if (this.props.playerId) {
-                                                        userData.selections = selections.splice(i, 1)[0];
-                                                    }
-
-                                                    this.setState({ allPlayerSelections: selections, userData: userData })
-                                                }}
-                                            /> : null } */}
+                    <PlayerPredictions />
                 </div>
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
-                    {null  /* TODO: Implement as prediction submitter */}
+                    {null  /* TODO: Implement as round submitter */}
                     {/* { 
                         !this.state.loading && this.state.meta.gameweeks.length > 0
                         ? <Performance meta={this.state.meta.players} startDate={this.state.meta.gameweeks[0]} playerId={this.props.playerId} />

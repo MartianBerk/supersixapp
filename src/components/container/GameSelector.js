@@ -9,7 +9,6 @@ class GameSelector extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            meta: props.meta,
             date: null,
             leagues: {},
             matches: [],
@@ -206,7 +205,6 @@ class GameSelector extends Component {
                                     {
                                         this.state.matchRow === match.id ?
                                         <GameDetail
-                                            playerId={this.props.playerId}
                                             adminMode={true}
                                             homeTeam={match.home_team}
                                             awayTeam={match.away_team}
@@ -239,6 +237,14 @@ class GameSelector extends Component {
                             </div>
                         )
                     })}
+                </div>
+                <div className="games-whitespace">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                 </div>
             </div>
         )
