@@ -24,6 +24,9 @@ export const LISTMATCHESURL = BASEURL + "/admin/listmatchesnew";
 export const GETMATCHURL = BASEURL + "/admin/getmatch";
 export const ADDMATCHURL = BASEURL + "/admin/addmatch";
 export const DROPMATCHURL = BASEURL + "/admin/dropmatch";
+export const LISTPLAYERSURL = BASEURL + "/admin/listplayers";
+export const LISTPREDICTIONSURL = BASEURL + "/admin/listpredictionsnew";
+export const ADDPREDICTIONADMINURL = BASEURL + "/admin/addprediction";
 
 // user admin web apis
 const ADMINURL = BASEURL.substring(0, BASEURL.length - 17) + "/admin"

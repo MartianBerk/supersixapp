@@ -21,7 +21,10 @@ export class Requests {
         ADDMATCHESURL: "matchesadd.json",
         GETMATCHURL: "match.json",
         ADDMATCHURL: "add_match.json",
-        DROPMATCHURL: "drop_match.json"
+        DROPMATCHURL: "drop_match.json",
+        LISTPLAYERSURL: "players.json",
+        LISTPREDICTIONSURL: "list_predictions.json",
+        ADDPREDICTIONADMINURL: "add_prediction_admin.json"
     };
 
     constructor() {
