@@ -1,0 +1,166 @@
+.supersixadmin-rounds-container {
+    overflow-y: scroll;
+}
+
+.supersixadmin-rounds {
+    background-color: #454242;
+    color: #ccccc3;
+    width: 100%;
+    margin: auto;
+    font-weight: bold;
+}
+
+.supersixadmin-rounds .currentround {
+    width: 100%;
+    margin: auto;
+}
+
+.supersixadmin-rounds .currentround-section {
+    overflow: hidden;
+    width: 100%;
+    margin: auto;
+}
+
+.supersixadmin-rounds .currentround-subsection {
+    float: left;
+    width: 25%;
+}
+
+.supersixadmin-rounds .historicround {
+    overflow: hidden;
+    width: 100%;
+}
+
+.supersixadmin-rounds .historicround-section {
+    float: left;
+    width: 24%;
+    margin-bottom: -20px;
+}
+
+.currentround-create-fields {
+    overflow: hidden;
+    margin: 20px;
+}
+
+.supersixadmin-rounds .create {
+    float: left;
+    width: 50%;
+    margin-bottom: 50px;
+}
+
+.supersixadmin-rounds .currentround-section input {
+    background-color: #454242;
+    color: #ccccc3;
+    font-weight: bold;
+    text-align: center;
+}
+
+.supersixadmin-rounds .pick-winner-button {
+    width: 45%;
+    height: 25px;
+    background-color: #6b6b6b;
+    color: #ccccc3;
+    font-weight: bold;
+    text-align: center;
+    border: 0;
+    transition: 0.3s;
+    border-radius: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 40px;
+}
+
+.supersixadmin-rounds .pick-winner-button.active {
+    background-color: #287a4f;
+}
+
+.supersixadmin-rounds .pick-winner-player {
+    overflow: hidden;
+    width: 100%;
+    margin: auto;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.supersixadmin-rounds .player-section {
+    float: left;
+    width: 65%;
+}
+
+.supersixadmin-rounds .buyin {
+    float: left;
+    width: 30%;
+}
+
+.supersixadmin-rounds .small-button {
+    width: 25%;
+    background-color: #6b6b6b;
+    color: #ccccc3;
+    border: 0;
+    border-radius: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    font-weight: bold;
+}
+
+.supersixadmin-rounds .small-button.active {
+    background-color: #287a4f;
+}
+
+#createround-buyin {
+    width: 30%;
+}
+
+.supersixadmin-rounds .currentround-submit {
+    width: 20%;
+    height: 25px;
+    background-color: #6b6b6b;
+    color: #ccccc3;
+    text-align: center;
+    border: 0;
+    border-radius: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.confirm-container {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+}
+
+.confirm-container .hidden {
+    display: None;
+}
+
+.confirm {
+    /* height: 40%; */
+    width: 50%;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color:  rgba(0, 0, 0, 0.8);
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+.confirm-buttons {
+    overflow: hidden;
+    background-color:  rgba(0, 0, 0, 0.8);
+}
+
+.confirm-buttons .confirm-button {
+    width: 75px;
+    height: 25px;
+    margin: 20px;
+}
+
+#confirm-yes {
+    background-color: #269726;
+}
+
+#confirm-no {
+    background-color: #962f16;
+}

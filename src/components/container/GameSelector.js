@@ -255,24 +255,24 @@ class GameSelector extends Component {
 
         return (
             <div className="games">
-                <div className="matchselector-load">
                     {
                         this.state.selectedDate ?
-                        <div className="date-picker">
-                            <div className="date-picker-part">{this.state.dates.indexOf(this.state.selectedDate) ? <div id="date-picker-left" onClick={this.handleDateClick}>{"<"}</div> : <div id="date-picker-left">{""}</div>}</div>
-                            <div className="date-picker-part">{this.state.selectedDate}</div>
-                            <div className="date-picker-part">{this.state.dates.indexOf(this.state.selectedDate) !== this.state.dates.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
-                        </div>
-                        : null
+                        <div className="matchselector-load">
+                            <div className="date-picker">
+                                <div className="date-picker-part">{this.state.dates.indexOf(this.state.selectedDate) ? <div id="date-picker-left" onClick={this.handleDateClick}>{"<"}</div> : <div id="date-picker-left">{""}</div>}</div>
+                                <div className="date-picker-part">{this.state.selectedDate}</div>
+                                <div className="date-picker-part">{this.state.dates.indexOf(this.state.selectedDate) !== this.state.dates.length - 1 ? <div id="date-picker-right" onClick={this.handleDateClick}>{">"}</div> : <div id="date-picker-right">{""}</div>}</div>
+                            </div>
+                            <div className={`gameselector-selections${selections == 6 ? "-complete" : ""}`}>
+                                {selections} / 6 Selections
+                            </div>
+                            <br />
+                            {[
+                                this.renderMatchSelector()
+                            ]}
+                        </div> :
+                        null
                     }
-                </div>
-                <div className={`gameselector-selections${selections == 6 ? "-complete" : ""}`}>
-                    {selections} / 6 Selections
-                </div>
-                <br />
-                {[
-                    this.renderMatchSelector()
-                ]}
             </div>
         )
     }

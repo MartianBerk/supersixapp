@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
-import { Requests } from "../requests.js";
 import GameSelector from '../container/GameSelector.js';
+import Players from '../container/Players.js';
 import PlayerPredictions from '../container/PlayerPredictions.js';
+import SupersixRounds from '../container/SupersixRounds.js';
 
 import '../css/SuperSix.css';
 
@@ -60,37 +61,19 @@ class SuperSixAdmin extends Component {
                             <img id="supersix-user-img" onClick={this.handleMenuClick} src='users-admin.svg' height='40' width='40' /> 
                     </button> 
                 </div>
-                <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
+                <div className={`supersixadmin supersixadmin-games ${this.state.showGames ? "" : "hidden"}`}>
                     <GameSelector
                         playerId={ this.props.playerId }
                     /> 
                 </div>
-                <div className={`supersix supersix-scores ${this.state.showPlayers ? "" : "hidden"}`}>
+                <div className={`supersixadmin supersixadmin-predictions ${this.state.showPlayers ? "" : "hidden"}`}>
                     <PlayerPredictions />
                 </div>
-                <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
-                    {null  /* TODO: Implement as round submitter */}
-                    {/* { 
-                        !this.state.loading && this.state.meta.gameweeks.length > 0
-                        ? <Performance meta={this.state.meta.players} startDate={this.state.meta.gameweeks[0]} playerId={this.props.playerId} />
-                        : null 
-                    }   */}
+                <div className={`supersixadmin supersixadmin-rounds ${this.state.showPerformance ? "" : "hidden"}`}>
+                    <SupersixRounds />
                 </div>
-                <div className={`supersix supersix-user ${this.state.showUser ? "" : "hidden"}`}>
-                    {null  /* TODO: Implement as player submitter */}
-                    {/* { 
-                        !this.state.loading ? 
-                        <User
-                            playerMeta={this.props.meta["players"]}
-                            isLoggedIn={true}
-                            userData={
-                                { userId: this.props.userId }
-                            }
-                            onLogoutSuccess={() => {
-                                this.props.onLogoutSuccess();
-                            }}
-                        /> : null
-                    } */}
+                <div className={`supersixadmin supersixadmin-players ${this.state.showUser ? "" : "hidden"}`}>
+                    <Players />
                 </div>
             </div>
         )

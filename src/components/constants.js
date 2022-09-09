@@ -27,6 +27,16 @@ export const DROPMATCHURL = BASEURL + "/admin/dropmatch";
 export const LISTPLAYERSURL = BASEURL + "/admin/listplayers";
 export const LISTPREDICTIONSURL = BASEURL + "/admin/listpredictionsnew";
 export const ADDPREDICTIONADMINURL = BASEURL + "/admin/addprediction";
+export const CURRENTROUNDADMINURL = BASEURL + "/admin/currentround";
+export const HISTORICROUNDSURL = BASEURL + "/admin/historicrounds";
+export const ADDROUNDURL = BASEURL + "/admin/addround";
+export const ENDROUNDURL = BASEURL + "/admin/endround";
+export const ADDPLAYERURL = BASEURL + "/admin/addplayer";
+export const DROPPLAYERURL = BASEURL + "/admin/dropplayer";
+export const REACTIVATEPLAYERURL = BASEURL + "/admin/reactivateplayer";
+export const GETSPECIALMESSAGEURL = BASEURL + "/admin/getspecialmessage";
+export const SETSPECIALMESSAGEURL = BASEURL + "/admin/setspecialmessage";
+export const ENDSPECIALMESSAGEURL = BASEURL + "/admin/endspecialmessage";
 
 // user admin web apis
 const ADMINURL = BASEURL.substring(0, BASEURL.length - 17) + "/admin"
