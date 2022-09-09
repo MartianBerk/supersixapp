@@ -1317,7 +1317,7 @@
             "match_date": "Sat, 10 Sep 2022 14:00:00 GMT",
             "match_minute": null,
             "matchday": 7,
-            "status": "SCHEDULED",
+            "status": "POSTPONED",
             "use_match": true
         },
         {

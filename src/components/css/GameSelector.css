@@ -40,6 +40,10 @@
     color: #287a4f;
 }
 
+.postponed {
+    color: rgba(183, 41, 41, 0.7);
+}
+
 .hometeam, .awayteam {
     width: 30%;
     margin-top: 3px;
@@ -47,4 +51,9 @@
 
 .gameexpander {
     width: 33%;
+}
+
+.gameexpander img {
+    padding-left: 10px;
+    padding-right: 10px;
 }

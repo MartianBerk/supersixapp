@@ -185,7 +185,7 @@ class GameSelector extends Component {
                                 </span>
                                 <div className="matchselector-submit-match">
                                     <div
-                                        className={"matchselector-submit-match-section" + (this.state.selections.indexOf(match.id) > -1 ? " selected" : "")}
+                                        className={"matchselector-submit-match-section" + (match.status === "POSTPONED" ? " postponed" : (this.state.selections.indexOf(match.id) > -1 ? " selected" : ""))}
                                         onMouseDown={(e) => { 
                                             if(e.target.type !== "submit" && match.status !== "POSTPONED") {
                                                 this.setState({ matchRow: match.id === this.state.matchRow ? null : match.id });
@@ -194,11 +194,9 @@ class GameSelector extends Component {
                                     >
                                         <span className="gameselection hometeam">{match.home_team}</span>
                                         <span className="gameselection gameexpander">
-                                        {
-                                            match.status === "POSTPONED" ?
-                                            "P : P" :
-                                            <img src={this.state.matchRow === match.id ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />
-                                        }
+                                        {match.status === "POSTPONED" ? "(P) " : ""}
+                                        <img src={this.state.matchRow === match.id ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />
+                                        {match.status === "POSTPONED" ? " (P)" : ""}
                                         </span>
                                         <span className="gameselection awayteam">{match.away_team}</span>
                                     </div>
