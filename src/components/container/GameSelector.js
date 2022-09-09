@@ -187,7 +187,7 @@ class GameSelector extends Component {
                                     <div
                                         className={"matchselector-submit-match-section" + (match.status === "POSTPONED" ? " postponed" : (this.state.selections.indexOf(match.id) > -1 ? " selected" : ""))}
                                         onMouseDown={(e) => { 
-                                            if(e.target.type !== "submit" && match.status !== "POSTPONED") {
+                                            if(e.target.type !== "submit" && (match.status !== "POSTPONED" || this.state.selections.indexOf(match.id) > -1)) {
                                                 this.setState({ matchRow: match.id === this.state.matchRow ? null : match.id });
                                             }
                                         }}
