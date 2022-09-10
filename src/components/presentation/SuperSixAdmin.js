@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
-import { Requests } from "../requests.js";
-import GameSelector from '../container/GameSelector.js';
+import MatchSelector from '../container/MatchSelector.js';
+import Players from '../container/Players.js';
 import PlayerPredictions from '../container/PlayerPredictions.js';
+import SupersixRounds from '../container/SupersixRounds.js';
 
 import '../css/SuperSix.css';
 
@@ -61,7 +62,7 @@ class SuperSixAdmin extends Component {
                     </button> 
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
-                    <GameSelector
+                    <MatchSelector
                         playerId={ this.props.playerId }
                     /> 
                 </div>
@@ -69,28 +70,10 @@ class SuperSixAdmin extends Component {
                     <PlayerPredictions />
                 </div>
                 <div className={`supersix supersix-performance ${this.state.showPerformance ? "" : "hidden"}`}>
-                    {null  /* TODO: Implement as round submitter */}
-                    {/* { 
-                        !this.state.loading && this.state.meta.gameweeks.length > 0
-                        ? <Performance meta={this.state.meta.players} startDate={this.state.meta.gameweeks[0]} playerId={this.props.playerId} />
-                        : null 
-                    }   */}
+                    <SupersixRounds />
                 </div>
                 <div className={`supersix supersix-user ${this.state.showUser ? "" : "hidden"}`}>
-                    {null  /* TODO: Implement as player submitter */}
-                    {/* { 
-                        !this.state.loading ? 
-                        <User
-                            playerMeta={this.props.meta["players"]}
-                            isLoggedIn={true}
-                            userData={
-                                { userId: this.props.userId }
-                            }
-                            onLogoutSuccess={() => {
-                                this.props.onLogoutSuccess();
-                            }}
-                        /> : null
-                    } */}
+                    <Players />
                 </div>
             </div>
         )

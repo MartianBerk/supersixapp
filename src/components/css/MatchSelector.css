@@ -1,3 +1,12 @@
+.matchselector-container {
+    height: 50%;
+    overflow-y: scroll;
+    color: #ccccc3;
+    width: 100%;
+    margin: auto;
+    font-weight: bold;
+}
+
 .matchselector-submit-match-section {
     margin: auto;
     overflow: hidden;
