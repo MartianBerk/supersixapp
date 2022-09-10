@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import GameSelector from '../container/GameSelector.js';
+import MatchSelector from '../container/MatchSelector.js';
 import Players from '../container/Players.js';
 import PlayerPredictions from '../container/PlayerPredictions.js';
 import SupersixRounds from '../container/SupersixRounds.js';
@@ -62,7 +62,7 @@ class SuperSixAdmin extends Component {
                     </button> 
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
-                    <GameSelector
+                    <MatchSelector
                         playerId={ this.props.playerId }
                     /> 
                 </div>
