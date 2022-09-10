@@ -1,0 +1,67 @@
+{
+    "rounds": [
+        {
+            "end_date": "2022-08-27T00:00:00",
+            "jackpot": 12000,
+            "matches": 4,
+            "players": 15,
+            "round_id": 7,
+            "start_date": "2022-08-06T00:00:00",
+            "winner": "Stuart Allen"
+        },
+        {
+            "end_date": "2022-07-30T00:00:00",
+            "jackpot": 3000,
+            "matches": 1,
+            "players": 15,
+            "round_id": 6,
+            "start_date": "2022-07-30T00:00:00",
+            "winner": "Andy Galvin"
+        },
+        {
+            "end_date": "2022-05-22T00:00:00",
+            "jackpot": 78000,
+            "matches": 26,
+            "players": 15,
+            "round_id": 5,
+            "start_date": "2021-12-11T00:00:00",
+            "winner": "Jason Cox"
+        },
+        {
+            "end_date": "2021-12-04T00:00:00",
+            "jackpot": 36000,
+            "matches": 12,
+            "players": 15,
+            "round_id": 4,
+            "start_date": "2021-09-18T00:00:00",
+            "winner": "Craig Clark & Stuart Allen"
+        },
+        {
+            "end_date": "2021-09-11T00:00:00",
+            "jackpot": 57000,
+            "matches": 19,
+            "players": 14,
+            "round_id": 3,
+            "start_date": "2021-03-13T00:00:00",
+            "winner": "Stuart Allen"
+        },
+        {
+            "end_date": "2021-03-06T00:00:00",
+            "jackpot": 36000,
+            "matches": 12,
+            "players": 14,
+            "round_id": 2,
+            "start_date": "2020-12-19T00:00:00",
+            "winner": "Craig Clark & Andy Galvin"
+        },
+        {
+            "end_date": "2020-12-12T00:00:00",
+            "jackpot": 39000,
+            "matches": 13,
+            "players": 13,
+            "round_id": 1,
+            "start_date": "2020-10-10T00:00:00",
+            "winner": "Gary Osmond"
+        }
+    ]
+}

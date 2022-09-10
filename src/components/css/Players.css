@@ -1,0 +1,72 @@
+.supersixadmin-players-container {
+    height: 50%;
+    overflow-y: scroll;
+}
+
+.supersixadmin-players {
+    background-color: #454242;
+    color: #ccccc3;
+    width: 100%;
+    margin: auto;
+    font-weight: bold;
+}
+
+.supersixadmin-players .playersection {
+    overflow: hidden;
+    width: 100%;
+    margin: auto;
+}
+
+.supersixadmin-players .playersection .player {
+    float: left;
+    width: 50%;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.supersixadmin-players .playersection .player span {
+    float: left;
+    width: 50%;
+}
+
+.supersixadmin-players button {
+    width: 40%;
+    border: 0;
+    border-radius: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    font-weight: bold;
+}
+
+.active button {
+    background-color: #a62d12;
+}
+
+.retired button {
+    background-color: #116618;
+}
+
+.supersixadmin-players .add-player {
+    overflow: hidden;
+    width: 100%;
+    margin: auto;
+}
+
+.supersixadmin-players .add-player .section {
+    float: left;
+    width: 33%;
+}
+
+.supersixadmin-players input {
+    background-color: #454242;
+    color: #ccccc3;
+    font-weight: bold;
+    text-align: center;
+    width: 100px;
+}
+
+.add-player button {
+    background-color: #6b6b6b;
+    color: #ccccc3;
+    margin-top: 62px;
+}
