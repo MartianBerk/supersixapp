@@ -27,7 +27,7 @@ class GamePrediction extends Component {
         }
 
         this.requests.fetch(
-            this.props.qatarHero ? "GETWORLDCUPPREDICTIONURL" : "GETPREDICTIONURL",
+            this.props.qatarHero ? "QATARHEROGETPREDICTIONURL" : "GETPREDICTIONURL",
             "GET",
             {
                 gameId: this.props.gameId,
@@ -69,7 +69,7 @@ class GamePrediction extends Component {
     handleSelectionClick(e) {
         if (e.target.value !== this.state.selection) {
             this.requests.fetch(
-                this.props.qatarHero ? "ADDWORLDCUPPREDICTIONURL" : "ADDPREDICTIONURL", 
+                this.props.qatarHero ? "QATARHEROADDPREDICTIONURL" : "ADDPREDICTIONURL", 
                 "POST",
                 null,
                 {

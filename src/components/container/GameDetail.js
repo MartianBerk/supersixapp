@@ -23,32 +23,34 @@ class GameDetail extends Component {
     }
 
     fetchGameData() {
-        let gameDate = new Date(this.state.gameDate);
+        if (!this.props.disableStats) {
+            let gameDate = new Date(this.state.gameDate);
 
-        const year = gameDate.getFullYear();
-        const month = (gameDate.getMonth() + 1) > 9 ? (gameDate.getMonth() + 1) : "0" + (gameDate.getMonth() + 1);
-        const day = gameDate.getDate() > 9 ? gameDate.getDate() : "0" + gameDate.getDate();
-        gameDate = [day, month, year].join("-");
+            const year = gameDate.getFullYear();
+            const month = (gameDate.getMonth() + 1) > 9 ? (gameDate.getMonth() + 1) : "0" + (gameDate.getMonth() + 1);
+            const day = gameDate.getDate() > 9 ? gameDate.getDate() : "0" + gameDate.getDate();
+            gameDate = [day, month, year].join("-");
 
-        const requests = new Requests();
+            const requests = new Requests();
 
-        requests.fetch(
-            "GETMATCHDETAILURL",
-            "GET",
-            {
-                hometeam: this.state.homeTeam,
-                awayteam: this.state.awayTeam,
-                matchdate: gameDate
-            }
-        )
-        .then(response => response.json())
-        .then(data => this.setState({
-            leaguePosition: data["match_detail"]["league_position"],
-            teamPerformance: data["match_detail"]["team_performance"],
-            headToHead: data["match_detail"]["head_to_head"],
-            loading: false
-        }))
-        .catch(/* do nothing */)
+            requests.fetch(
+                "GETMATCHDETAILURL",
+                "GET",
+                {
+                    hometeam: this.state.homeTeam,
+                    awayteam: this.state.awayTeam,
+                    matchdate: gameDate
+                }
+            )
+            .then(response => response.json())
+            .then(data => this.setState({
+                leaguePosition: data["match_detail"]["league_position"],
+                teamPerformance: data["match_detail"]["team_performance"],
+                headToHead: data["match_detail"]["head_to_head"],
+                loading: false
+            }))
+            .catch(/* do nothing */)
+        }
     }
 
     componentDidMount() {
