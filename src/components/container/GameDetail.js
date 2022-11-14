@@ -51,6 +51,9 @@ class GameDetail extends Component {
             }))
             .catch(/* do nothing */)
         }
+        else {
+            this.setState({ loading: false });
+        }
     }
 
     componentDidMount() {
