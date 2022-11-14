@@ -112,6 +112,7 @@ class GameDetail extends Component {
                                     gameId={this.state.gameId}
                                     playerId={this.state.playerId}
                                     onPredictionSet={this.props.onSelection}
+                                    qatarHero={this.props.qatarHero}
                                 /> :
                                 <button
                                     className="gameprediction-userlogin-button"

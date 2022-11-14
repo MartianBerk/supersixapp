@@ -255,6 +255,7 @@ class QatarHero extends Component {
                                                                     this.setState({ playerSelections: newSelections });
                                                                 }}
                                                                 disableStats={true}
+                                                                qatarHero={true}
                                                                  />
                                                                : null}
                 </div>
