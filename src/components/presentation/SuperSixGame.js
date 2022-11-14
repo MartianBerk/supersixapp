@@ -71,7 +71,7 @@ class SuperSixGame extends Component {
                     newUser: newUser,
                     userData: {
                         playerId: userData.player_id,
-                        qatarHeroPlayerId: userData.qatar_her_player_id,
+                        qatarHeroPlayerId: userData.qatar_hero_player_id,
                         permissions: userData.permissions,
                         userId: userData.user_id,
                         email: userData.email,
