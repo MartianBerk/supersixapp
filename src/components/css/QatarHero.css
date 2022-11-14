@@ -1,0 +1,59 @@
+.qatarhero-container {
+    margin: auto;
+    padding-top: 25px;
+    height: 80%;
+}
+
+.qatarhero {
+    height: 50%;
+    overflow-y: scroll;
+}
+
+.qatarhero-view-picker {
+    color: #ccccc3;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 0px 20px 0px;
+    overflow: hidden;
+}
+
+.qatarhero-view-picker-part {
+    float: left;
+    width: 33.33%;
+}
+
+#qatarhero-view-picker-left, #qatar-hero-view-picker-right {
+    cursor: pointer;
+    height: 10px;
+}
+
+.qatarhero-table table {
+    width: 100%;
+}
+
+.qatarhero-table table th {
+    margin: auto;
+    /* width: 25%; */
+}
+
+.qatarhero-table table .table-column-header {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding-bottom: 7.5px;
+}
+
+.qatarhero-table table .table-column-header-contents {
+    padding: 0px 5px 0px 5px;
+}
+
+.qatarhero-table table .table-column-header-contents:hover, .table-column-header-sort {
+    cursor: pointer;
+}
+
+.qatarhero-table table .table-row-even {
+    background-color: #918989;
+}
+
+.qatarhero-table table .table-row-odd {
+    background-color: #746d6d;
+}

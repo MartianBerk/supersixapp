@@ -75,21 +75,28 @@ class GameDetail extends Component {
             !this.state.loading && 
             (
                 <div className="gamedetail-container">
-                    <p className="gamedetail-row">
-                        <span className="gamedetail-section hometeam">{this.state.leaguePosition[this.state.homeTeam] || "-"}</span>
-                        <span className="gamedetail-section title">League Position</span>
-                        <span className="gamedetail-section awayteam">{this.state.leaguePosition[this.state.awayTeam] || "-"}</span>
-                    </p>
-                    <p className="gamedetail-row">
-                        <span className="gamedetail-section hometeam">{this.renderWinDrawLoss(this.state.teamPerformance[this.state.homeTeam])}</span>
-                        <span className="gamedetail-section title">Performance</span>
-                        <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.teamPerformance[this.state.awayTeam])}</span>
-                    </p>
-                    <p className="gamedetail-row">
-                        <span className="gamedetail-section hometeam">{this.renderWinDrawLoss(this.state.headToHead[this.state.homeTeam])}</span>
-                        <span className="gamedetail-section title">Head To Head</span>
-                        <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.headToHead[this.state.awayTeam])}</span>
-                    </p>
+                    {
+                        this.props.disableStats ?
+                        null :
+                        <div>
+                            <p className="gamedetail-row">
+                                <span className="gamedetail-section hometeam">{this.state.leaguePosition[this.state.homeTeam] || "-"}</span>
+                                <span className="gamedetail-section title">League Position</span>
+                                <span className="gamedetail-section awayteam">{this.state.leaguePosition[this.state.awayTeam] || "-"}</span>
+                            </p>
+                            <p className="gamedetail-row">
+                                <span className="gamedetail-section hometeam">{this.renderWinDrawLoss(this.state.teamPerformance[this.state.homeTeam])}</span>
+                                <span className="gamedetail-section title">Performance</span>
+                                <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.teamPerformance[this.state.awayTeam])}</span>
+                            </p>
+                            <p className="gamedetail-row">
+                                <span className="gamedetail-section hometeam">{this.renderWinDrawLoss(this.state.headToHead[this.state.homeTeam])}</span>
+                                <span className="gamedetail-section title">Head To Head</span>
+                                <span className="gamedetail-section awayteam">{this.renderWinDrawLoss(this.state.headToHead[this.state.awayTeam])}</span>
+                            </p>
+                        </div>
+                    }
+                    
                     {/* TODO: This needs to only render if we have playerId. Otherwise a login button to reveal user page. Also, handle submitted predictions.*/}
                     { 
                         !this.state.loading ? 
@@ -105,6 +112,7 @@ class GameDetail extends Component {
                                     gameId={this.state.gameId}
                                     playerId={this.state.playerId}
                                     onPredictionSet={this.props.onSelection}
+                                    qatarHero={this.props.qatarHero}
                                 /> :
                                 <button
                                     className="gameprediction-userlogin-button"

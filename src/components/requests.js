@@ -2,7 +2,7 @@ import * as Constants from "./constants";
 
 
 export class Requests {
-    DEVELOPMENT = false;
+    DEVELOPMENT = true;
     OVERRIDES = {
         MATCHESURL: "matches.json",
         SCORESURL: "scores.json",
@@ -34,7 +34,11 @@ export class Requests {
         ENDSPECIALMESSAGEURL: "addround.json",
         ADDPLAYERURL: "addplayer.json",
         DROPPLAYERURL: "dropplayer.json",
-        REACTIVATEPLAYERURL: "addplayer.json"
+        REACTIVATEPLAYERURL: "addplayer.json",
+        QATARHEROMATCHESURL: "qatarhero-matches.json",
+        QATARHEROSCORESURL: "qatarhero-scores.json",
+        QATARHEROGETPREDICTIONURL: "blank.json",
+        QATARHEROADDPREDICTIONURL: "blank.json"
     };
 
     constructor() {

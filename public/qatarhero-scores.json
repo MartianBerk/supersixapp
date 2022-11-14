@@ -1,0 +1,16 @@
+{
+    "scores": [
+        {
+            "bonus": 2,
+            "player": "Martin Baker",
+            "score": 2,
+            "total": 4
+        },
+        {
+            "bonus": 0,
+            "player": "Greg Perkins",
+            "score": 2,
+            "total": 2
+        }
+    ]
+}

@@ -5,6 +5,7 @@ import Games from "../container/Games.js";
 import Performance from "../container/Performance.js";
 import Scores from "../container/Scores.js";
 import User from "../container/User.js";
+import QatarHero from '../container/QatarHero.js';
 
 import '../css/SuperSix.css';
 
@@ -18,6 +19,8 @@ class SuperSixGame extends Component {
             newUser: false,
             userData: {
                 playerId: null,
+                qatarHeroPlayerId: null,
+                permissions: [],
                 userId: null,
                 email: null,
                 firstname: null,
@@ -29,7 +32,8 @@ class SuperSixGame extends Component {
             showGames: true,
             showPlayers: false,
             showPerformance: false,
-            showUser: false
+            showUser: false,
+            showQatarHero: false
         };
 
         const requests = new Requests()
@@ -67,6 +71,8 @@ class SuperSixGame extends Component {
                     newUser: newUser,
                     userData: {
                         playerId: userData.player_id,
+                        qatarHeroPlayerId: userData.qatar_her_player_id,
+                        permissions: userData.permissions,
                         userId: userData.user_id,
                         email: userData.email,
                         firstname: userData.firstname,
@@ -85,20 +91,47 @@ class SuperSixGame extends Component {
 
     handleMenuClick(e) {
         if (e.target.id === "supersix-games" || e.target.id === "supersix-games-img") {
-            this.setState({ showGames: true, showPlayers: false, showPerformance: false, showUser: false })
+            if (this.state.showQatarHero) {
+                this.props.onQatarHero();
+            }
+            
+            this.setState({ showGames: true, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: false })
         }
         else if (e.target.id === "supersix-players" || e.target.id === "supersix-scores-img") {
-            this.setState({ showGames: false, showPlayers: true, showPerformance: false, showUser: false })
+            this.setState({ showGames: false, showPlayers: true, showPerformance: false, showUser: false, showQatarHero: false })
         }
         else if (e.target.id === "supersix-performance" || e.target.id === "supersix-performance-img") {
-            this.setState({ showGames: false, showPlayers: false, showPerformance: true, showUser: false })
+            if (this.state.showQatarHero) {
+                this.props.onQatarHero();
+            }
+            
+            this.setState({ showGames: false, showPlayers: false, showPerformance: true, showUser: false, showQatarHero: false })
         }
         else if (e.target.id === "supersix-user" || e.target.id === "supersix-user-img") {
-            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true })
+            if (this.state.showQatarHero) {
+                this.props.onQatarHero();
+            }
+
+            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true, showQatarHero: false })
+        }
+        else if (e.target.id === "supersix-qatar" || e.target.id === "supersix-qatar-img") {
+            if (!this.state.showQatarHero) {
+                this.props.onQatarHero();
+            }
+            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: true })
         }
     }
 
     render () {
+        let qatarHero = false;
+        for (var i = 0; i < this.state.userData.permissions.length; i++) {
+            let permission = this.state.userData.permissions[i];
+            if (permission.name === "QATARHERO" && permission.permission === 1) {
+                qatarHero = true;
+                break;
+            }
+        }
+
         return (
             <div className="supersixgame-container">
                 <div className="supersix-menu">
@@ -122,6 +155,12 @@ class SuperSixGame extends Component {
                         id="supersix-user"
                         onClick={this.handleMenuClick}>
                             <img id="supersix-user-img" onClick={this.handleMenuClick} src='users.svg' height='40' width='40' /> 
+                    </button>
+                    <button
+                        className={`supersix-menu-button ${this.state.showQatarHero ? "active" : ""}`}
+                        id="supersix-qatar"
+                        onClick={this.handleMenuClick}>
+                            <img id="supersix-qatar-img" onClick={this.handleMenuClick} src='qatar.svg' height='40' width='40' /> 
                     </button> 
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
@@ -233,6 +272,19 @@ class SuperSixGame extends Component {
                             }}
                         /> : null
                     }
+                </div>
+                <div className={`supersix supersix-qatar ${this.state.showQatarHero ? "" : "hidden"}`}>
+                    { 
+                        !this.state.loading
+                        ? <QatarHero 
+                            hasPermission={qatarHero}
+                            playerId={this.state.userData.qatarHeroPlayerId}
+                            onLoginSelect={() => {
+                                this.setState({ showGames: false, showUser: true })
+                            }}
+                          />
+                        : null 
+                    }  
                 </div>
             </div>
         )
