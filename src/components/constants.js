@@ -5,13 +5,14 @@ export const MATCHESURL = BASEURL + "/game/livematches";
 export const SCORESURL = BASEURL + "/game/livescores";
 export const METAURL = BASEURL + "/game/meta";
 export const CURRENTROUNDURL = BASEURL + "/game/currentround";
-
 export const AGGREGATESTATSURL = BASEURL + "/stats/aggregate";
 export const WINNERSURL = BASEURL + "/stats/winners";
-
 export const SPECIALMESSAGEURL = BASEURL + "/game/specialmessage";
-
 export const GETMATCHDETAILURL = BASEURL + "/game/matchdetail";
+
+// qatar hero apis
+export const QATARHEROMATCHESURL = BASEURL + "/worldcup/matches";
+export const QATARHEROSCORESURL = BASEURL + "/worldcup/scores";
 
 // user web apis
 export const GETPREDICTIONURL = BASEURL + "/user/getprediction";

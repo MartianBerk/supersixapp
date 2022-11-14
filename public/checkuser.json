@@ -7,5 +7,12 @@
     "lastname": "Baker",
     "new_user": false,
     "player_id": 1,
-    "user_id": "ssx-mb"
+    "user_id": "ssx-mb",
+    "permissions": [
+        {
+            "name": "QATARHERO",
+            "permission": "1",
+            "type": "SWITCH"
+        }
+    ]
 }
