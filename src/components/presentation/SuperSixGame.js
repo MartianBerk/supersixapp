@@ -123,7 +123,7 @@ class SuperSixGame extends Component {
     }
 
     render () {
-        let qatarHero = true;
+        let qatarHero = false;
         for (var i = 0; i < this.state.userData.permissions.length; i++) {
             let permission = this.state.userData.permissions[i];
             if (permission.name === "QATARHERO" && permission.permission === 1) {
