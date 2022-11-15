@@ -13,6 +13,7 @@ export const GETMATCHDETAILURL = BASEURL + "/game/matchdetail";
 // qatar hero apis
 export const QATARHEROMATCHESURL = BASEURL + "/worldcup/matches";
 export const QATARHEROSCORESURL = BASEURL + "/worldcup/scores";
+export const QATARHEROLISTPREDICTIONSURL = BASEURL + "/worldcup/getpredictions";
 export const QATARHEROGETPREDICTIONURL = BASEURL + "/worldcup/getprediction";
 export const QATARHEROADDPREDICTIONURL = BASEURL + "/worldcup/addprediction";
 

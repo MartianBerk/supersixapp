@@ -25,6 +25,8 @@ class QatarHero extends Component {
             matchDates: [],
             selectedDate: null,
             indexRow: null,
+            allPredictions: [],
+            playerSelections: 0,
             scores: []
         };
 
@@ -45,6 +47,15 @@ class QatarHero extends Component {
         const weekday = weekdays[date.getDay()];
 
         return weekday + " " + day + " " + months[month];
+    }
+
+    _formatMatchTime(matchDate) {
+        let d = new Date(matchDate);
+
+        let hours = d.getHours() > 9 ? d.getHours() : "0" + d.getHours();
+        let minutes = d.getMinutes() > 9 ? d.getMinutes() : "0" + d.getMinutes();
+
+        return `${hours}:${minutes}`;
     }
 
     _calculateExpired(match) {
@@ -133,10 +144,33 @@ class QatarHero extends Component {
                     }
                 });
 
-                return { matches: newMatches, matchDates: newDates, selectedDate: selectedDate || now > maxDate ? newDates[newDates.length - 1] : newDates[0] };
+                selectedDate = selectedDate || now > maxDate ? newDates[newDates.length - 1] : newDates[0];
+
+                return { 
+                    matches: newMatches,
+                    matchDates: newDates,
+                    selectedDate: selectedDate,
+                    playerSelections: 0
+                };
             })
         })
-        .then( /* GET PREDICTIONS */ )
+        .then(() => {
+            this.requests.fetch("QATARHEROLISTPREDICTIONSURL")
+            .then(response => response.json())
+            .then(data => this.setState((_) => {
+                let playerSelections = 0;
+
+                data.predictions.forEach((prediction) => {
+                    this.state.matches.forEach(match => {
+                        if (match.id === prediction.match_id) {
+                            playerSelections++;
+                        }
+                    })
+                })
+
+                return { playerSelections: playerSelections, allPredictions: data.predictions }
+            }))
+        })
         .then(() => {
             this.requests.fetch("QATARHEROSCORESURL")
             .then(response => response.json())
@@ -158,7 +192,18 @@ class QatarHero extends Component {
             case "date-picker-right": dateIndex++; break;
         };
 
-        this.setState({ selectedDate: this.state.matchDates[dateIndex] });
+        let playerSelections = 0;
+        for (var i = 0; i < this.state.matches.length; i++) {
+            if (this._formatDate(this.state.matches[i].match_date) == this.state.matchDates[dateIndex]) {
+                this.state.allPredictions.forEach((prediction) => {
+                    if (this.state.matches[i].id === prediction.match_id) {
+                        playerSelections++;
+                    }
+                })
+            }
+        }
+
+        this.setState({ selectedDate: this.state.matchDates[dateIndex], playerSelections: playerSelections });
     }
 
     componentDidMount() {
@@ -233,7 +278,7 @@ class QatarHero extends Component {
                                 <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
                         </span>
                         <span className={"gamesection awayteam" + (lock ? " gameday" : "")}>{game.away_team.label}</span>
-                        {lock ? <span className="gamesection matchtime">{this._calculateExpired(game)}</span> : null}
+                        <span className="gamesection matchtime">{lock ? this._calculateExpired(game) : this._formatMatchTime(game.match_date)}</span>
                     </p>
                     {!lock && this.state.indexRow === index ? <GameDetail
                                                                 playerId={this.state.playerId}
@@ -248,11 +293,10 @@ class QatarHero extends Component {
 
                                                                     this.props.onLoginSelect()
                                                                 }}
-                                                                onSelection={(selection) => {
-                                                                    let newSelections = [...this.state.playerSelections];
-                                                                    newSelections[this.state.indexRow] = selection;
-
-                                                                    this.setState({ playerSelections: newSelections });
+                                                                onSelection={(_) => {
+                                                                    let selections = this.state.playerSelections;
+                                                                    selections++;
+                                                                    this.setState({ playerSelections: selections });
                                                                 }}
                                                                 disableStats={true}
                                                                 qatarHero={true}
@@ -261,6 +305,8 @@ class QatarHero extends Component {
                 </div>
             )
         }) || [];
+
+        let rowCount = rows.reduce((t, s) => { return t + (s ? 1 : 0) }, 0);
 
         return (
             <div className="qatarhero-matches">
@@ -274,6 +320,9 @@ class QatarHero extends Component {
                         </div>
                         : null
                     }
+                </div>
+                <div className={`games-player-selections${this.state.playerSelections === rowCount ? "-complete" : ""}`}>
+                    {this.state.playerSelections} / {rowCount} Selections
                 </div>
                 <div className="qatarhero-matches-list">
                     {

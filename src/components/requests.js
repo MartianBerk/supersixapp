@@ -37,8 +37,9 @@ export class Requests {
         REACTIVATEPLAYERURL: "addplayer.json",
         QATARHEROMATCHESURL: "qatarhero-matches.json",
         QATARHEROSCORESURL: "qatarhero-scores.json",
-        QATARHEROGETPREDICTIONURL: "blank.json",
-        QATARHEROADDPREDICTIONURL: "blank.json"
+        QATARHEROLISTPREDICTIONSURL: "qatarhero-predictions.json",
+        QATARHEROGETPREDICTIONURL: "prediction.json",
+        QATARHEROADDPREDICTIONURL: "add_prediction_admin.json"
     };
 
     constructor() {
