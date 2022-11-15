@@ -321,8 +321,8 @@ class QatarHero extends Component {
                         : null
                     }
                 </div>
-                <div className={`games-player-selections${this.state.playerSelections === rowCount ? "-complete" : ""}`}>
-                    {this.state.playerSelections} / {rowCount} Selections
+                <div className={`games-player-selections${this.state.playerSelections >= rowCount ? "-complete" : ""}`}>
+                    {this.state.playerSelections >= rowCount ? "Selections Complete" : "Missing Selections"}
                 </div>
                 <div className="qatarhero-matches-list">
                     {
