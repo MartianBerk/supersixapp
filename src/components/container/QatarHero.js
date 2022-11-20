@@ -80,7 +80,7 @@ class QatarHero extends Component {
                 "Content-Type": "application/json"
             },
             null,
-            "undefined"
+            "same-origin"
         )
         .then(response => response.json())
         .then(data => this.setState((_) => {
