@@ -241,6 +241,7 @@ class SuperSixGame extends Component {
                                     newUser: false,
                                     userData: {
                                         playerId: null,
+                                        qatarHeroPlayerId: null,
                                         userId: null,
                                         email: null,
                                         firstname: null,
