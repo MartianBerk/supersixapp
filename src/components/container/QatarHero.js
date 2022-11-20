@@ -72,16 +72,7 @@ class QatarHero extends Component {
     }
 
     _getData() {
-        this.requests.fetch(
-            "QATARHEROMATCHESURL",
-            "GET",
-            null,
-            {
-                "Content-Type": "application/json"
-            },
-            null,
-            "same-origin"
-        )
+        this.requests.fetch("QATARHEROMATCHESURL")
         .then(response => response.json())
         .then(data => this.setState((_) => {
             let matches = [];
@@ -198,16 +189,7 @@ class QatarHero extends Component {
                 return { playerSelections: playerSelections, allPredictions: data.predictions }
             }))
             .then(() => {
-                this.requests.fetch(
-                    "QATARHEROSCORESURL",
-                    "GET",
-                    null,
-                    {
-                        "Content-Type": "application/json"
-                    },
-                    null,
-                    "same-origin"
-                )
+                this.requests.fetch("QATARHEROSCORESURL")
                 .then(response => response.json())
                 .then(data => this.setState({ scores: data.scores, loading: false }))
             })
