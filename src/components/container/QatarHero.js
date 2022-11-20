@@ -172,7 +172,7 @@ class QatarHero extends Component {
                 data.predictions.forEach((prediction) => {
                     if (prediction.player_id === this.state.playerId) {
                         this.state.matches.forEach(match => {
-                            if (match.id === prediction.match_id) {
+                            if (this._formatDate(match.match_date) === selectedDate && match.id === prediction.match_id) {
                                 playerSelections++;
                             }
                         })
