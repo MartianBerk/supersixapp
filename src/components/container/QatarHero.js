@@ -179,13 +179,12 @@ class QatarHero extends Component {
 
                 return { playerSelections: playerSelections, allPredictions: data.predictions }
             }))
+            .then(() => {
+                this.requests.fetch("QATARHEROSCORESURL")
+                .then(response => response.json())
+                .then(data => this.setState({ scores: data.scores, loading: false }))
+            })
         })
-        .then(() => {
-            this.requests.fetch("QATARHEROSCORESURL")
-            .then(response => response.json())
-            .then(data => this.setState({ scores: data.scores }))
-        })
-        .then(() => this.setState({ loading: false }))
     }
 
     _handleViewClick(event) {
