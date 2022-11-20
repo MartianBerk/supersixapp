@@ -164,26 +164,19 @@ class QatarHero extends Component {
             })
         })
         .then(() => {
-            this.requests.fetch(
-                "QATARHEROLISTPREDICTIONSURL",
-                "GET",
-                null,
-                {
-                    "Content-Type": "application/json"
-                },
-                null,
-                "include"    
-            )
+            this.requests.fetch("QATARHEROLISTPREDICTIONSURL")
             .then(response => response.json())
             .then(data => this.setState((_) => {
                 let playerSelections = 0;
 
                 data.predictions.forEach((prediction) => {
-                    this.state.matches.forEach(match => {
-                        if (match.id === prediction.match_id) {
-                            playerSelections++;
-                        }
-                    })
+                    if (prediction.player_id === this.state.playerId) {
+                        this.state.matches.forEach(match => {
+                            if (match.id === prediction.match_id) {
+                                playerSelections++;
+                            }
+                        })
+                    }
                 })
 
                 return { playerSelections: playerSelections, allPredictions: data.predictions }
