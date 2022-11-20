@@ -79,6 +79,7 @@ class QatarHero extends Component {
             {
                 "Content-Type": "application/json"
             },
+            null,
             "same-origin"
         )
         .then(response => response.json())
@@ -179,6 +180,7 @@ class QatarHero extends Component {
                 {
                     "Content-Type": "application/json"
                 },
+                null,
                 "same-origin"    
             )
             .then(response => response.json())
