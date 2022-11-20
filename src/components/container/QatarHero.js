@@ -120,18 +120,19 @@ class QatarHero extends Component {
                     }
 
                     if (a.match_date > b.match_date) {
-                        maxDate = new Date(a.match_date);
+                        maxDate = aDate;
                         return 1
                     }
                     else if (a.match_date < b.match_date) {
+                        maxDate = bDate;
                         return -1
                     }
                 });
 
                 // sort dates separately for date picker
                 newDates.sort((a, b) => {
-                    const aDate = new Date(a.match_date);
-                    const bDate = new Date(b.match_date);
+                    const aDate = new Date(a);
+                    const bDate = new Date(b);
 
                     if (aDate > bDate) {
                         return 1
@@ -144,7 +145,15 @@ class QatarHero extends Component {
                     }
                 });
 
-                selectedDate = selectedDate || now > maxDate ? newDates[newDates.length - 1] : newDates[0];
+                if (selectedDate) {
+                    selectedDate = this._formatDate(selectedDate);
+                }
+                else if (now > maxDate) {
+                    selectedDate = newDates[newDates.length - 1];
+                }
+                else {
+                    selectedDate = newDates[0];
+                }
 
                 return { 
                     matches: newMatches,
