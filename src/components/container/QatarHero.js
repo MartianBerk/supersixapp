@@ -245,9 +245,7 @@ class QatarHero extends Component {
         
             // Lock 10 minutes before kickoff
             let lock = false;
-            let todayTime = today.getFullYear() + today.getMonth() + today.getDate() + today.getHours() + today.getMinutes();
-            let gameDateTime = gameDate.getFullYear() + gameDate.getMonth() + gameDate.getDate() + gameDate.getHours() + gameDate.getMinutes();
-            if(todayTime >= gameDateTime - 10) {
+            if(new Date(gameDate.getTime() - 10 * 60 * 1000) >= today) {
                 lock = true;
             }
             else if(today > gameDate) {
