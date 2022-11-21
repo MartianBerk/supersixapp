@@ -249,6 +249,32 @@ class QatarHero extends Component {
             if(today >= gameLockTime) {
                 lock = true;
             }
+
+            let prediction = null;
+            let correct = null;
+            for (var i = 0; i < this.state.allPredictions.length; i++) {
+                const selectedPrediction = this.state.allPredictions[i];
+                if (selectedPrediction.player_id === this.state.playerId && selectedPrediction.match_id === game.id) {
+                    prediction = selectedPrediction.prediction;
+                }
+
+                if (prediction) {
+                    if (prediction === "home" && game.home_score > game.away_score) {
+                        correct = true;
+                    }
+                    else if (prediction === "away" && game.away_score > game.home_score) {
+                        correct = true;
+                    }
+                    else if (prediction === "draw" && game.home_score === game.away_score) {
+                        correct = true;
+                    }
+                    else {
+                        correct = false;
+                    }
+
+                    break;
+                }
+            }
             
             return (
                 <div
@@ -264,7 +290,8 @@ class QatarHero extends Component {
                     }
                 >
                     <p className="game">
-                        <span className={"gamesection hometeam" + (lock ? " gameday" : "")}>{game.home_team.label}</span>
+                        <span className="gamesection correct">{typeof correct === 'boolean' && correct ? <img src='tick.png' height='15' width='15' /> : ''}</span>
+                        <span className={"gamesection hometeam" + (lock ? " gameday" : "") + (prediction === "home" ? " prediction" : "")}>{game.home_team.label}</span>
                         <span className={"gamesection gamescores" + (lock ? " gameday" : "")}>
                             {
                                 lock ? 
@@ -279,7 +306,7 @@ class QatarHero extends Component {
                                 :
                                 <img src={this.state.indexRow === index ? "shrink-white.png" : "expand-white.png"} height='10' width='10' />}
                         </span>
-                        <span className={"gamesection awayteam" + (lock ? " gameday" : "")}>{game.away_team.label}</span>
+                        <span className={"gamesection awayteam" + (lock ? " gameday" : "") + (prediction === "away" ? " prediction" : "")}>{game.away_team.label}</span>
                         <span className="gamesection matchtime">{lock ? this._calculateExpired(game) : this._formatMatchTime(game.match_date)}</span>
                     </p>
                     {!lock && this.state.indexRow === index ? <GameDetail

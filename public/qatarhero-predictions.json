@@ -1,8 +1,9 @@
 {
     "predictions": [
         {
-            "match_id": 1,
-            "prediction": "home"
+            "player_id": 1,
+            "match_id": 2,
+            "prediction": "draw"
         }
     ]
 }

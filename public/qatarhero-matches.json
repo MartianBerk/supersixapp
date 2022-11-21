@@ -17,11 +17,11 @@
             "use_match": false
         },
         {
-            "away_score": null,
+            "away_score": 2,
             "away_team": "Iran",
             "external_id": "England-Iran-2022-2023",
             "extra_time": null,
-            "home_score": null,
+            "home_score": 6,
             "home_team": "England",
             "id": 2,
             "league_id": 9,
@@ -29,7 +29,7 @@
             "match_minute": null,
             "matchday": 1,
             "penalties": null,
-            "status": "SCHEDULED",
+            "status": "FINISHED",
             "use_match": false
         },
         {

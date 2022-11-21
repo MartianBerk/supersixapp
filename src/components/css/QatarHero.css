@@ -93,6 +93,11 @@
     width: 10%;
 }
 
+.correct {
+    margin-top: 5px;
+    width: 5px;
+}
+
 .matchscore {
     margin-left: 2px;
     margin-right: 2px;
@@ -111,6 +116,10 @@
 .matchtime {
     padding-left: 25px;
     width: 10px;
+}
+
+.prediction {
+    text-decoration: underline;
 }
 
 .games-player-selections {
