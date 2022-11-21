@@ -265,7 +265,7 @@ class QatarHero extends Component {
                     else if (prediction === "away" && game.away_score > game.home_score) {
                         correct = true;
                     }
-                    else if (prediction === "draw" && game.home_score === game.away_score) {
+                    else if (prediction === "draw" && (game.status === "IN PLAY" || game.status === "FINISHED") && game.home_score === game.away_score) {
                         correct = true;
                     }
                     else {
