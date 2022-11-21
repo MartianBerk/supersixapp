@@ -235,7 +235,6 @@ class QatarHero extends Component {
         const today = new Date();
 
         const rows = this.state.matches.map((game, index) => {
-            const gameDate = new Date(game.match_date);
             const formattedDate = this._formatDate(game.match_date);
 
             // Filter games by date
@@ -245,10 +244,9 @@ class QatarHero extends Component {
         
             // Lock 10 minutes before kickoff
             let lock = false;
-            if(new Date(gameDate.getTime() - 10 * 60 * 1000) >= today) {
-                lock = true;
-            }
-            else if(today > gameDate) {
+            let gameLockTime = new Date(game.match_date);
+            gameLockTime.setMinutes(gameLockTime.getMinutes() - 10);
+            if(today >= gameLockTime) {
                 lock = true;
             }
             
