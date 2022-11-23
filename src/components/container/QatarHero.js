@@ -169,7 +169,7 @@ class QatarHero extends Component {
                     matches: newMatches,
                     matchDates: newDates,
                     selectedDate: selectedDate,
-                    playerSelections: 0
+                    playerSelections: this.state.playerSelections
                 };
             })
         })
