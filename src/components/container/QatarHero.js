@@ -27,7 +27,9 @@ class QatarHero extends Component {
             indexRow: null,
             allPredictions: [],
             playerSelections: 0,
-            scores: []
+            scores: [],
+            live: false,
+            liveDate: null
         };
 
         this._handleViewClick = this._handleViewClick.bind(this);
@@ -72,6 +74,9 @@ class QatarHero extends Component {
     }
 
     _getData() {
+        let live = false;
+        let liveDate = null;
+        
         this.requests.fetch("QATARHEROMATCHESURL")
         .then(response => response.json())
         .then(data => this.setState((_) => {
@@ -79,6 +84,11 @@ class QatarHero extends Component {
             let dates = [];
 
             data.matches.forEach(match => {
+                if (!live && match.status === "IN PLAY") {
+                    live = true;
+                    liveDate = new Date(match.match_date);
+                }
+                
                 match.home_team = {
                     label: match.home_team in this.state.meta.teams ? this.state.meta.teams[match.home_team] : match.home_team,
                     name: match.home_team
@@ -163,6 +173,7 @@ class QatarHero extends Component {
                 };
             })
         })
+        .then(() => { this.setState({ live: live, liveDate: liveDate }) })
         .then(() => {
             this.requests.fetch("QATARHEROLISTPREDICTIONSURL")
             .then(response => response.json())
@@ -215,9 +226,26 @@ class QatarHero extends Component {
 
         this.setState({ selectedDate: this.state.matchDates[dateIndex], playerSelections: playerSelections });
     }
+    
+    initiateLiveMode() {
+        const now = new Date();
+        let cutoff = new Date(this.state.liveDate.getTime());
+        cutoff.setHours(cutoff.getHours() + 2);  // set cutoff 2 hours later
+
+        if (!this.gamesInterval && now >= this.state.liveDate && now <= cutoff) {
+            this._getData();
+            this.gamesInterval = setInterval(() => this._getData(), 30000);  // 30 sec refresh
+        }
+        else if (!(now >= this.state.liveDate && now <= cutoff)) {
+            this.gamesInterval = null;
+        }
+    }
 
     componentDidMount() {
+        this.initiateLiveMode();
         this._getData();
+        this.gamesInterval = null;
+        this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 30000);  // 30 sec refresh
     }
 
     componentDidUpdate(prevProps) {
