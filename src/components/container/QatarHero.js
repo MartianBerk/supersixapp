@@ -238,7 +238,7 @@ class QatarHero extends Component {
 
             if (!this.gamesInterval && now >= this.state.liveDate && now <= cutoff) {
                 this._getData();
-                this.gamesInterval = setInterval(() => this._getData(), 30000);  // 30 sec refresh
+                this.gamesInterval = setInterval(() => this._getData(), 60000);  // 60 sec refresh
             }
             else if (!(now >= this.state.liveDate && now <= cutoff)) {
                 this.gamesInterval = null;
@@ -250,7 +250,7 @@ class QatarHero extends Component {
         this.initiateLiveMode();
         this._getData();
         this.gamesInterval = null;
-        this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 30000);  // 30 sec refresh
+        this.initiateLiveModeInterval = setInterval(() => this.initiateLiveMode(), 60000);  // 30 sec refresh
     }
 
     componentDidUpdate(prevProps) {
