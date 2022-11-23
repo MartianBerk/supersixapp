@@ -228,16 +228,21 @@ class QatarHero extends Component {
     }
     
     initiateLiveMode() {
-        const now = new Date();
-        let cutoff = new Date(this.state.liveDate.getTime());
-        cutoff.setHours(cutoff.getHours() + 2);  // set cutoff 2 hours later
-
-        if (!this.gamesInterval && now >= this.state.liveDate && now <= cutoff) {
-            this._getData();
-            this.gamesInterval = setInterval(() => this._getData(), 30000);  // 30 sec refresh
-        }
-        else if (!(now >= this.state.liveDate && now <= cutoff)) {
+        if (!this.state.liveDate) {
             this.gamesInterval = null;
+        }
+        else {
+            const now = new Date();
+            let cutoff = new Date(this.state.liveDate.getTime());
+            cutoff.setHours(cutoff.getHours() + 2);  // set cutoff 2 hours later
+
+            if (!this.gamesInterval && now >= this.state.liveDate && now <= cutoff) {
+                this._getData();
+                this.gamesInterval = setInterval(() => this._getData(), 30000);  // 30 sec refresh
+            }
+            else if (!(now >= this.state.liveDate && now <= cutoff)) {
+                this.gamesInterval = null;
+            }
         }
     }
 
