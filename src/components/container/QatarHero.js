@@ -360,8 +360,8 @@ class QatarHero extends Component {
                                                                     selections++;
                                                                     this.setState({ playerSelections: selections });
                                                                 }}
-                                                                disableStats={true}
                                                                 qatarHero={true}
+                                                                matchDay={game.matchday}
                                                                  />
                                                                : null}
                 </div>

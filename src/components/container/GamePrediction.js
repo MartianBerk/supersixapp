@@ -12,10 +12,14 @@ class GamePrediction extends Component {
             playerId: props.playerId,
             loading: true,
             selection: null,
-            error: null
+            error: null,
+            extraTime: null,
+            penalties: null,
+            lockPrediction: false
         };
 
         this.handleSelectionClick = this.handleSelectionClick.bind(this);
+        this.handleToggleClick = this.handleToggleClick.bind(this);
 
         this.requests = new Requests();
     }
@@ -89,11 +93,46 @@ class GamePrediction extends Component {
                     return null;
                 }
 
-                this.setState({ selection: d.prediction })
+                this.setState({ selection: d.prediction, extraTime: false, penalties: false })
                 this.props.onPredictionSet(d.prediction);
             })
             .catch(e => {this.setState({ error: e })})
         }
+    }
+
+    handleToggleClick(e) {
+        e.stopPropagation();
+
+        const extraTime = !this.state.extraTime && !this.state.penalties;
+        const penalties = this.state.extraTime && !this.state.penalties;
+
+        this.setState({ lockPrediction: true }, () => {
+            this.requests.fetch(
+                this.props.qatarHero ? "QATARHEROADDPREDICTIONURL" : "ADDPREDICTIONURL", 
+                "POST",
+                null,
+                {
+                    "Content-Type": "application/json"
+                },
+                {
+                    game_id: this.props.gameId,
+                    player_id: this.state.playerId,
+                    prediction: this.state.selection,
+                    extra_time: extraTime,
+                    penalties: penalties
+                },
+                "same-origin"
+            )
+            .then(response => response.json())
+            .then(d => {
+                if (d.error) {
+                    this.setState({ error: d.message, lockPrediction: false });
+                    return null;
+                }
+
+                this.setState({ extraTime: extraTime, penalties: penalties, lockPrediction: false });
+            })
+        })
     }
 
     render () {
@@ -112,10 +151,20 @@ class GamePrediction extends Component {
                                 onClick={this.handleSelectionClick} value="home">
                                     HOME
                             </button>
-                            <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "draw" ? " active" : "")}
-                                onClick={this.handleSelectionClick} value="draw">
-                                    DRAW
-                            </button>
+                            {
+                                this.props.qatarHero && this.props.matchDay <= 3 ?
+                                <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "draw" ? " active" : "")}
+                                    onClick={this.handleSelectionClick} value="draw">
+                                        DRAW
+                                </button>
+                                :
+                                <button className="gameprediction-button gameprediction-button-selection gameprediction-toggle"
+                                    onMouseDown={this.handleToggleClick} value="extratime">
+                                    <span className={this.state.selection && !this.state.extraTime && !this.state.penalties ? 'active' : ''}>90</span>
+                                    <span className={this.state.selection && this.state.extraTime ? 'active' : ''}>ET</span>
+                                    <span className={this.state.selection && this.state.penalties ? 'active' : ''}>P</span>
+                                </button>
+                            }
                             <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "away" ? " active" : "")}
                                 onClick={this.handleSelectionClick} value="away">
                                     AWAY
