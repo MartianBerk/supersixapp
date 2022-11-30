@@ -36,6 +36,23 @@
     background-color: #287a4f;
 }
 
+.gameprediction-toggle {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.gameprediction-toggle span {
+    float: left;
+    width: 33.33%;
+    border-radius: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.gameprediction-toggle span.active {
+    background-color: #287a4f;
+}
+
 .gameprediction-userlogin-button {
     background-color: #454242;
     color: #ccccc3;

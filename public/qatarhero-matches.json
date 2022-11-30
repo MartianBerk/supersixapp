@@ -235,7 +235,7 @@
             "league_id": 9,
             "match_date": "2022-11-24T16:00:00Z",
             "match_minute": null,
-            "matchday": 1,
+            "matchday": 4,
             "penalties": null,
             "status": "SCHEDULED",
             "use_match": false
@@ -251,7 +251,7 @@
             "league_id": 9,
             "match_date": "2022-11-24T19:00:00Z",
             "match_minute": null,
-            "matchday": 1,
+            "matchday": 4,
             "penalties": null,
             "status": "SCHEDULED",
             "use_match": false
