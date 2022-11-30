@@ -52,6 +52,8 @@ class GamePrediction extends Component {
 
             this.setState({
                 selection: data.prediction,
+                extraTime: data.extra_time,
+                penalties: data.penalties,
                 loading: false
             })
         })
