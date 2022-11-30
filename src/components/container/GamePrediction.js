@@ -103,6 +103,10 @@ class GamePrediction extends Component {
     handleToggleClick(e) {
         e.stopPropagation();
 
+        if (this.state.lockPrediction) {
+            return null;
+        }
+
         const extraTime = !this.state.extraTime && !this.state.penalties;
         const penalties = this.state.extraTime && !this.state.penalties;
 
