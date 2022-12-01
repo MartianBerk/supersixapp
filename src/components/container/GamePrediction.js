@@ -84,7 +84,9 @@ class GamePrediction extends Component {
                 {
                     game_id: this.props.gameId,
                     player_id: this.state.playerId,
-                    prediction: e.target.value
+                    prediction: e.target.value,
+                    extra_time: false,
+                    penalties: false
                 },
                 "same-origin"
             )
