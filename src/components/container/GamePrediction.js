@@ -160,7 +160,7 @@ class GamePrediction extends Component {
                                     HOME
                             </button>
                             {
-                                this.props.qatarHero && this.props.matchDay <= 3 ?
+                                !this.props.qatarHero || this.props.matchDay <= 3 ?
                                 <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "draw" ? " active" : "")}
                                     onClick={this.handleSelectionClick} value="draw">
                                         DRAW
