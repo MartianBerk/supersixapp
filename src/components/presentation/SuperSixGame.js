@@ -114,12 +114,12 @@ class SuperSixGame extends Component {
 
             this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true, showQatarHero: false })
         }
-        else if (e.target.id === "supersix-qatar" || e.target.id === "supersix-qatar-img") {
-            if (!this.state.showQatarHero) {
-                this.props.onQatarHero();
-            }
-            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: true })
-        }
+        // else if (e.target.id === "supersix-qatar" || e.target.id === "supersix-qatar-img") {
+        //     if (!this.state.showQatarHero) {
+        //         this.props.onQatarHero();
+        //     }
+        //     this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: true })
+        // }
     }
 
     render () {
@@ -275,7 +275,7 @@ class SuperSixGame extends Component {
                         /> : null
                     }
                 </div>
-                <div className={`supersix supersix-qatar ${this.state.showQatarHero ? "" : "hidden"}`}>
+                {/* <div className={`supersix supersix-qatar ${this.state.showQatarHero ? "" : "hidden"}`}>
                     { 
                         !this.state.loading
                         ? <QatarHero 
@@ -287,7 +287,7 @@ class SuperSixGame extends Component {
                           />
                         : null 
                     }  
-                </div>
+                </div> */}
             </div>
         )
     }
