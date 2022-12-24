@@ -2,7 +2,7 @@ import * as Constants from "./constants";
 
 
 export class Requests {
-    DEVELOPMENT = true;
+    DEVELOPMENT = false;
     OVERRIDES = {
         MATCHESURL: "matches.json",
         SCORESURL: "scores.json",
