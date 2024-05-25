@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Requests } from "../requests.js";
 
 import '../css/Head.css';
-import EuroWizard from './EuroWizard.js';
 
 class Head extends Component {
     constructor(props) {
@@ -24,20 +23,6 @@ class Head extends Component {
         this.requests = new Requests()
 
         this.handleLogoClick = this.handleLogoClick.bind(this);
-
-        this.banner = ""
-        if (this.state.adminMode) {
-            this.banner = "Admin Mode"
-        }
-        else if (this.state.specialMessage) {
-            this.banner = this.specialMessage
-        }
-        else if (this.state.qatarHero) {
-            this.banner = "Qatar Hero"
-        }
-        else if (this.state.euroWizard) {
-            this.banner = "Euro Wizard"
-        }
     }
 
     componentDidUpdate(prevProps) {
@@ -48,6 +33,10 @@ class Head extends Component {
 
         if (this.props.qatarHero !== prevProps.qatarHero) {
             this.setState({ qatarHero: this.props.qatarHero });
+        }
+
+        if (this.props.euroWizard !== prevProps.euroWizard) {
+            this.setState({ euroWizard: this.props.euroWizard });
         }
     }
 
@@ -181,6 +170,17 @@ class Head extends Component {
     }
 
     render () {
+        let bannerText = null;
+        if (this.state.adminMode) {
+            bannerText = "Admin Mode";
+        }
+        else if (this.state.qatarHero) {
+            bannerText = "Qatar Hero"
+        }
+        else if (this.state.euroWizard) {
+            bannerText = "Euro Wizard"
+        }
+ 
         return (
             <div className="head">
                 <div className="head-main">
@@ -190,7 +190,7 @@ class Head extends Component {
                     </div>
                     <div className="logo">
                         <img id="supersix-logo" src={this.state.adminMode ? 'logo-admin.png' : 'logo.png'} height='70' width='80' onClick={this.handleLogoClick} />
-                        <div className="banner-text admin">{this.banner}</div>
+                        <div className="banner-text admin">{bannerText || this.state.specialMessage}</div>
                     </div>
                     <div className="jackpot">
                         <h2>Jackpot</h2>

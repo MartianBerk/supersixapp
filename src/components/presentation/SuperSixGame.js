@@ -34,7 +34,8 @@ class SuperSixGame extends Component {
             showPlayers: false,
             showPerformance: false,
             showUser: false,
-            showQatarHero: false
+            showQatarHero: false,
+            showEuroWizard: false
         };
 
         const requests = new Requests()
@@ -96,6 +97,9 @@ class SuperSixGame extends Component {
             if (this.state.showQatarHero) {
                 this.props.onQatarHero();
             }
+            else if (this.state.showEuroWizard) {
+                this.props.onEuroWizard();
+            }
             
             this.setState({ showGames: true, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: false, showEuroWizard: false })
         }
@@ -106,12 +110,18 @@ class SuperSixGame extends Component {
             if (this.state.showQatarHero) {
                 this.props.onQatarHero();
             }
+            else if (this.state.showEuroWizard) {
+                this.props.onEuroWizard();
+            }
             
             this.setState({ showGames: false, showPlayers: false, showPerformance: true, showUser: false, showQatarHero: false, showEuroWizard: false })
         }
         else if (e.target.id === "supersix-user" || e.target.id === "supersix-user-img") {
             if (this.state.showQatarHero) {
                 this.props.onQatarHero();
+            }
+            else if (this.state.showEuroWizard) {
+                this.props.onEuroWizard();
             }
 
             this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true, showQatarHero: false, showEuroWizard: false })
@@ -126,6 +136,7 @@ class SuperSixGame extends Component {
             if (!this.state.showEuroWizard) {
                 this.props.onEuroWizard();
             }
+
             this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: false, showEuroWizard: true })
         }
     }
@@ -174,7 +185,7 @@ class SuperSixGame extends Component {
                             <img id="supersix-qatar-img" onClick={this.handleMenuClick} src='qatar.svg' height='40' width='40' /> 
                     </button>  */}
                     <button
-                        className={`supersix-menu-button ${this.state.euroWizard ? "active" : ""}`}
+                        className={`supersix-menu-button ${this.state.showEuroWizard ? "active" : ""}`}
                         id="supersix-euros"
                         onClick={this.handleMenuClick}>
                             <img id="supersix-euros-img" onClick={this.handleMenuClick} src='euros.svg' height='40' width='40' /> 
