@@ -6,6 +6,7 @@ import Performance from "../container/Performance.js";
 import Scores from "../container/Scores.js";
 import User from "../container/User.js";
 import QatarHero from '../container/QatarHero.js';
+import EuroWizard from '../container/EuroWizard.js';
 
 import '../css/SuperSix.css';
 
@@ -72,6 +73,7 @@ class SuperSixGame extends Component {
                     userData: {
                         playerId: userData.player_id,
                         qatarHeroPlayerId: userData.qatar_hero_player_id,
+                        euroWizardPlayerId: userData.euro_wizard_player_id,
                         permissions: userData.permissions,
                         userId: userData.user_id,
                         email: userData.email,
@@ -95,40 +97,49 @@ class SuperSixGame extends Component {
                 this.props.onQatarHero();
             }
             
-            this.setState({ showGames: true, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: false })
+            this.setState({ showGames: true, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: false, showEuroWizard: false })
         }
         else if (e.target.id === "supersix-players" || e.target.id === "supersix-scores-img") {
-            this.setState({ showGames: false, showPlayers: true, showPerformance: false, showUser: false, showQatarHero: false })
+            this.setState({ showGames: false, showPlayers: true, showPerformance: false, showUser: false, showQatarHero: false, showEuroWizard: false })
         }
         else if (e.target.id === "supersix-performance" || e.target.id === "supersix-performance-img") {
             if (this.state.showQatarHero) {
                 this.props.onQatarHero();
             }
             
-            this.setState({ showGames: false, showPlayers: false, showPerformance: true, showUser: false, showQatarHero: false })
+            this.setState({ showGames: false, showPlayers: false, showPerformance: true, showUser: false, showQatarHero: false, showEuroWizard: false })
         }
         else if (e.target.id === "supersix-user" || e.target.id === "supersix-user-img") {
             if (this.state.showQatarHero) {
                 this.props.onQatarHero();
             }
 
-            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true, showQatarHero: false })
+            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true, showQatarHero: false, showEuroWizard: false })
         }
         // else if (e.target.id === "supersix-qatar" || e.target.id === "supersix-qatar-img") {
         //     if (!this.state.showQatarHero) {
         //         this.props.onQatarHero();
         //     }
-        //     this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: true })
+        //     this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: true, showEuroWizard: false  })
         // }
+        else if (e.target.id === "supersix-euros" || e.target.id === "supersix-euros-img") {
+            if (!this.state.showEuroWizard) {
+                this.props.onEuroWizard();
+            }
+            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: false, showEuroWizard: true })
+        }
     }
 
     render () {
         let qatarHero = false;
+        let euroWizard = false;
         for (var i = 0; this.state.userData.permissions && i < this.state.userData.permissions.length; i++) {
             let permission = this.state.userData.permissions[i];
             if (permission.name === "QATARHERO" && permission.permission === "1") {
                 qatarHero = true;
-                break;
+            }
+            else if (permission.name === "EUROWIZARD" && permission.permission === "1") {
+                euroWizard = true;
             }
         }
 
@@ -156,11 +167,17 @@ class SuperSixGame extends Component {
                         onClick={this.handleMenuClick}>
                             <img id="supersix-user-img" onClick={this.handleMenuClick} src='users.svg' height='40' width='40' /> 
                     </button>
-                    <button
+                    {/* <button
                         className={`supersix-menu-button ${this.state.showQatarHero ? "active" : ""}`}
                         id="supersix-qatar"
                         onClick={this.handleMenuClick}>
                             <img id="supersix-qatar-img" onClick={this.handleMenuClick} src='qatar.svg' height='40' width='40' /> 
+                    </button>  */}
+                    <button
+                        className={`supersix-menu-button ${this.state.euroWizard ? "active" : ""}`}
+                        id="supersix-euros"
+                        onClick={this.handleMenuClick}>
+                            <img id="supersix-euros-img" onClick={this.handleMenuClick} src='euros.svg' height='40' width='40' /> 
                     </button> 
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
@@ -224,6 +241,7 @@ class SuperSixGame extends Component {
                                     userData: {
                                         playerId: userData.player_id,
                                         qatarHeroPlayerId: userData.qatar_hero_player_id,
+                                        euroWizardPlayerId: userData.euro_wizard_player_id,
                                         userId: userData.user_id,
                                         email: userData.email,
                                         firstname: userData.firstname,
@@ -242,6 +260,7 @@ class SuperSixGame extends Component {
                                     userData: {
                                         playerId: null,
                                         qatarHeroPlayerId: null,
+                                        euroWizardPlayerId: null,
                                         userId: null,
                                         email: null,
                                         firstname: null,
@@ -288,6 +307,19 @@ class SuperSixGame extends Component {
                         : null 
                     }  
                 </div> */}
+                <div className={`supersix supersix-euros ${this.state.showEuroWizard ? "" : "hidden"}`}>
+                    { 
+                        !this.state.loading
+                        ? <EuroWizard 
+                            hasPermission={euroWizard}
+                            playerId={this.state.userData.euroWizardPlayerId}
+                            onLoginSelect={() => {
+                                this.setState({ showGames: false, showUser: true })
+                            }}
+                          />
+                        : null 
+                    }  
+                </div>
             </div>
         )
     }

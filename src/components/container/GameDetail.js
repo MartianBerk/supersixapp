@@ -23,7 +23,7 @@ class GameDetail extends Component {
     }
 
     fetchGameData() {
-        if (!this.props.qatarHero) {
+        if (!this.props.qatarHero && !this.props.euroWizard) {
             let gameDate = new Date(this.state.gameDate);
 
             const year = gameDate.getFullYear();
@@ -81,7 +81,7 @@ class GameDetail extends Component {
             (
                 <div className="gamedetail-container">
                     {
-                        this.props.qatarHero ?
+                        this.props.qatarHero && this.props.euroWizard ?
                         null :
                         <div>
                             <p className="gamedetail-row">
@@ -118,6 +118,7 @@ class GameDetail extends Component {
                                     playerId={this.state.playerId}
                                     onPredictionSet={this.props.onSelection}
                                     qatarHero={this.props.qatarHero}
+                                    euroWizard={this.props.euroWizard}
                                     matchDay={this.props.matchDay}
                                 /> :
                                 <button

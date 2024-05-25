@@ -8,10 +8,11 @@
     "new_user": false,
     "player_id": 1,
     "qatar_hero_player_id": 1,
+    "euro_wizard_player_id": 1,
     "user_id": "ssx-mb",
     "permissions": [
         {
-            "name": "QATARHERO",
+            "name": "EUROWIZARD",
             "permission": "1",
             "type": "SWITCH"
         }

@@ -9,7 +9,7 @@ import '../css/SuperSix.css';
 class SuperSix extends Component {
     constructor(props) {
         super(props);
-        this.state = { userId: null, playerId: null, meta: null, adminMode: false, qatarHero: false };
+        this.state = { userId: null, playerId: null, meta: null, adminMode: false, qatarHero: false, euroWizard: false };
     }
 
     render () {
@@ -21,6 +21,8 @@ class SuperSix extends Component {
                         this.setState({ adminMode: adminMode });
                     }}
                     qatarHero={this.state.qatarHero}
+                    euroWizard={this.state.euroWizard}
+
                 />
                 {
                     this.state.adminMode ?
@@ -42,6 +44,9 @@ class SuperSix extends Component {
                         }}
                         onQatarHero={() => {
                             this.setState({ qatarHero: !this.state.qatarHero });
+                        }}
+                        onEuroWizard={() => {
+                            this.setState({ euroWizard: !this.state.euroWizard });
                         }}
                     />
                 }

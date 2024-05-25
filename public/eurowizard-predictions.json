@@ -1,0 +1,9 @@
+{
+    "predictions": [
+        {
+            "player_id": 1,
+            "match_id": 2,
+            "prediction": "draw"
+        }
+    ]
+}
