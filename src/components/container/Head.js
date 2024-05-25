@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Requests } from "../requests.js";
 
 import '../css/Head.css';
+import EuroWizard from './EuroWizard.js';
 
 class Head extends Component {
     constructor(props) {
@@ -16,12 +17,27 @@ class Head extends Component {
             specialMessage: null,
             userId: props.userId,
             adminMode: false,
-            qatarHero: this.props.qatarHero
+            qatarHero: this.props.qatarHero,
+            euroWizard: this.props.euroWizard
         };
 
         this.requests = new Requests()
 
         this.handleLogoClick = this.handleLogoClick.bind(this);
+
+        this.banner = ""
+        if (this.state.adminMode) {
+            this.banner = "Admin Mode"
+        }
+        else if (this.state.specialMessage) {
+            this.banner = this.specialMessage
+        }
+        else if (this.state.qatarHero) {
+            this.banner = "Qatar Hero"
+        }
+        else if (this.state.euroWizard) {
+            this.banner = "Euro Wizard"
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -174,7 +190,7 @@ class Head extends Component {
                     </div>
                     <div className="logo">
                         <img id="supersix-logo" src={this.state.adminMode ? 'logo-admin.png' : 'logo.png'} height='70' width='80' onClick={this.handleLogoClick} />
-                        <div className="banner-text admin">{this.state.adminMode ? 'Admin Mode' : ( this.state.qatarHero ? "Qatar Hero" : this.state.specialMessage )}</div>
+                        <div className="banner-text admin">{this.banner}</div>
                     </div>
                     <div className="jackpot">
                         <h2>Jackpot</h2>

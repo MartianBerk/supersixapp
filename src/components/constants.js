@@ -17,6 +17,13 @@ export const QATARHEROLISTPREDICTIONSURL = BASEURL + "/worldcup/listpredictions"
 export const QATARHEROGETPREDICTIONURL = BASEURL + "/worldcup/getprediction";
 export const QATARHEROADDPREDICTIONURL = BASEURL + "/worldcup/addprediction";
 
+// euro wizard apis
+export const EUROWIZARDMATCHESURL = BASEURL + "/euros/matches";
+export const EUROWIZARDSCORESURL = BASEURL + "/euros/scores";
+export const EUROWIZARDLISTPREDICTIONSURL = BASEURL + "/euros/listpredictions";
+export const EUROWIZARDGETPREDICTIONURL = BASEURL + "/euros/getprediction";
+export const EUROWIZARDADDPREDICTIONURL = BASEURL + "/euros/addprediction";
+
 // user web apis
 export const GETPREDICTIONURL = BASEURL + "/user/getprediction";
 export const ADDPREDICTIONURL = BASEURL + "/user/addprediction";

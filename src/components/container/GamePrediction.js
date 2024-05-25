@@ -22,6 +22,14 @@ class GamePrediction extends Component {
         this.handleToggleClick = this.handleToggleClick.bind(this);
 
         this.requests = new Requests();
+
+        this.urlPrefix = "";
+        if (this.props.qatarHero) {
+            this.urlPrefix = "QATARHERO"
+        }
+        else if (this.props.euroWizard) {
+            this.urlPrefix = "EUROWIZARD"
+        }
     }
 
     fetchPredictionData() {
@@ -31,7 +39,7 @@ class GamePrediction extends Component {
         }
 
         this.requests.fetch(
-            this.props.qatarHero ? "QATARHEROGETPREDICTIONURL" : "GETPREDICTIONURL",
+            this.urlPrefix + "GETPREDICTIONURL",
             "GET",
             {
                 gameId: this.props.gameId,
@@ -75,7 +83,7 @@ class GamePrediction extends Component {
     handleSelectionClick(e) {
         if (e.target.value !== this.state.selection) {
             this.requests.fetch(
-                this.props.qatarHero ? "QATARHEROADDPREDICTIONURL" : "ADDPREDICTIONURL", 
+                this.urlPrefix + "ADDPREDICTIONURL",
                 "POST",
                 null,
                 {
@@ -116,7 +124,7 @@ class GamePrediction extends Component {
 
         this.setState({ lockPrediction: true }, () => {
             this.requests.fetch(
-                this.props.qatarHero ? "QATARHEROADDPREDICTIONURL" : "ADDPREDICTIONURL", 
+                this.urlPrefix + "ADDPREDICTIONURL", 
                 "POST",
                 null,
                 {
@@ -160,7 +168,7 @@ class GamePrediction extends Component {
                                     HOME
                             </button>
                             {
-                                !this.props.qatarHero || this.props.matchDay <= 3 ?
+                                (!this.props.qatarHero && !this.props.euroWizard) || this.props.matchDay <= 3 ?
                                 <button className={"gameprediction-button gameprediction-button-selection" + (this.state.selection === "draw" ? " active" : "")}
                                     onClick={this.handleSelectionClick} value="draw">
                                         DRAW

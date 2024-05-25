@@ -39,7 +39,10 @@ export class Requests {
         QATARHEROSCORESURL: "qatarhero-scores.json",
         QATARHEROLISTPREDICTIONSURL: "qatarhero-predictions.json",
         QATARHEROGETPREDICTIONURL: "prediction.json",
-        QATARHEROADDPREDICTIONURL: "add_prediction_admin.json"
+        QATARHEROADDPREDICTIONURL: "add_prediction_admin.json",
+        EUROWIZARDMATCHESURL: "eurowizard-matches.json",
+        EUROWIZARDSCORESURL: "eurowizard-scores.json",
+        EUROWIZARDLISTPREDICTIONSURL: "eurowizard-predictions.json",
     };
 
     constructor() {
