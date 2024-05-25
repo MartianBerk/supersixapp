@@ -81,7 +81,7 @@ class GameDetail extends Component {
             (
                 <div className="gamedetail-container">
                     {
-                        this.props.qatarHero && this.props.euroWizard ?
+                        this.props.qatarHero || this.props.euroWizard ?
                         null :
                         <div>
                             <p className="gamedetail-row">
