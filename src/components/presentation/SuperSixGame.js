@@ -132,13 +132,13 @@ class SuperSixGame extends Component {
         //     }
         //     this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: true, showEuroWizard: false  })
         // }
-        else if (e.target.id === "supersix-euros" || e.target.id === "supersix-euros-img") {
-            if (!this.state.showEuroWizard) {
-                this.props.onEuroWizard();
-            }
+        // else if (e.target.id === "supersix-euros" || e.target.id === "supersix-euros-img") {
+        //     if (!this.state.showEuroWizard) {
+        //         this.props.onEuroWizard();
+        //     }
 
-            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: false, showEuroWizard: true })
-        }
+        //     this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: false, showEuroWizard: true })
+        // }
     }
 
     render () {
@@ -184,12 +184,12 @@ class SuperSixGame extends Component {
                         onClick={this.handleMenuClick}>
                             <img id="supersix-qatar-img" onClick={this.handleMenuClick} src='qatar.svg' height='40' width='40' /> 
                     </button>  */}
-                    <button
+                    {/* <button
                         className={`supersix-menu-button ${this.state.showEuroWizard ? "active" : ""}`}
                         id="supersix-euros"
                         onClick={this.handleMenuClick}>
                             <img id="supersix-euros-img" onClick={this.handleMenuClick} src='euros.svg' height='40' width='40' /> 
-                    </button> 
+                    </button>  */}
                 </div>
                 <div className={`supersix supersix-games ${this.state.showGames ? "" : "hidden"}`}>
                     { !this.state.loading ? <Games
@@ -318,7 +318,7 @@ class SuperSixGame extends Component {
                         : null 
                     }  
                 </div> */}
-                <div className={`supersix supersix-euros ${this.state.showEuroWizard ? "" : "hidden"}`}>
+                {/* <div className={`supersix supersix-euros ${this.state.showEuroWizard ? "" : "hidden"}`}>
                     { 
                         !this.state.loading
                         ? <EuroWizard 
@@ -330,7 +330,7 @@ class SuperSixGame extends Component {
                           />
                         : null 
                     }  
-                </div>
+                </div> */}
             </div>
         )
     }
