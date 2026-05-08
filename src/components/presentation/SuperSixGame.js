@@ -126,12 +126,12 @@ class SuperSixGame extends Component {
 
             this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: true, showQatarHero: false, showEuroWizard: false })
         }
-        // else if (e.target.id === "supersix-qatar" || e.target.id === "supersix-qatar-img") {
-        //     if (!this.state.showQatarHero) {
-        //         this.props.onQatarHero();
-        //     }
-        //     this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: true, showEuroWizard: false  })
-        // }
+        else if (e.target.id === "supersix-qatar" || e.target.id === "supersix-qatar-img") {
+            if (!this.state.showQatarHero) {
+                this.props.onQatarHero();
+            }
+            this.setState({ showGames: false, showPlayers: false, showPerformance: false, showUser: false, showQatarHero: true, showEuroWizard: false  })
+        }
         // else if (e.target.id === "supersix-euros" || e.target.id === "supersix-euros-img") {
         //     if (!this.state.showEuroWizard) {
         //         this.props.onEuroWizard();
@@ -178,12 +178,12 @@ class SuperSixGame extends Component {
                         onClick={this.handleMenuClick}>
                             <img id="supersix-user-img" onClick={this.handleMenuClick} src='users.svg' height='40' width='40' /> 
                     </button>
-                    {/* <button
+                    <button
                         className={`supersix-menu-button ${this.state.showQatarHero ? "active" : ""}`}
                         id="supersix-qatar"
                         onClick={this.handleMenuClick}>
                             <img id="supersix-qatar-img" onClick={this.handleMenuClick} src='qatar.svg' height='40' width='40' /> 
-                    </button>  */}
+                    </button>
                     {/* <button
                         className={`supersix-menu-button ${this.state.showEuroWizard ? "active" : ""}`}
                         id="supersix-euros"
@@ -305,7 +305,7 @@ class SuperSixGame extends Component {
                         /> : null
                     }
                 </div>
-                {/* <div className={`supersix supersix-qatar ${this.state.showQatarHero ? "" : "hidden"}`}>
+                <div className={`supersix supersix-qatar ${this.state.showQatarHero ? "" : "hidden"}`}>
                     { 
                         !this.state.loading
                         ? <QatarHero 
@@ -317,7 +317,7 @@ class SuperSixGame extends Component {
                           />
                         : null 
                     }  
-                </div> */}
+                </div>
                 {/* <div className={`supersix supersix-euros ${this.state.showEuroWizard ? "" : "hidden"}`}>
                     { 
                         !this.state.loading
