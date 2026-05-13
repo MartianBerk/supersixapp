@@ -175,10 +175,10 @@ class Head extends Component {
             bannerText = "Admin Mode";
         }
         else if (this.state.qatarHero) {
-            bannerText = "Qatar Hero"
+            bannerText = "Money Ball"
         }
         else if (this.state.euroWizard) {
-            bannerText = "Euro Wizard"
+            bannerText = "Euros"
         }
  
         return (
