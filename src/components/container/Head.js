@@ -175,7 +175,7 @@ class Head extends Component {
             bannerText = "Admin Mode";
         }
         else if (this.state.qatarHero) {
-            bannerText = "Soccer Cup"
+            bannerText = "Money Ball"
         }
         else if (this.state.euroWizard) {
             bannerText = "Euros"
